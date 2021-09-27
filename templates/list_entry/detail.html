@@ -1,0 +1,21 @@
+{% extends 'diary_base.html' %}
+
+{% block content %}
+	<div class="card">
+	    <div class="card-header">
+	        <h5 class="card-title">List Entry Details #{{list_entry.id}}</h5>
+	    </div>
+	    <div class="card-body">
+	    <dl class="row">
+	      <dt class="col-sm-3">Content</dt>
+	      <dd class="col-sm-9">{{ list_entry.content}}</dd>
+	      <dt class="col-sm-3">Date</dt>
+	      <dd class="col-sm-9">{{list_entry.timestamp}}</dd>
+	    </dl>
+
+	    </div>
+	</div>
+	<a href="{{update_link}}" class="btn btn-success">update</a>
+	<a href="{{delete_link}}" class="btn btn-danger">delete</a>
+	<a href="{{go_back_link}}" class="btn btn-info">go back</a>
+{% endblock %}

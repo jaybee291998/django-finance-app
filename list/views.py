@@ -175,7 +175,7 @@ class ListEntryListView(ListView):
 		except EmptyPage:
 			list_entries = paginator.page(paginator.num_pages)
 		context['list_entry_details'] = zip(list_entries, detail_links)
-		context['add_list_entry_link'] = reverse_lazy('list_entry_create')
+		context['add_list_entry_link'] = reverse_lazy('list_entry_create', kwargs={'list_id':list_obj.id})
 		context['go_home_link'] = reverse_lazy('home')
 		return context
 
@@ -218,10 +218,10 @@ class ListEntryDetailView(DetailView):
 		context = super(ListEntryDetailView, self).get_context_data(**kwargs)
 		list_entry = context['list_entry']
 		delete_link = reverse_lazy('list_entry_delete', kwargs={'pk':list_entry.pk, 'list_id':list_obj.id})
-		update_link = reverse_lazy('list_update', kwargs={'pk':list_entry.pk})
+		update_link = reverse_lazy('list_entry_update', kwargs={'pk':list_entry.pk, 'list_id':list_obj.id})
 		context['delete_link'] = delete_link
 		context['update_link'] = update_link
-		context['go_back_link'] = reverse_lazy('list_entries_list')
+		context['go_back_link'] = reverse_lazy('list_entries_list', kwargs={'list_id':list_obj.id})
 		return context
 
 	def get_list_object(self):
@@ -286,7 +286,7 @@ class ListEntryDeleteView(DeleteView):
 
 	def get_object(self, queryset=None):
 		list_obj = self.get_list_object()
-		obj = super(ListDeleteView, self).get_object(queryset=queryset)
+		obj = super(ListEntryDeleteView, self).get_object(queryset=queryset)
 		# check if the current list entry is owned by the list object
 		if obj.list_obj != list_obj:
 			raise Http404()
