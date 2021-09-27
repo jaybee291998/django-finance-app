@@ -129,10 +129,18 @@ class ListDeleteView(DeleteView):
 class ListEntryCreateView(CreateView):
 	model = ListEntry
 	template_name = 'list_entry/create.html'
-	success_url = reverse_lazy('list_entries_list')
 	fields = ('content',)
 
+	def get_success_url(self):
+		list_obj = self.get_list_object()
+		return reverse_lazy('list_entry_detail', kwargs={'pk':self.object.id, 'list_id':list_obj.id})
+
 	def form_valid(self, form):
+		list_obj = self.get_list_object()
+		form.instance.list_obj = list_obj
+		return super(ListEntryCreateView, self).form_valid(form)
+
+	def get_list_object(self):
 		# get the list_id then check if exist, if so check if the current user is the owner of the list
 		# object
 		list_id = self.kwargs['list_id']
@@ -143,8 +151,7 @@ class ListEntryCreateView(CreateView):
 		# check if the current user is the owner of the list object
 		if list_obj.user != self.request.user:
 			raise Http404()
-		form.instance.list_obj = list_obj
-		return super(ListEntryCreateView, self).form_valid(form)
+		return list_obj
 
 
 @method_decorator(login_required, name='dispatch')
