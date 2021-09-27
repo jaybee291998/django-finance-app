@@ -1,0 +1,40 @@
+{% extends 'accounts_base.html' %}
+
+{% block content %}
+	<a href="{{logout_link}}" class="btn btn-danger" role='button'>logout</a>
+	<div class="card" style="width: 18rem;">
+	  <div class="card-body">
+	    <h5 class="card-title">Expense</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">records and analyze your daily expenditures</p>
+	    <a href="{{expense_home_link}}" class="card-link">Go to Expense</a>
+	  </div>
+	</div>
+
+	<div class="card" style="width: 18rem;">
+	  <div class="card-body">
+	    <h5 class="card-title">Income</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">records and analyze your income</p>
+	    <a href="{{income_home_link}}" class="card-link">Go to Income</a>
+	  </div>
+	</div>
+
+	<div class="card" style="width: 18rem;">
+	  <div class="card-body">
+	    <h5 class="card-title">Diary</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">record what happnens in your daily life</p>
+	    <a href="{{diary_home_link}}" class="card-link">Go to Diary</a>
+	  </div>
+	</div>
+
+	<div class="card" style="width: 18rem;">
+	  <div class="card-body">
+	    <h5 class="card-title">Fund</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">allocate and monitor yours funds</p>
+	    <a href="{{fund_home_link}}" class="card-link">Go to Fund</a>
+	  </div>
+	</div>
+{% endblock %}
