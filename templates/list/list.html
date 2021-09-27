@@ -11,11 +11,13 @@
 		<tr>
 			<th>title</th>
 			<th>description</th>
+			<th>date</th>
 		</tr>
-		{% for entry, detail_link in diary_details %}
+		{% for entry, detail_link in list_details %}
 			<tr>
 				<td><a href="{{detail_link}}">{{entry.title}}</a></td>
-				<td>{{entry.content}}</td>
+				<td>{{entry.description}}</td>
+				<td>{{entry.timestamp}}</td>
 			</tr>
 		{% endfor %}
 	</table>

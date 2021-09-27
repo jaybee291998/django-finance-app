@@ -26,7 +26,7 @@ class ListCreateView(CreateView):
 
 	def form_valid(self, form):
 		form.instance.user = self.request.user
-		return super(DiaryCreateView, self).form_valid(form)
+		return super(ListCreateView, self).form_valid(form)
 
 @method_decorator(login_required, name='dispatch')
 class ListListView(ListView):
@@ -56,7 +56,6 @@ class ListListView(ListView):
 		context['list_details'] = zip(lists, detail_links)
 		context['add_list_link'] = reverse_lazy('list_create')
 		context['go_home_link'] = reverse_lazy('home')
-		context['entry_date'] = entry_date
 		return context
 
 @method_decorator(login_required, name='dispatch')
