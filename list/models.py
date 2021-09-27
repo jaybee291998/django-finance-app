@@ -13,6 +13,9 @@ class List(models.Model):
 		return f'{self.title} - {self.description[:15]}'
 
 class ListEntry(models.Model):
-	list_id				= models.ForeignKey(List, related_name='list_entries', on_delete=models.CASCADE, null=True)
+	list_obj			= models.ForeignKey(List, related_name='list_entries', on_delete=models.CASCADE, null=True)
 	content 			= models.TextField()
 	timestamp 			= models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f'{self.list_obj.title} - {self.content[:10]}'

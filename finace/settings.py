@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'diary',
     'bank_account',
     'fund',
+    'list',
 
     'rest_framework',
 ]
