@@ -137,99 +137,102 @@ class ListEntryCreateView(CreateView):
 			list_obj = List.objects.get(pk=list_id)
 		except LidtDoesNotExist:
 			raise Http404()
+		# check if the current user is the owner of the list object
+		if list_obj.user != self.request.user:
+			raise Http404()
 		form.instance.list_obj = list_obj
 		return super(ListEntryCreateView, self).form_valid(form)
 
 
-# @method_decorator(login_required, name='dispatch')
-# class ListEntryListView(ListView):
-# 	model = ListEntry
-# 	template_name = 'list/list.html'
-# 	context_object_name = 'lists'
-# 	paginate_by = 10
+@method_decorator(login_required, name='dispatch')
+class ListEntryListView(ListView):
+	model = ListEntry
+	template_name = 'list/list.html'
+	context_object_name = 'lists'
+	paginate_by = 10
 
-# 	def get_queryset(self):
-# 		queryset = List.objects.filter(user=self.request.user).order_by('-timestamp')
-# 		return queryset
+	def get_queryset(self):
+		queryset = List.objects.filter(user=self.request.user).order_by('-timestamp')
+		return queryset
 
-# 	def get_context_data(self, **kwargs):
-# 		context = super(ListListView, self).get_context_data(**kwargs)
-# 		lists = self.get_queryset()
-# 		page = self.request.GET.get('page')
-# 		paginator = Paginator(lists, self.paginate_by)
+	def get_context_data(self, **kwargs):
+		context = super(ListListView, self).get_context_data(**kwargs)
+		lists = self.get_queryset()
+		page = self.request.GET.get('page')
+		paginator = Paginator(lists, self.paginate_by)
 
-# 		lists = context['lists']
-# 		detail_links = [reverse_lazy('list_detail', kwargs={'pk':list_obj.pk}) for list_obj in lists]
-# 		try:
-# 			lists = paginator.page(page)
-# 		except PageNotAnInteger:
-# 			lists = paginator.page(1)
-# 		except EmptyPage:
-# 			lists = paginator.page(paginator.num_pages)
-# 		context['list_details'] = zip(lists, detail_links)
-# 		context['add_list_link'] = reverse_lazy('list_create')
-# 		context['go_home_link'] = reverse_lazy('home')
-# 		return context
+		lists = context['lists']
+		detail_links = [reverse_lazy('list_detail', kwargs={'pk':list_obj.pk}) for list_obj in lists]
+		try:
+			lists = paginator.page(page)
+		except PageNotAnInteger:
+			lists = paginator.page(1)
+		except EmptyPage:
+			lists = paginator.page(paginator.num_pages)
+		context['list_details'] = zip(lists, detail_links)
+		context['add_list_link'] = reverse_lazy('list_create')
+		context['go_home_link'] = reverse_lazy('home')
+		return context
 
-# @method_decorator(login_required, name='dispatch')
-# class ListDetailView(DetailView):
-# 	model = List
-# 	template_name = 'list/detail.html'
-# 	context_object_name = 'list'
+@method_decorator(login_required, name='dispatch')
+class ListDetailView(DetailView):
+	model = List
+	template_name = 'list/detail.html'
+	context_object_name = 'list'
 
-# 	def get_object(self, queryset=None):
-# 		obj = super(ListDetailView, self).get_object(queryset=queryset)
-# 		if obj.user != self.request.user:
-# 			raise Http404()
-# 		return obj
+	def get_object(self, queryset=None):
+		obj = super(ListDetailView, self).get_object(queryset=queryset)
+		if obj.user != self.request.user:
+			raise Http404()
+		return obj
 
-# 	def get_queryset(self):
-# 		queryset = super(ListDetailView, self).get_queryset()
-# 		return queryset.filter(user=self.request.user)
+	def get_queryset(self):
+		queryset = super(ListDetailView, self).get_queryset()
+		return queryset.filter(user=self.request.user)
 
-# 	def get_context_data(self, **kwargs):
-# 		context = super(ListDetailView, self).get_context_data(**kwargs)
-# 		list_obj = context['list']
-# 		delete_link = reverse_lazy('list_delete', kwargs={'pk':list_obj.pk})
-# 		update_link = reverse_lazy('list_update', kwargs={'pk':list_obj.pk})
-# 		context['delete_link'] = delete_link
-# 		context['update_link'] = update_link
-# 		context['go_back_link'] = reverse_lazy('lists_list')
-# 		return context
+	def get_context_data(self, **kwargs):
+		context = super(ListDetailView, self).get_context_data(**kwargs)
+		list_obj = context['list']
+		delete_link = reverse_lazy('list_delete', kwargs={'pk':list_obj.pk})
+		update_link = reverse_lazy('list_update', kwargs={'pk':list_obj.pk})
+		context['delete_link'] = delete_link
+		context['update_link'] = update_link
+		context['go_back_link'] = reverse_lazy('lists_list')
+		return context
 
 
-# @method_decorator(login_required, name='dispatch')
-# class ListUpdateView(UpdateView):
-# 	model = List 
-# 	template_name = 'list/update.html'
-# 	context_object_name = 'list'
-# 	fields = ('title', 'description')
+@method_decorator(login_required, name='dispatch')
+class ListUpdateView(UpdateView):
+	model = List 
+	template_name = 'list/update.html'
+	context_object_name = 'list'
+	fields = ('title', 'description')
 
-# 	def get_success_url(self):
-# 		return reverse_lazy('list_detail', kwargs={'pk':self.object.id})
+	def get_success_url(self):
+		return reverse_lazy('list_detail', kwargs={'pk':self.object.id})
 
-# 	def get_object(self, queryset=None):
-# 		obj = super(ListUpdateView, self).get_object(queryset=queryset)
-# 		if obj.user != self.request.user:
-# 			raise Http404()
-# 		return obj
+	def get_object(self, queryset=None):
+		obj = super(ListUpdateView, self).get_object(queryset=queryset)
+		if obj.user != self.request.user:
+			raise Http404()
+		return obj
 
-# 	def get_queryset(self):
-# 		queryset = super(ListUpdateView, self).get_queryset()
-# 		return queryset.filter(user=self.request.user)
+	def get_queryset(self):
+		queryset = super(ListUpdateView, self).get_queryset()
+		return queryset.filter(user=self.request.user)
 
-# @method_decorator(login_required, name='dispatch')
-# class ListDeleteView(DeleteView):
-# 	model = List
-# 	template_name = 'list/delete.html'
-# 	success_url = reverse_lazy('lists_list')
+@method_decorator(login_required, name='dispatch')
+class ListDeleteView(DeleteView):
+	model = List
+	template_name = 'list/delete.html'
+	success_url = reverse_lazy('lists_list')
 
-# 	def get_object(self, queryset=None):
-# 		obj = super(ListDeleteView, self).get_object(queryset=queryset)
-# 		if obj.user != self.request.user:
-# 			raise Http404()
-# 		return obj
+	def get_object(self, queryset=None):
+		obj = super(ListDeleteView, self).get_object(queryset=queryset)
+		if obj.user != self.request.user:
+			raise Http404()
+		return obj
 
-# 	def get_queryset(self):
-# 		queryset = super(ListDeleteView, self).get_queryset()
-# 		return queryset.filter(user=self.request.user)
+	def get_queryset(self):
+		queryset = super(ListDeleteView, self).get_queryset()
+		return queryset.filter(user=self.request.user)
