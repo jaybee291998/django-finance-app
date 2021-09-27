@@ -82,6 +82,7 @@ class ListDetailView(DetailView):
 		context['delete_link'] = delete_link
 		context['update_link'] = update_link
 		context['go_back_link'] = reverse_lazy('lists_list')
+		context['list_entry_home_link'] = reverse_lazy('list_entries_list', kwargs={'list_id':list_obj.id})
 		return context
 
 
