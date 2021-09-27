@@ -1,0 +1,27 @@
+{% extends 'diary_base.html' %}
+
+{% block content %}
+		<ul class="nav">
+			<li class="nav-item">
+				<a href="{{go_home_link}}" class="nav-link">Home</a>
+			</li>
+		</ul>
+
+	<table class="table table-striped">
+		<tr>
+			<th>title</th>
+			<th>description</th>
+		</tr>
+		{% for entry, detail_link in diary_details %}
+			<tr>
+				<td><a href="{{detail_link}}">{{entry.title}}</a></td>
+				<td>{{entry.content}}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	<a href="{{add_list_link}}" class="btn btn-success" role="button">add list</a>
+	
+	{% if is_paginated %}
+    	{% include "income/_pagination.html" %}
+	{% endif %}
+{% endblock %}
