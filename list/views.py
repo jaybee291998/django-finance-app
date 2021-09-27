@@ -164,7 +164,8 @@ class ListEntryListView(ListView):
 	def get_queryset(self):
 		list_obj = self.get_list_object()
 
-		queryset = ListEntry.objects.filter(list_obj=list_obj).order_by('-timestamp')
+		# the oldest list entry is on top
+		queryset = ListEntry.objects.filter(list_obj=list_obj).order_by('timestamp')
 		return queryset
 
 	def get_context_data(self, **kwargs):
