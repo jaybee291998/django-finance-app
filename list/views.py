@@ -36,7 +36,7 @@ class ListListView(ListView):
 	paginate_by = 10
 
 	def get_queryset(self):
-		queryset = List.objects.filter(user=self.request.user)
+		queryset = List.objects.filter(user=self.request.user).order_by('-timestamp')
 		return queryset
 
 	def get_context_data(self, **kwargs):
