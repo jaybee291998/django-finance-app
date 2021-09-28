@@ -84,10 +84,14 @@ WSGI_APPLICATION = 'finace.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# modified the database to use mysql
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'jayvee291998$finance',
+        'USER': 'jayvee291998',
+        'PASSWORD': 'l67VNwPoSX3pN49lv7UzQKfUQysrdoQ',
+        'HOST': 'jayvee291998.mysql.pythonanywhere-services.com',
     }
 }
 
@@ -131,7 +135,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # static root for the python anywhere server
-STATIC_ROOT = '/home/jayvee291998/django-finance-app/static' 
+STATIC_ROOT = '/home/jayvee291998/django-finance-app/static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
