@@ -291,7 +291,7 @@ class ListEntryDeleteView(DeleteView):
 
 	def get_success_url(self):
 		list_obj = self.get_list_object()
-		return reverse_lazy('list_entry_list', kwargs={'list_id':list_obj.id})
+		return reverse_lazy('list_entries_list', kwargs={'list_id':list_obj.id})
 
 	def get_object(self, queryset=None):
 		list_obj = self.get_list_object()
