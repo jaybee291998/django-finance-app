@@ -159,6 +159,9 @@ class ExpenseUpdateView(UpdateView):
 		prev_price = self.object.price
 		prev_fund = self.object.fund
 
+		print(f'prev_price: {prev_price}')
+		print(f'prev_fund: {prev_fund}')
+
 
 		if fund == prev_fund:
 			if price < prev_price:
@@ -187,6 +190,7 @@ class ExpenseUpdateView(UpdateView):
 		kwargs.update({'account':self.request.user.bank_account})
 
 		# a flag if the form is being to update
+		kwargs.update({'account':self.request.user.bank_account})
 		return kwargs
 
 
