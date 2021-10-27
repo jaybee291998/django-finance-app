@@ -175,6 +175,9 @@ class ExpenseUpdateView(UpdateView):
 			# subtract the current price to the current fund
 			fund.amount -= price
 
+		# save the fund instance
+		fund.save()
+
 		self.object = form.save()
 		return super(ExpenseUpdateView, self).form_valid(form)
 
