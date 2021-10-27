@@ -153,6 +153,28 @@ class ExpenseUpdateView(UpdateView):
 		return queryset.filter(account=self.request.user.bank_account)
 
 	def form_valid(self, form):
+		price = form.instance.price
+		fund = form.instance.fund
+
+		prev_price = self.object.price
+		prev_fund = self.object.fund
+
+
+		if fund == prev_fund:
+			if price < prev_price:
+				# since the current price is lower than the previous price
+				# add the remaining back to the fund
+				fund.amount += prev_price - price
+			else:
+				# subtract the excess from the fund
+				fund.amout -= price - prev_price
+		else:
+			# add the previous price from the previous fund
+			prev_fund.amount += prev_price
+
+			# subtract the current price to the current fund
+			fund.amount -= price
+
 		self.object = form.save()
 		return super(ExpenseCreateView, self).form_valid(form)
 
