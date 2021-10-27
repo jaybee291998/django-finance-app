@@ -38,7 +38,7 @@ class ExpenseAddForm(forms.ModelForm):
 			prev_price = self.prev_instance.price
 			prev_fund = self.prev_instance.fund
 			if price > prev_price:
-				if (price - prev_price) > fundo_bj.amount:
+				if (price - prev_price) > fund_bj.amount:
 					raise ValidationError(f'The fund {prev_fund.name} has insufficient balance\nCurrent Balance: {prev_fund.amount}')
 		else:
 			if fund_obj.amount - price < 0:
