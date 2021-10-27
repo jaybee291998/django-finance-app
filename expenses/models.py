@@ -22,36 +22,3 @@ class Expense(models.Model):
 
 	def __str__(self):
 		return self.description[:10] + ' - ' + str(self.category)
-
-
-	def save(self, update=False ,*args, **kwargs):
-		# subtract the price of the expense to the selected fund
-		prc = self.price
-		fnd = self.fund
-		if update:
-			# if save is used to update an expense
-			# make sure that the fund is adjusted appropriately
-			prev_prc = self.instance.price
-			if prc < prev_prc:
-				fnd.amount += prev_prc - prc
-			else:
-				fnd.amount -= prc - prev_prc
-		else:
-			fnd.amount -= prc 
-		fnd.save()
-
-		super(Expense, self).save(*args, **kwargs)
-
-	def delete(self, *args, **kwargs):
-		# add the price of the expense to be deleted
-		# to the fund where it was subtracted before
-		prc = self.price
-		fnd = self.fund
-
-		# add the amount that was subtracted before
-		fnd.amount += prc
-		fnd.save()
-
-		super(Expense, self).delete(*args, **kwargs)
-
-

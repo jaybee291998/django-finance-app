@@ -40,6 +40,15 @@ class ExpenseCreateView(CreateView):
 
 	def form_valid(self, form):
 		form.instance.account = self.request.user.bank_account
+
+		# get the fund to subtract from
+		fund = form.instance.fund
+		price = form.instance.price
+
+		# subtract the price from the fund
+		fund.amout -= price
+		fund.save()
+
 		return super(ExpenseCreateView, self).form_valid(form)
 
 	def get_form_kwargs(self):
@@ -144,7 +153,7 @@ class ExpenseUpdateView(UpdateView):
 		return queryset.filter(account=self.request.user.bank_account)
 
 	def form_valid(self, form):
-		self.object = form.save(update=True)
+		self.object = form.save()
 		return super(ExpenseCreateView, self).form_valid(form)
 
 	# add additional custom data to the form arguments
