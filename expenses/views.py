@@ -167,7 +167,7 @@ class ExpenseUpdateView(UpdateView):
 				fund.amount += prev_price - price
 			else:
 				# subtract the excess from the fund
-				fund.amout -= price - prev_price
+				fund.amount -= price - prev_price
 		else:
 			# add the previous price from the previous fund
 			prev_fund.amount += prev_price
