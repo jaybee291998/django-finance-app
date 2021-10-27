@@ -32,7 +32,7 @@ class ExpenseAddForm(forms.ModelForm):
 	def clean_fund(self):
 		price = self.cleaned_data['price']
 		fund_obj = self.cleaned_data['fund']
-		if fund_obj.amount - price <= 0:
+		if fund_obj.amount - price < 0:
 			raise ValidationError(f'The fund {fund_obj.name} has insufficient balance\nCurrent Balance: {fund_obj.amount}')
 
 		return fund_obj
