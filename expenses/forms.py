@@ -34,14 +34,26 @@ class ExpenseAddForm(forms.ModelForm):
 	def clean_fund(self):
 		price = self.cleaned_data['price']
 		fund_obj = self.cleaned_data['fund']
+
+		# if being updated
 		if self.prev_instance is not None:
 			prev_price = self.prev_instance.price
 			prev_fund = self.prev_instance.fund
-			if price > prev_price:
-				if (price - prev_price) > prev_fund.amount:
-					raise ValidationError(f'The fund {prev_fund.name} has insufficient balance\nCurrent Balance: {prev_fund.amount}')
+			# check if the fund is also updated
+			if fund_obj == prev_fund:
+				if price > prev_price:
+					if (price - prev_price) > fund_obj.amount:
+						raise ValidationError(f'The fund {fund_obj.name} has insufficient balance\nCurrent Balance: {fund_obj.amount}')
+			else:
+				# the fund is also updated
+				if price > fund_obj.amount:
+									if price > prev_price:
+					if (price - prev_price) > fund_obj.amount:
+						raise ValidationError(f'The fund {fund_obj.name} has insufficient balance\nCurrent Balance: {fund_obj.amount}')
 		else:
-			if fund_obj.amount - price < 0:
+			if fund_obj.amount < price:
 				raise ValidationError(f'The fund {fund_obj.name} has insufficient balance\nCurrent Balance: {fund_obj.amount}')
+
+		fund_obj.save()
 
 		return fund_obj
