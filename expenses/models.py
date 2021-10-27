@@ -22,3 +22,15 @@ class Expense(models.Model):
 
 	def __str__(self):
 		return self.description[:10] + ' - ' + str(self.category)
+
+	def delete(self, *args, **kwargs):
+		# add the price of the expense to be deleted
+		# to the fund where it was subtracted before
+		prc = self.price
+		fnd = self.fund
+
+		# add the amount that was subtracted before
+		fnd.amount += prc
+		fnd.save()
+
+		super(Expense, self).delete(*args, **kwargs)
