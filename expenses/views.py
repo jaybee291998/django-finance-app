@@ -175,6 +175,9 @@ class ExpenseUpdateView(UpdateView):
 			# add the previous price from the previous fund
 			prev_fund.amount += prev_price
 
+			# save the prev fund
+			prev_fund.save()
+
 			# subtract the current price to the current fund
 			fund.amount -= price
 
