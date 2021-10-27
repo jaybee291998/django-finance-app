@@ -176,7 +176,7 @@ class ExpenseUpdateView(UpdateView):
 			fund.amount -= price
 
 		self.object = form.save()
-		return super(ExpenseCreateView, self).form_valid(form)
+		return super(ExpenseUpdateView, self).form_valid(form)
 
 	# add additional custom data to the form arguments
 	def get_form_kwargs(self):
