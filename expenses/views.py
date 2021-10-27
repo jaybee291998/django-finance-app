@@ -160,9 +160,6 @@ class ExpenseUpdateView(UpdateView):
 		prev_price = prev_instance.price
 		prev_fund = prev_instance.fund
 
-		print(f'prev_price: {prev_price}')
-		print(f'prev_fund: {prev_fund}')
-
 		if fund == prev_fund:
 			if price < prev_price:
 				# since the current price is lower than the previous price
