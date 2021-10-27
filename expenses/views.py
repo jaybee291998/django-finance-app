@@ -156,15 +156,12 @@ class ExpenseUpdateView(UpdateView):
 		price = form.instance.price
 		fund = form.instance.fund
 
-		prev_price = self.object.price
-		prev_fund = self.object.fund
+		prev_instance = Expense.objects.get(pk=self.object.pk)
+		prev_price = prev_instance.price
+		prev_fund = prev_instance.fund
 
 		print(f'prev_price: {prev_price}')
 		print(f'prev_fund: {prev_fund}')
-
-
-		print(f'price: {price}')
-		print(f'fund: {fund}')
 
 		if fund == prev_fund:
 			if price < prev_price:
