@@ -2,6 +2,8 @@ from django import forms
 from .models import Expense, Fund
 from django.contrib.admin import widgets   
 
+from funds.models import Fund
+
 class DateInput(forms.DateTimeInput):
 	input_type='datetime-local'
 
@@ -25,3 +27,12 @@ class ExpenseAddForm(forms.ModelForm):
 			'price',
 			'fund'
 		]
+
+	def clean_fund(self):
+		price = self.cleaned_data['price']
+		fund_id = self.cleaned_data['fund']
+		fund_obj = Fund.objects.get(pk=fund_id)
+		if fund_obj.amount - price <= 0:
+			raise ValidationError("That fund has insufuccient balance")
+
+		return fund_id

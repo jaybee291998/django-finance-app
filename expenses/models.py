@@ -23,3 +23,11 @@ class Expense(models.Model):
 	def __str__(self):
 		return self.description[:10] + ' - ' + str(self.category)
 
+
+	def save(self, *args, **kwargs):
+		# subtract the price of the expense to the selected fund
+		prc = self.price
+
+		super(Expense, self).save(*args, **kwargs)
+
+
