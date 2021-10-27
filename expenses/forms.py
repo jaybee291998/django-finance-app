@@ -2,7 +2,7 @@ from django import forms
 from .models import Expense, Fund
 from django.contrib.admin import widgets   
 
-from funds.models import Fund
+from fund.models import Fund
 
 class DateInput(forms.DateTimeInput):
 	input_type='datetime-local'
