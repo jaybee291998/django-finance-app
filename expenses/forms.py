@@ -36,3 +36,11 @@ class ExpenseAddForm(forms.ModelForm):
 			raise ValidationError(f'The fund {fund_obj.name} has insufficient balance\nCurrent Balance: {fund_obj.amount}')
 
 		return fund_obj
+
+	def save(self, commit=True, update=False):
+		m = super(ExpenseAddForm, self).save(commit=False)
+
+		if commit:
+			m.save(update=update)
+
+		return m

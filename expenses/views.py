@@ -143,9 +143,16 @@ class ExpenseUpdateView(UpdateView):
 		queryset = super(ExpenseUpdateView, self).get_queryset()
 		return queryset.filter(account=self.request.user.bank_account)
 
+	def form_valid(self, form):
+		self.object = form.save(update=True)
+		return super(ExpenseCreateView, self).form_valid(form)
+
+	# add additional custom data to the form arguments
 	def get_form_kwargs(self):
 		kwargs = super(ExpenseUpdateView, self).get_form_kwargs()
 		kwargs.update({'account':self.request.user.bank_account})
+
+		# a flag if the form is being to update
 		return kwargs
 
 

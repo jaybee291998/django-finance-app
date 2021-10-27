@@ -24,11 +24,20 @@ class Expense(models.Model):
 		return self.description[:10] + ' - ' + str(self.category)
 
 
-	def save(self, *args, **kwargs):
+	def save(self, update=False ,*args, **kwargs):
 		# subtract the price of the expense to the selected fund
 		prc = self.price
 		fnd = self.fund
-		fnd.amount -= prc 
+		if update:
+			# if save is used to update an expense
+			# make sure that the fund is adjusted appropriately
+			prev_prc = self.instance.price
+			if prc < prev_prc:
+				fnd.amount += prev_prc - prc
+			else:
+				fnd.amount -= prc - prev_prc
+		else:
+			fnd.amount -= prc 
 		fnd.save()
 
 		super(Expense, self).save(*args, **kwargs)
