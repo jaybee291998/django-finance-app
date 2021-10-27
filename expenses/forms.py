@@ -47,9 +47,7 @@ class ExpenseAddForm(forms.ModelForm):
 			else:
 				# the fund is also updated
 				if price > fund_obj.amount:
-									if price > prev_price:
-					if (price - prev_price) > fund_obj.amount:
-						raise ValidationError(f'The fund {fund_obj.name} has insufficient balance\nCurrent Balance: {fund_obj.amount}')
+					raise ValidationError(f'The fund {fund_obj.name} has insufficient balance\nCurrent Balance: {fund_obj.amount}')
 		else:
 			if fund_obj.amount < price:
 				raise ValidationError(f'The fund {fund_obj.name} has insufficient balance\nCurrent Balance: {fund_obj.amount}')
