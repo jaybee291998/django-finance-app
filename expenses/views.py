@@ -46,7 +46,7 @@ class ExpenseCreateView(CreateView):
 		price = form.instance.price
 
 		# subtract the price from the fund
-		fund.amout -= price
+		fund.amount -= price
 		fund.save()
 
 		return super(ExpenseCreateView, self).form_valid(form)
