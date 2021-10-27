@@ -17,6 +17,7 @@ class ExpenseAddForm(forms.ModelForm):
 		account = kwargs.pop('account')
 		super(ExpenseAddForm, self).__init__(*args, **kwargs)
 		self.fields['fund'].queryset = Fund.objects.filter(account=account)
+		self.prev_instance = kwargs.pop('prev_instance')
 
 	fund 		= forms.ModelChoiceField(queryset=None, initial=0)
 
@@ -32,7 +33,17 @@ class ExpenseAddForm(forms.ModelForm):
 	def clean_fund(self):
 		price = self.cleaned_data['price']
 		fund_obj = self.cleaned_data['fund']
-		if fund_obj.amount - price < 0:
+
+		insufficient_balance = False
+		if self.prev_instance is not None:
+			prev_price = self.prev_instance.price
+			prev_fund = self.prev_instance.fund
+			if price > prev_price:
+				insufficient_balance = (price - prev_price) > fund.amount
+		else:
+			insufficient_balance = fund.amount - price < 0
+
+		if insufficient_balance:
 			raise ValidationError(f'The fund {fund_obj.name} has insufficient balance\nCurrent Balance: {fund_obj.amount}')
 
 		return fund_obj

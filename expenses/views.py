@@ -190,7 +190,7 @@ class ExpenseUpdateView(UpdateView):
 		kwargs.update({'account':self.request.user.bank_account})
 
 		# a flag if the form is being to update
-		kwargs.update({'account':self.request.user.bank_account})
+		kwargs.update({'prev_instance':Expense.objects.get(pk=self.object.id)})
 		return kwargs
 
 
