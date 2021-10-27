@@ -54,6 +54,8 @@ class ExpenseCreateView(CreateView):
 	def get_form_kwargs(self):
 		kwargs = super(ExpenseCreateView, self).get_form_kwargs()
 		kwargs.update({'account':self.request.user.bank_account})
+		# a flag if the form is being to update
+		kwargs.update({'prev_instance':None})
 		return kwargs
 
 @method_decorator(login_required, name='dispatch')
