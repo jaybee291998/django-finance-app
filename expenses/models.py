@@ -27,6 +27,9 @@ class Expense(models.Model):
 	def save(self, *args, **kwargs):
 		# subtract the price of the expense to the selected fund
 		prc = self.price
+		fnd = self.fund
+		fnd.amount -= prc 
+		fnd.save()
 
 		super(Expense, self).save(*args, **kwargs)
 
