@@ -1,6 +1,7 @@
 from django import forms 
 from .models import Expense, Fund
-from django.contrib.admin import widgets   
+from django.contrib.admin import widgets 
+from django.core.excpetions import ValidationError  
 
 from fund.models import Fund
 
