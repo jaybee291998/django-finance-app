@@ -41,6 +41,10 @@ class FundListView(ListView):
 	context_object_name = 'funds'
 	paginate_by = 10
 
+	def get_queryset(self):
+		queryset = Fund.objects.filter(account=self.request.user.bank_account)
+		return queryset
+
 	def get_context_data(self, **kwargs):
 		context = super(FundListView, self).get_context_data(**kwargs)
 		funds = self.get_queryset()
