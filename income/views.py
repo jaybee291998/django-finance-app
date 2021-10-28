@@ -32,9 +32,9 @@ class IncomeCreateView(CreateView):
 	def form_valid(self, form):
 		bank_account = self.request.user.bank_account
 		form.instance.account = bank_account
-		
+
 		# add the income to the bank account
-		bank_account += form.instance.amount
+		bank_account.balance += form.instance.amount
 		return super(IncomeCreateView, self).form_valid(form)
 
 
