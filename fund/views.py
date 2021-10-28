@@ -49,14 +49,21 @@ class FundListView(ListView):
 		context = super(FundListView, self).get_context_data(**kwargs)
 		funds = self.get_queryset()
 
+		# unallocated balance from the bank account
+		# which means the money that is not on any funds
+		unallocated_balance = self.request.user.bank_account.amount
 
+		# total balance
+		# are the remaining money from all the funds + the unallocated balance
+		total_balance = unallocated_balance + sum([fund.amount for fund in funds])
 		funds = context['funds']
 		
 		detail_links = [reverse_lazy('fund_detail', kwargs={'pk':fund.pk}) for fund in funds]
 		context['fund_details'] = zip(funds, detail_links)
 		context['add_fund_link'] = reverse_lazy('fund_create')
 		context['go_home_link'] = reverse_lazy('home')
-
+		context['unallocated_balance'] = unallocated_balance
+		context['total_expenditure'] = total_expenditure
 		return context
 
 @method_decorator(login_required, name='dispatch')
