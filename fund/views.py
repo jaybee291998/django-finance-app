@@ -63,6 +63,7 @@ class FundListView(ListView):
 		context['add_fund_link'] = reverse_lazy('fund_create')
 		context['go_home_link'] = reverse_lazy('home')
 		context['unallocated_balance'] = unallocated_balance
+		context['total_balance'] = total_balance
 		return context
 
 @method_decorator(login_required, name='dispatch')
