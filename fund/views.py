@@ -45,11 +45,14 @@ class FundListView(ListView):
 		context = super(FundListView, self).get_context_data(**kwargs)
 		funds = self.get_queryset()
 
-		funds = context['funds']
-		detail_links = [reverse_lazy('fund_detail', kwargs={'pk':fund.pk}) for fund in funds]
 
+		funds = context['funds']
+		
+		detail_links = [reverse_lazy('fund_detail', kwargs={'pk':fund.pk}) for fund in funds]
+		context['fund_details'] = zip(funds, detail_links)
 		context['add_fund_link'] = reverse_lazy('fund_create')
 		context['go_home_link'] = reverse_lazy('home')
+
 		return context
 
 @method_decorator(login_required, name='dispatch')
