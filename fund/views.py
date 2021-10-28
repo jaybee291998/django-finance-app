@@ -51,7 +51,7 @@ class FundListView(ListView):
 
 		# unallocated balance from the bank account
 		# which means the money that is not on any funds
-		unallocated_balance = self.request.user.bank_account.amount
+		unallocated_balance = self.request.user.bank_account.balance
 
 		# total balance
 		# are the remaining money from all the funds + the unallocated balance
