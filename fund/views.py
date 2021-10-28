@@ -41,36 +41,15 @@ class FundListView(ListView):
 	context_object_name = 'funds'
 	paginate_by = 10
 
-	def get_queryset(self):
-		entry_date = date.today()
-
-		if self.request.GET:
-			entry_date = datetime.strptime(self.request.GET['date'][:10].replace('-',''), "%Y%m%d").date()
-
-		queryset = Fund.objects.filter(account=self.request.user.bank_account, timestamp__year=entry_date.year, timestamp__month=entry_date.month, timestamp__day=entry_date.day).order_by('-timestamp')
-		return queryset
-
 	def get_context_data(self, **kwargs):
 		context = super(FundListView, self).get_context_data(**kwargs)
 		funds = self.get_queryset()
-		page = self.request.GET.get('page')
-		paginator = Paginator(funds, self.paginate_by)
 
 		funds = context['funds']
 		detail_links = [reverse_lazy('fund_detail', kwargs={'pk':fund.pk}) for fund in funds]
-		entry_date = datetime.strptime(self.request.GET['date'][:10].replace('-',''), "%Y%m%d").date() if self.request.GET else date.today()
 
-		try:
-			funds = paginator.page(page)
-		except PageNotAnInteger:
-			funds = paginator.page(1)
-		except EmptyPage:
-			funds = paginator.page(paginator.num_pages)
-		context['income_details'] = zip(funds, detail_links)
 		context['add_fund_link'] = reverse_lazy('fund_create')
 		context['go_home_link'] = reverse_lazy('home')
-		context['entry_date'] = entry_date
-		context['form'] = DateSelectorForm()
 		return context
 
 @method_decorator(login_required, name='dispatch')

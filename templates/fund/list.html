@@ -7,18 +7,12 @@
 			</li>
 		</ul>
 
-	<form method = "GET">
-	    {{ form }}
-	    <input type = "submit" value = "Submit">
-	</form>
-	<h3>{{entry_date}}</h3>
 	<table class="table table-striped">
 		<tr>
 			<th>name</th>
 			<th>description</th>
 			<th>category</th>
 			<th>amount</th>
-			<th>timestamp</th>
 		</tr>
 		{% for entry, detail_link in income_details %}
 			<tr>
@@ -26,13 +20,8 @@
 				<td>{{entry.description}}</td>
 				<td>{{entry.category}}</td>
 				<td>{{entry.amount}}</td>
-				<td>{{entry.timestamp}}</td>
 			</tr>
 		{% endfor %}
 	</table>
 	<a href="{{add_fund_link}}" class="btn btn-success" role="button">add fund</a>
-	
-	{% if is_paginated %}
-    	{% include "income/_pagination.html" %}
-	{% endif %}
 {% endblock %}
