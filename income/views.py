@@ -35,6 +35,8 @@ class IncomeCreateView(CreateView):
 
 		# add the income to the bank account
 		bank_account.balance += form.instance.amount
+		# save the changes to the database
+		bank_account.save()
 		return super(IncomeCreateView, self).form_valid(form)
 
 
