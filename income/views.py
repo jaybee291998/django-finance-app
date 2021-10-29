@@ -17,6 +17,7 @@ from django.views.generic.detail import DetailView
 
 
 from .models import Income
+from .forms import IncomeAddForm
 
 from accounts.utils import is_object_expired
 from expenses.forms import DateSelectorForm
@@ -28,6 +29,7 @@ class IncomeCreateView(CreateView):
 	template_name = 'income/create.html'
 	success_url = reverse_lazy('incomes_list')
 	fields = ('description', 'category', 'amount', 'source')
+	form_class = IncomeAddForm
 
 	def form_valid(self, form):
 		bank_account = self.request.user.bank_account
