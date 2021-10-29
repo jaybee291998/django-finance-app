@@ -40,7 +40,6 @@ class ExpenseCreateView(CreateView):
 
 	def form_valid(self, form):
 		form.instance.account = self.request.user.bank_account
-		form.instance.fund.queryset = Fund.objects.filter(account=self.request.user.bank_account)
 
 		# get the fund to subtract from
 		fund = form.instance.fund
@@ -54,7 +53,7 @@ class ExpenseCreateView(CreateView):
 
 	def get_form_kwargs(self):
 		kwargs = super(ExpenseCreateView, self).get_form_kwargs()
-		# kwargs.update({'account':self.request.user.bank_account})
+		kwargs.update({'account':self.request.user.bank_account})
 		# a flag if the form is being to update
 		kwargs.update({'prev_instance':None})
 		return kwargs

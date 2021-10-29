@@ -14,8 +14,10 @@ class DateSelectorForm(forms.Form):
 class ExpenseAddForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
+		account = kwargs.pop('account')
 		self.prev_instance = kwargs.pop('prev_instance')
 		super(ExpenseAddForm, self).__init__(*args, **kwargs)
+		self.fields['fund'].queryset = Fund.objects.filter(account=account)
 		
 
 	fund 		= forms.ModelChoiceField(queryset=None, initial=0)
