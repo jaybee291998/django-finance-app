@@ -128,6 +128,31 @@ class IncomeUpdateView(UpdateView):
 	context_object_name = 'income'
 	fields = ('description', 'category', 'amount', 'source')
 
+	# add the prev instance
+	self.prev_instance = Income.objects.get(pk=self.object.id)
+	# run custom code while the form is being validated
+	def form_valid(self, form):
+		# the amount to be updated
+		prev_amount = self.prev_instance.amount
+		# the amount that will replace the prev amount
+		current_amount = form.instance.amount
+
+		# the bank account
+		bank_account = self.request.user.bank_account
+
+		# the income is increased
+		if prev_amount < current_amount:
+			# add the increase to the unallocated balance
+			bank_account.balance += (current_amount - prev_amount)
+		else:
+			if (prev_amount - current_amount) < bank_account.balance:
+				# the income is reduced, so subtract the amount that is reduced
+				bank_account.balance -= (prev_amount - current_amount)
+		# save the changes in the bank account
+		bank_account.save()
+
+		super(IncomeUpdateView, self).form_valid(form)
+
 	def get_success_url(self):
 		return reverse_lazy('income_detail', kwargs={'pk':self.object.id})
 
@@ -148,7 +173,7 @@ class IncomeUpdateView(UpdateView):
 		kwargs = super(IncomeUpdateView, self).get_form_kwargs()
 		# a flag if the form is being to update
 		# pass the previus instance of the object to the form
-		kwargs.update({'prev_instance':Income.objects.get(pk=self.object.id)})
+		kwargs.update({'prev_instance':self.prev_instance})
 		return kwargs
 
 @method_decorator(login_required, name='dispatch')
