@@ -28,7 +28,6 @@ class IncomeCreateView(CreateView):
 	model = Income
 	template_name = 'income/create.html'
 	success_url = reverse_lazy('incomes_list')
-	fields = ('description', 'category', 'amount', 'source')
 	form_class = IncomeAddForm
 
 	def form_valid(self, form):
