@@ -30,6 +30,7 @@ class IncomeCreateView(CreateView):
 	success_url = reverse_lazy('incomes_list')
 	form_class = IncomeAddForm
 
+	# method that vali
 	def form_valid(self, form):
 		bank_account = self.request.user.bank_account
 		form.instance.account = bank_account
@@ -39,6 +40,12 @@ class IncomeCreateView(CreateView):
 		# save the changes to the database
 		bank_account.save()
 		return super(IncomeCreateView, self).form_valid(form)
+
+	def get_form_kwargs(self):
+		kwargs = super(IncomeCreateView, self).get_form_kwargs()
+		# a flag if the form is being to update
+		kwargs.update({'prev_instance':None})
+		return kwargs
 
 
 @method_decorator(login_required, name='dispatch')
@@ -135,6 +142,14 @@ class IncomeUpdateView(UpdateView):
 	def get_queryset(self):
 		queryset = super(IncomeUpdateView, self).get_queryset()
 		return queryset.filter(account=self.request.user.bank_account)
+
+	# add additional custom data to the form arguments
+	def get_form_kwargs(self):
+		kwargs = super(IncomeUpdateView, self).get_form_kwargs()
+		# a flag if the form is being to update
+		# pass the previus instance of the object to the form
+		kwargs.update({'prev_instance':Income.objects.get(pk=self.object.id)})
+		return kwargs
 
 @method_decorator(login_required, name='dispatch')
 class IncomeDeleteView(DeleteView):
