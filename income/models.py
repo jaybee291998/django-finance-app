@@ -22,7 +22,7 @@ class Income(models.Model):
 	def __str__(self):
 		return self.description[:10] + ' - ' + str(self.category)
 
-	def delete(self):
+	def delete(self, *args, **kwargs):
 		amt = self.amount
 		bank_account = self.account
 		# subtract the amount to the unallocated balance
