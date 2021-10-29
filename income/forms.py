@@ -20,7 +20,7 @@ class IncomeAddForm(forms.ModelForm):
 	def clean_amount(self):
 		amount = self.cleaned_data['amount']
 		# only accept positive integers
-		if price < 0:
+		if amount < 0:
 			raise ValidationError('Negative Integers are not allowed')
 		
 		return amount
