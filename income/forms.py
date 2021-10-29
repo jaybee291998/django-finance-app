@@ -9,7 +9,7 @@ class IncomeAddForm(forms.ModelForm):
 		super(ExpenseAddForm, self).__init__(*args, **kwargs)
 
 	class Meta:
-		model = Expense
+		model = Income
 		fields = [
 			'description',
 			'category',
