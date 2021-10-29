@@ -163,6 +163,12 @@ class IncomeDeleteView(DeleteView):
 			raise Http404()
 		if is_object_expired(obj, settings.TWELVE_HOUR_DURATION):
 			raise Http404()
+		# if the income to be deleted is higher than the unallocated balance of the
+		# bank account, dont allow deletion because the income will be subtracted to the balance
+		# when that happens the balance will be negative
+		# this only happens if the income is already allocated to a fund
+		if obj.amount > self.request.user.bank_account.balance:
+			raise Http404()
 		return obj
 
 	def get_queryset(self):
