@@ -31,6 +31,12 @@ class ExpenseAddForm(forms.ModelForm):
 			'fund'
 		]
 
+	def clean_price(self):
+		# only accept positive integers
+		if self.cleaned_data['price'] < 0:
+			raise ValidationError('Negative Integers are not allowed')
+		return self.cleaned_data['price']
+
 	def clean_fund(self):
 		price = self.cleaned_data['price']
 		fund_obj = self.cleaned_data['fund']
