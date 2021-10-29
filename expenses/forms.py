@@ -31,16 +31,15 @@ class ExpenseAddForm(forms.ModelForm):
 			'fund'
 		]
 
-	def clean_price(self):
-		price = self.cleaned_data['price']
+	def clean(self):
+		cleaned_data = super().clean()
+
+		price = cleaned_data['price']
 		# only accept positive integers
 		if price < 0:
 			raise ValidationError('Negative Integers are not allowed')
-		return price
 
-	def clean_fund(self):
-		price = self.cleaned_data['price']
-		fund_obj = self.cleaned_data['fund']
+		fund_obj = cleaned_data['fund']
 
 		# if being updated
 		if self.prev_instance is not None:
@@ -60,5 +59,3 @@ class ExpenseAddForm(forms.ModelForm):
 				raise ValidationError(f'The fund {fund_obj.name} has insufficient balance\nCurrent Balance: {fund_obj.amount}')
 
 		fund_obj.save()
-
-		return fund_obj
