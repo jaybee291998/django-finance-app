@@ -159,6 +159,8 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 			if form.is_valid():
 				amount = form.cleaned_data.get('amount')
 				action = form.cleaned_data.get('action')
+				errors.append('Lesser Men')
+				errors.append('Losethose')
 	else:
 		raise Http404()
 
