@@ -17,6 +17,7 @@ from django.conf import settings
 
 
 from .models import Fund
+from .forms import FundAllocationForm
 
 from expenses.forms import DateSelectorForm
 from accounts.utils import is_object_expired
@@ -142,3 +143,27 @@ class FundDeleteView(DeleteView):
 	def get_queryset(self):
 		queryset = super(FundDeleteView, self).get_queryset()
 		return queryset.filter(account=self.request.user.bank_account)
+
+@login_required
+def fund_allocation_view(request):
+	try:
+		fund = Fund.objects.get(pk=fund_id)
+	except (TypeError, ValueError, OverflowError, Fund.DoesNotExist):
+		fund = None
+
+	if fund is not None:
+		form = FundAllocationForm(request.POST or None)
+		if fund.account.user == self.request.user:
+			if form.is_valid():
+				amount = form.cleaned_data.get('amount')
+				action = form.cleaned_data.get('action')
+	else:
+		raise Http404()
+
+	context = {
+		'form': form,
+		'amount': amount,
+		'action': action
+	}
+
+	return render(request, 'fund/fund_allocation.html', context)
