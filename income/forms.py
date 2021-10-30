@@ -6,6 +6,7 @@ class IncomeAddForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		self.prev_instance = kwargs.pop('prev_instance')
+		self.bank_account = kwargs.pop('account')
 		super(IncomeAddForm, self).__init__(*args, **kwargs)
 
 	class Meta:

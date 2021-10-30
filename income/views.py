@@ -45,6 +45,7 @@ class IncomeCreateView(CreateView):
 		kwargs = super(IncomeCreateView, self).get_form_kwargs()
 		# a flag if the form is being to update
 		kwargs.update({'prev_instance':None})
+		kwargs.update({'account':None})
 		return kwargs
 
 
@@ -172,6 +173,8 @@ class IncomeUpdateView(UpdateView):
 		# a flag if the form is being to update
 		# pass the previus instance of the object to the form
 		kwargs.update({'prev_instance':Income.objects.get(pk=self.object.id)})
+		# pass the bank account 
+		kwargs.update({'account':self.request.user.bank_account})
 		return kwargs
 
 @method_decorator(login_required, name='dispatch')
