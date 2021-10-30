@@ -131,7 +131,7 @@ class IncomeUpdateView(UpdateView):
 
 	def __init__(self, **kwargs):
 		super(IncomeUpdateView, self).__init__(*kwargs)
-		self.prev_instance = Income.objects.get(pk=self.object.id)
+		self.prev_instance = None
 
 	# run custom code while the form is being validated
 	def form_valid(self, form):
@@ -165,6 +165,7 @@ class IncomeUpdateView(UpdateView):
 			raise Http404()
 		if is_object_expired(obj, settings.TWELVE_HOUR_DURATION):
 			raise Http404()
+		self.prev_instance = Income.objects.get(pk=obj.id)
 		return obj
 
 	def get_queryset(self):
