@@ -6,4 +6,4 @@ class FundAllocationForm(forms.Form):
 		('DL', 'Deallocate'))
 
 	amount 			= forms.IntegerField()
-	action 			= forms.CharField(max_length=2, choices=ACTIONS)
+	action 			= forms.ChoiceField(choices=ACTIONS)
