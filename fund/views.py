@@ -150,7 +150,8 @@ def fund_allocation_view(request):
 		fund = Fund.objects.get(pk=fund_id)
 	except (TypeError, ValueError, OverflowError, Fund.DoesNotExist):
 		fund = None
-
+	amount = None
+	action = None
 	if fund is not None:
 		form = FundAllocationForm(request.POST or None)
 		if fund.account.user == self.request.user:
