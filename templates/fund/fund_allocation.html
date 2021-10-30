@@ -2,6 +2,7 @@
 
 {% block content %}
 	<h2>Fund Allocation</h2>
+	<b>Unallocated Balance: </b> {{unallocated_balance}}<br>
 	{% if errors %}
 		<h4 class="alert alert-danger">Errors</h4>
 		<ul class="list-group">
@@ -11,8 +12,6 @@
 		</ul>
 	{% endif %}
 	<form method="POST">
-		<b>Amount:</b> {{amount}}
-		<b>Action:</b> {{action}}
 		{% csrf_token %}
 		{{form.as_p}}
 		<button type="submit">submit</button>

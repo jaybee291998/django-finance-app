@@ -150,14 +150,15 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 		fund = Fund.objects.get(pk=fund_id)
 	except (TypeError, ValueError, OverflowError, Fund.DoesNotExist):
 		fund = None
+
 	amount = None
 	action = None
+	bank_account = request.user.bank_account
 	errors = []
 	if fund is not None:
 		form = FundAllocationForm(request.POST or None)
 		if fund.account.user == request.user:
 			if form.is_valid():
-				bank_account = request.user.bank_account
 				amount = form.cleaned_data.get('amount')
 				action = form.cleaned_data.get('action')
 
@@ -192,9 +193,8 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 
 	context = {
 		'form': form,
-		'amount': amount,
-		'action': action,
-		'errors': errors
+		'errors': errors,
+		'unallocated_balance': bank_account.balance
 	}
 
 	return render(request, 'fund/fund_allocation.html', context)
