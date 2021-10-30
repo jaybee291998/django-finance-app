@@ -106,7 +106,7 @@ class FundUpdateView(UpdateView):
 	model = Fund
 	template_name = 'fund/update.html'
 	context_object_name = 'fund'
-	fields = ( 'name' ,'description', 'category', 'amount')
+	fields = ( 'name' ,'description', 'category')
 
 	def get_success_url(self):
 		return reverse_lazy('fund_detail', kwargs={'pk':self.object.id})
