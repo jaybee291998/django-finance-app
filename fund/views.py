@@ -172,6 +172,8 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 						fund.amount += amount
 						# subtract the amount to the bank account balance
 						bank_account.balance -= amount
+						# return to fund_detail
+						return redirect('fund_detail', pk=fund.id)
 					else:
 						# trying to allocate an amount greater than the current balance
 						errors.append(f'You can only allocate up to {bank_account.balance}, other wise your balance will be in the negative')
@@ -183,13 +185,14 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 						fund.amount -= amount
 						# add the deallocated amount to the bank account balance
 						bank_account.balance += amount
+						# return to fund_detail
+						return redirect('fund_detail', pk=fund.id)
 					else:
 						# trying to deallocate an amount that is greater than the available to the fund
 						errors.append(f'You cannot deallocate more than {fund.amount}, current {fund.name} balance {fund.amount}')
 				# save the changes
 				fund.save()
 				bank_account.save()
-				return redirect('fund_detail', pk=fund.id)
 	else:
 		raise Http404()
 
