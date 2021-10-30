@@ -129,7 +129,7 @@ class IncomeUpdateView(UpdateView):
 	context_object_name = 'income'
 	form_class = IncomeAddForm
 
-	def __init__(self, *kwargs):
+	def __init__(self, **kwargs):
 		super(IncomeUpdateView, self).__init__(**kwargs)
 		self.prev_instance = None
 
