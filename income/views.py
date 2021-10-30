@@ -126,7 +126,7 @@ class IncomeUpdateView(UpdateView):
 	model = Income
 	template_name = 'income/update.html'
 	context_object_name = 'income'
-	fields = ('description', 'category', 'amount', 'source')
+	form_class = IncomeAddForm
 
 	# run custom code while the form is being validated
 	def form_valid(self, form):
