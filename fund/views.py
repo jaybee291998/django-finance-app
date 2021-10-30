@@ -155,7 +155,7 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 	action = None
 	bank_account = request.user.bank_account
 	errors = []
-	if fund is not None:
+	if fund is not None and is_object_expired(fund):
 		form = FundAllocationForm(request.POST or None)
 		if fund.account.user == request.user:
 			if form.is_valid():
