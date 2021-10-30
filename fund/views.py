@@ -145,7 +145,7 @@ class FundDeleteView(DeleteView):
 		return queryset.filter(account=self.request.user.bank_account)
 
 @login_required
-def fund_allocation_view(request):
+def fund_allocation_view(request, fund_id, *args, **kwargs):
 	try:
 		fund = Fund.objects.get(pk=fund_id)
 	except (TypeError, ValueError, OverflowError, Fund.DoesNotExist):
