@@ -150,7 +150,7 @@ class IncomeUpdateView(UpdateView):
 				bank_account.balance -= (prev_amount - current_amount)
 		# save the changes in the bank account
 		bank_account.save()
-
+		self.object = form.save()
 		super(IncomeUpdateView, self).form_valid(form)
 
 	def get_success_url(self):
