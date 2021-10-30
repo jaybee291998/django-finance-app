@@ -136,7 +136,7 @@ class IncomeUpdateView(UpdateView):
 	# run custom code while the form is being validated
 	def form_valid(self, form):
 		# the amount to be updated
-		prev_amount = Income
+		prev_amount = self.prev_instance.amount
 		# the amount that will replace the prev amount
 		current_amount = form.instance.amount
 
