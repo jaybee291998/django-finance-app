@@ -168,7 +168,7 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 		'form': form,
 		'amount': amount,
 		'action': action,
-		'erros': errors
+		'errors': errors
 	}
 
 	return render(request, 'fund/fund_allocation.html', context)
