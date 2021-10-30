@@ -154,7 +154,7 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 	action = None
 	if fund is not None:
 		form = FundAllocationForm(request.POST or None)
-		if fund.account.user == self.request.user:
+		if fund.account.user == request.user:
 			if form.is_valid():
 				amount = form.cleaned_data.get('amount')
 				action = form.cleaned_data.get('action')
