@@ -189,7 +189,7 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 				# save the changes
 				fund.save()
 				bank_account.save()
-				return reverse_lazy('fund_detail', kwargs={'pk':fund.id})
+				return redirect('fund_detail', kwargs={'pk':fund.id})
 	else:
 		raise Http404()
 
