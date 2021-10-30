@@ -26,11 +26,10 @@ class IncomeAddForm(forms.ModelForm):
 
 		if self.prev_instance is not None:
 			prev_amount = self.prev_instance.amount
-			bank_account = self.request.user.bank_account
 			# if the prev_amount is reduced
 			if amount < prev_amount:
 				# if the amount reduced is greater than  the unallocated balance
-				if (prev_amount - amount) > bank_account.balance:
+				if (prev_amount - amount) > self.bank_account.balance:
 					raise ValidationError(f'You cannot reduce this income by {prev_amount - amount}, because it is already in use')
 		
 		return amount
