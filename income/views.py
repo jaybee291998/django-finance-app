@@ -129,11 +129,14 @@ class IncomeUpdateView(UpdateView):
 	context_object_name = 'income'
 	form_class = IncomeAddForm
 
+	def __init__(self, *kwargs):
+		super(IncomeUpdateView, self).__init__(**kwargs)
+		self.prev_instance = None
+
 	# run custom code while the form is being validated
 	def form_valid(self, form):
 		# the amount to be updated
-		prev_instance = Income.objects.get(pk=self.object.id)
-		prev_amount = prev_instance.amount
+		prev_amount = self.prev_instance.amount
 		# the amount that will replace the prev amount
 		current_amount = form.instance.amount
 
@@ -151,7 +154,7 @@ class IncomeUpdateView(UpdateView):
 		# save the changes in the bank account
 		bank_account.save()
 		self.object = form.save()
-		super(IncomeUpdateView, self).form_valid(form)
+		return super(IncomeUpdateView, self).form_valid(form)
 
 	def get_success_url(self):
 		return reverse_lazy('income_detail', kwargs={'pk':self.object.id})
@@ -162,6 +165,7 @@ class IncomeUpdateView(UpdateView):
 			raise Http404()
 		if is_object_expired(obj, settings.TWELVE_HOUR_DURATION):
 			raise Http404()
+		self.prev_instance = Income.objects.get(pk=obj.id)
 		return obj
 
 	def get_queryset(self):
@@ -173,7 +177,7 @@ class IncomeUpdateView(UpdateView):
 		kwargs = super(IncomeUpdateView, self).get_form_kwargs()
 		# a flag if the form is being to update
 		# pass the previus instance of the object to the form
-		kwargs.update({'prev_instance':Income.objects.get(pk=self.object.id)})
+		kwargs.update({'prev_instance':self.prev_instance})
 		# pass the bank account 
 		kwargs.update({'account':self.request.user.bank_account})
 		return kwargs
