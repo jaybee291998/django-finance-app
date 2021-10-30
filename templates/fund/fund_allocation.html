@@ -2,6 +2,13 @@
 
 {% block content %}
 	<h2>Fund Allocation</h2>
+	{% if errors %}
+		<ul class="list-group">
+		{% for error in errors %}
+			<li class="list-group-item list-group-item-danger">{{error}}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
 	<form method="POST">
 		<b>Amount:</b> {{amount}}
 		<b>Action:</b> {{action}}
