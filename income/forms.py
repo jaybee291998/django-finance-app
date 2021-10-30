@@ -30,6 +30,6 @@ class IncomeAddForm(forms.ModelForm):
 			if amount < prev_amount:
 				# if the amount reduced is greater than  the unallocated balance
 				if (prev_amount - amount) > self.bank_account.balance:
-					raise ValidationError(f'You cannot reduce this income lower than {amount - self.bank_account.balance}, because if you any longer you will have negative balance')
+					raise ValidationError(f'You cannot reduce this income lower than {prev_amount - self.bank_account.balance}, because if you any longer you will have negative balance')
 		
 		return amount
