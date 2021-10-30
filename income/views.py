@@ -128,11 +128,6 @@ class IncomeUpdateView(UpdateView):
 	context_object_name = 'income'
 	fields = ('description', 'category', 'amount', 'source')
 
-	def __init__(self, **kwargs):
-		super(IncomeUpdateView, self).__init__(**kwargs)
-		# add the prev instance
-		self.prev_instance = Income.objects.get(pk=self.object.id)
-
 	# run custom code while the form is being validated
 	def form_valid(self, form):
 		# the amount to be updated
@@ -176,7 +171,7 @@ class IncomeUpdateView(UpdateView):
 		kwargs = super(IncomeUpdateView, self).get_form_kwargs()
 		# a flag if the form is being to update
 		# pass the previus instance of the object to the form
-		kwargs.update({'prev_instance':self.prev_instance})
+		kwargs.update({'prev_instance':Income.objects.get(pk=self.object.id)})
 		return kwargs
 
 @method_decorator(login_required, name='dispatch')
