@@ -148,7 +148,7 @@ class IncomeUpdateView(UpdateView):
 			# add the increase to the unallocated balance
 			bank_account.balance += (current_amount - prev_amount)
 		else:
-			if (prev_amount - current_amount) < bank_account.balance:
+			if (prev_amount - current_amount) <= bank_account.balance:
 				# the income is reduced, so subtract the amount that is reduced
 				bank_account.balance -= (prev_amount - current_amount)
 		# save the changes in the bank account
