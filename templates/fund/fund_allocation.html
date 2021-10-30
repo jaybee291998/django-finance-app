@@ -1,0 +1,11 @@
+{% extends fund_base.html %}
+
+{% content block %}
+	<h2>Fund Allocation</h2>
+	<form method="POST">
+		<b>Amount:</b> {{amount}}
+		<b>Action:</b> {{action}}
+		{% csrf_token %}
+		{{form.as_p}}
+	</form>
+{% endblock %}
