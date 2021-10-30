@@ -152,6 +152,7 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 		fund = None
 	amount = None
 	action = None
+	errors = []
 	if fund is not None:
 		form = FundAllocationForm(request.POST or None)
 		if fund.account.user == request.user:
@@ -164,7 +165,8 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 	context = {
 		'form': form,
 		'amount': amount,
-		'action': action
+		'action': action,
+		'erros': errors
 	}
 
 	return render(request, 'fund/fund_allocation.html', context)
