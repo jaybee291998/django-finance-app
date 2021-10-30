@@ -177,7 +177,7 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 				# deallocate
 				else:
 					# check if the amount to deallocate is less than the remaining amount on the fund
-					if amount < fund.amount:
+					if amount <= fund.amount:
 						# subtract the amount to the fund
 						fund.amount -= amount
 						# add the deallocated amount to the bank account balance
