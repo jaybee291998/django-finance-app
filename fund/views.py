@@ -194,7 +194,8 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 	context = {
 		'form': form,
 		'errors': errors,
-		'unallocated_balance': bank_account.balance
+		'unallocated_balance': bank_account.balance,
+		'fund_amount': fund.amount
 	}
 
 	return render(request, 'fund/fund_allocation.html', context)
