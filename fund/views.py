@@ -157,10 +157,36 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 		form = FundAllocationForm(request.POST or None)
 		if fund.account.user == request.user:
 			if form.is_valid():
+				bank_account = request.user.bank_account
 				amount = form.cleaned_data.get('amount')
 				action = form.cleaned_data.get('action')
-				errors.append('Lesser Men')
-				errors.append('Losethose')
+
+				# allocate to fund
+				if action=='AL':
+					# check if the amount to allocate to the fund is 
+					# less than the unallocated balnace of the bank account
+					if amount < bank_account.balance:
+						# add the amount to the fund
+						fund.amount += amount
+						# subtract the amount to the bank account balance
+						bank_account.balance -= amount
+					else:
+						# trying to allocate an amount greater than the current balance
+						errors.append(f'You can only allocate up to {bank_account.balance}, other wise your balance will be in the negative')
+				# deallocate
+				else:
+					# check if the amount to deallocate is less than the remaining amount on the fund
+					if amount < fund.amount:
+						# subtract the amount to the fund
+						fund.amount -= amount
+						# add the deallocated amount to the bank account balance
+						bank_account.balance += amount
+					else:
+						# trying to deallocate an amount that is greater than the available to the fund
+						errors.append(f'You cannot deallocate more than {fund.amount}, current {fund.name} balance {fund.amount}')
+				# save the changes
+				fund.save()
+				bank_account.save()
 	else:
 		raise Http404()
 
