@@ -28,10 +28,11 @@ class FundCreateView(CreateView):
 	model = Fund
 	template_name = 'fund/create.html'
 	success_url = reverse_lazy('funds_list')
-	fields = ('name', 'description', 'category', 'amount')
+	fields = ('name', 'description', 'category')
 
 	def form_valid(self, form):
 		form.instance.account = self.request.user.bank_account
+		form.instance.amount = 0
 		return super(FundCreateView, self).form_valid(form)
 
 
