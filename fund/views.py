@@ -89,14 +89,14 @@ class FundDetailView(DetailView):
 		fund = context['fund']
 		delete_link = reverse_lazy('fund_delete', kwargs={'pk':fund.pk})
 		update_link = reverse_lazy('fund_update', kwargs={'pk':fund.pk})
+		# link to fund allocation page
+		context['fund_allocation_link'] = reverse_lazy('fund_allocation', kwargs={'fund_id':fund.pk})
 
 		# check if the fund is expired, if it is remove the ability to update
 		if not is_object_expired(fund, settings.TWELVE_HOUR_DURATION) and not fund.fund_expenses.exists(): 
 			context['delete_link'] = delete_link
 			context['update_link'] = update_link
 			context['is_expired'] = False
-			# link to fund allocation page
-			context['fund_allocation_link'] = reverse_lazy('fund_allocation', kwargs={'fund_id':fund.pk})
 		else:
 			context['is_expired'] = True
 		context['go_back_link'] = reverse_lazy('funds_list')
