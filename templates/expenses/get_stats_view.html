@@ -20,55 +20,36 @@
 			const data = await res.json();
 			return data;
 		}
-		// generate a random rgba color
-		const randomColor = () => {
-			var o = Math.round, r = Math.random, s = 255;
-			return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
-		}
-		// get an array of random rgba colors
-		const getRandomColors = size => {
-			var colors = []
-			for(var i = 0; i < size; i++){
-				colors.push(randomColor());
-			}
-			return colors;
-		}
-		// process the data from the server 
-		// to return a dictionary than can be used for makeChart
-		const process_chart_data = (array_1, array_2) => {
-			var chart_data = {data:[], labels:[]}
-			var i = 0;
-			while(i < array_2.length){
-				let cur_val = array_2[i];
-				let count = count_consec_occur(array_2, i, cur_val);
-				let sum = sum_fr_to(array_1, i, i+count);
-				chart_data["data"].push(sum);
-				chart_data["labels"].push(cur_val)
-				i += count;
-			} 
-			return chart_data;
-		}
 
-		// make a chart
-		const update_chart = async () => {
+		// make a expense chart
+		const make_expense_chart = async() =>{
+			// create a new canvas inside the canvas div
 			canvasDiv.innerHTML = '';
 			const ctx = document.createElement('canvas');
 			ctx.id = 'myChart';
+			// get the data from the server
 			var raw_data = await get_data();
-			console.log(raw_data['interval']);
+			// extract price and timestamp data such that it could be used to make a chart
 			var chart_data = process_chart_data(raw_data.map((data) => data.price), raw_data.map((data) => data.timestamp.slice(5, 10)));
-			month1_dataset = {
-				label: 'month 1 expenses',
+			make_chart(chart_data, "expenses")
+		}
+
+		// make a chart
+		const make_chart = (chart_data, label) => {
+			// create the dataset that will be used by the chart
+			dataset = {
+				label: label,
 				data: chart_data.data,
 				backgroundColor: getRandomColors(chart_data.data.length),
 				borderWidth: 1
 			}
 
+			// the actual chart object
 			var myChart = new Chart(ctx,{
 				type: 'bar',
 				data: {
 					labels: chart_data.labels,
-					datasets: [month1_dataset]
+					datasets: [dataset]
 				},
 				options:{
 					scales:{
@@ -106,6 +87,36 @@
 			}
 			return sum
 		}
+
+		// generate a random rgba color
+		const randomColor = () => {
+			var o = Math.round, r = Math.random, s = 255;
+			return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+		}
+		// get an array of random rgba colors
+		const getRandomColors = size => {
+			var colors = []
+			for(var i = 0; i < size; i++){
+				colors.push(randomColor());
+			}
+			return colors;
+		}
+		// process the data from the server 
+		// to return a dictionary than can be used for makeChart
+		const process_chart_data = (array_1, array_2) => {
+			var chart_data = {data:[], labels:[]}
+			var i = 0;
+			while(i < array_2.length){
+				let cur_val = array_2[i];
+				let count = count_consec_occur(array_2, i, cur_val);
+				let sum = sum_fr_to(array_1, i, i+count);
+				chart_data["data"].push(sum);
+				chart_data["labels"].push(cur_val)
+				i += count;
+			} 
+			return chart_data;
+		}
+
 		var interval = document.getElementById('interval');
 		var canvasDiv = document.getElementById('canvas_div_id');
 		update_chart()
