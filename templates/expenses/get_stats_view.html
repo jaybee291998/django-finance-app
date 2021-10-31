@@ -3,11 +3,12 @@
 {% block content %}
 	<h3>Ligth Wood Laminate6</h3>
 	    <label for="interval">Interval:</label>
-	    <select id="interval" onchange="make_expense_chart(this)">
+	    <select id="interval" onchange="get_data(this)">
 	    	<option value="WEEK">Week</option>
 	    	<option value="MONTH">Month</option>
 	    	<option value="THREEMONTHS">3 Months</option>
 	    </select>
+	    <button id="make_chart_btn" onclick="make_expense_chart(this)">make chart</button>
 	<div id="canvas_div_id">
 		
 	</div>
@@ -26,7 +27,7 @@
 		// make a expense chart
 		const make_expense_chart = async() =>{
 			// get the data from the server
-			var raw_data = await get_data();
+			// var raw_data = await get_data();
 			// extract price and timestamp data such that it could be used to make a chart
 			var chart_data = process_chart_data(raw_expense_data.map((data) => data.price), raw_expense_data.map((data) => data.timestamp.slice(5, 10)));
 			make_chart(chart_data, "expenses");
