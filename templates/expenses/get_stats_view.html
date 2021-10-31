@@ -22,7 +22,7 @@
 			const res = await fetch('{{domain}}?interval='+interval.value);
 			const data = await res.json();
 			// set the variable
-			raw_expense_data = data
+			raw_expense_data = data["expense_data"]
 			return data
 		}
 
