@@ -96,7 +96,7 @@ class FundDetailView(DetailView):
 			context['update_link'] = update_link
 			context['is_expired'] = False
 			# link to fund allocation page
-			context['fund_allcation_link'] = reverse_lazy('fund_allocation', kwargs={'pk':fund.pk})
+			context['fund_allocation_link'] = reverse_lazy('fund_allocation', kwargs={'pk':fund.pk})
 		else:
 			context['is_expired'] = True
 		context['go_back_link'] = reverse_lazy('funds_list')
