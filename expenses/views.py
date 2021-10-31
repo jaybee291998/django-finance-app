@@ -283,7 +283,8 @@ def get_stats(request):
 	data = {
 		'data': [expense.price for expense in expenses],
 		'labels': [expense.timestamp.day for expense in expenses],
-		'interval': given_interval
+		'interval': given_interval,
+		'expenses': expenses
 	}
 	return JsonResponse(data, safe=False)
 
