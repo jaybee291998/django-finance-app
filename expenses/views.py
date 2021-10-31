@@ -283,8 +283,8 @@ def get_stats(request):
 	end_date = date.today() + timedelta(days=1)
 	start_date = end_date - interval
 	expenses = Expense.objects.filter(account=request.user.bank_account, timestamp__range=[start_date, end_date])
-	serializer = ExpenseSerializer(expenses)
-	return JsonResponse(serializer.data)
+	serializer = ExpenseSerializer(expenses, many=True)
+	return JsonResponse(serializer.data, safe=False)
 
 @login_required
 def get_stats_view(request):
