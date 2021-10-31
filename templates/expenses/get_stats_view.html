@@ -23,19 +23,20 @@
 
 		// make a expense chart
 		const make_expense_chart = async() =>{
-			// create a new canvas inside the canvas div
-			canvasDiv.innerHTML = '';
-			const ctx = document.createElement('canvas');
-			ctx.id = 'myChart';
 			// get the data from the server
 			var raw_data = await get_data();
 			// extract price and timestamp data such that it could be used to make a chart
 			var chart_data = process_chart_data(raw_data.map((data) => data.price), raw_data.map((data) => data.timestamp.slice(5, 10)));
-			make_chart(chart_data, "expenses", ctx)
+			make_chart(chart_data, "expenses")
 		}
 
 		// make a chart
-		const make_chart = (chart_data, label, ctx) => {
+		const make_chart = (chart_data, label) => {
+			// create a new canvas inside the canvas div
+			canvasDiv.innerHTML = '';
+			const ctx = document.createElement('canvas');
+			ctx.id = 'myChart';
+			
 			// create the dataset that will be used by the chart
 			dataset = {
 				label: label,
