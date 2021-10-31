@@ -16,7 +16,7 @@
 		const get_data = async () => {
 			const res = await fetch('{{domain}}?interval=' + interval.value);
 			const data = await res.json();
-			console.log(data["expenses"])
+			console.log(data)
 			return data;
 		}
 		// generate a random rgba color
