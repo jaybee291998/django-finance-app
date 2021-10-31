@@ -9,5 +9,5 @@ class ExpenseSerializer(serializers.ModelSerializer):
 class ExpenseSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Expense
-		fields = ['id', 'description', 'category', 'price', 'timestamp']
+		fields = ['id', 'description', 'category', 'price', 'fund', 'timestamp']
 
