@@ -14,11 +14,13 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script type="text/javascript">
+		const raw_expense_data;
 		// get the data from the server
 		const get_data = async () => {
 			const res = await fetch('{{domain}}?interval='+interval.value);
 			const data = await res.json();
-			return data;
+			raw_expense_data = data;
+			return data
 		}
 
 		// make a expense chart
@@ -26,8 +28,8 @@
 			// get the data from the server
 			var raw_data = await get_data();
 			// extract price and timestamp data such that it could be used to make a chart
-			var chart_data = process_chart_data(raw_data.map((data) => data.price), raw_data.map((data) => data.timestamp.slice(5, 10)));
-			make_chart(chart_data, "expenses")
+			var chart_data = process_chart_data(raw_expense_data.map((data) => data.price), raw_expense_data.map((data) => data.timestamp.slice(5, 10)));
+			make_chart(chart_data, "expenses");
 		}
 
 		// make a chart
