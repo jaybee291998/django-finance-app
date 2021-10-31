@@ -284,10 +284,22 @@ def get_stats(request):
 	start_date = end_date - interval
 	expenses = Expense.objects.filter(account=request.user.bank_account, timestamp__range=[start_date, end_date])
 	serializer = ExpenseSerializer(expenses, many=True)
+	# dictionary that contains the id of the fund as key
+	# and the name of the fund as a value
+	fund_names = {}
+	for fund in Fund.objects.filter(account=request.user.bank_account):
+		fund_names[fund.id] = fund.name
+
+	# dictionary that conatains the id of expense types as key
+	# and expense type name as value
+	category_names = {}
+	for expense_type in ExpenseType.objects.all():
+		category_names[expense_type.id] = expense_type.name
+
 	data = {
 		'expense_data': serializer.data,
-		'fund_names': [fund.name for fund in Fund.objects.filter(account=request.user.bank_account)],
-		'category_names': [expense_type.name for expense_type in ExpenseType.objects.all()],
+		'fund_names': fund_names,
+		'category_names': category_names,
 	}
 	return JsonResponse(data, safe=False)
 
