@@ -31,11 +31,11 @@
 			var raw_data = await get_data();
 			// extract price and timestamp data such that it could be used to make a chart
 			var chart_data = process_chart_data(raw_data.map((data) => data.price), raw_data.map((data) => data.timestamp.slice(5, 10)));
-			make_chart(chart_data, "expenses")
+			make_chart(chart_data, "expenses", ctx)
 		}
 
 		// make a chart
-		const make_chart = (chart_data, label) => {
+		const make_chart = (chart_data, label, ctx) => {
 			// create the dataset that will be used by the chart
 			dataset = {
 				label: label,
