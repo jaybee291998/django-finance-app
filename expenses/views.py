@@ -18,6 +18,7 @@ from django.conf import settings
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response 
 from rest_framework.views import APIView
+from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework import generics
 
@@ -29,6 +30,8 @@ from .permissions import OwnerAndSuperUserOnly
 
 from accounts.utils import is_object_expired
 from .forms import DateSelectorForm
+
+from .serializers import ExpenseSerializer
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -280,14 +283,8 @@ def get_stats(request):
 	end_date = date.today() + timedelta(days=1)
 	start_date = end_date - interval
 	expenses = Expense.objects.filter(account=request.user.bank_account, timestamp__range=[start_date, end_date])
-	expenses_list = list(expenses)
-	data = {
-		'data': [expense.price for expense in expenses],
-		'labels': [expense.timestamp.day for expense in expenses],
-		'interval': given_interval,
-		'expenses': expenses_list
-	}
-	return JsonResponse(data, safe=False)
+	serializer = ExpenseSerializer(expenses)
+	return JsonResponse(serializer.data)
 
 @login_required
 def get_stats_view(request):
