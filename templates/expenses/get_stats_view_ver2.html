@@ -52,6 +52,7 @@
 		const update_chart = async (chart) => {
 			
 			var raw_data = await get_data();
+			console.log(raw_data)
 			var chart_data = process_chart_data(raw_data["data"], raw_data["labels"]);
 			month1_dataset = {
 				label: 'month 1 expenses',
