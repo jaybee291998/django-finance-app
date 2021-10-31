@@ -23,7 +23,7 @@ from rest_framework import status
 from rest_framework import generics
 
 from .forms import ExpenseAddForm
-from .models import Expense, Fund
+from .models import Expense, Fund, ExpenseType
 from .serializers import ExpenseSerializer
 from .permissions import OwnerAndSuperUserOnly
 
@@ -284,7 +284,12 @@ def get_stats(request):
 	start_date = end_date - interval
 	expenses = Expense.objects.filter(account=request.user.bank_account, timestamp__range=[start_date, end_date])
 	serializer = ExpenseSerializer(expenses, many=True)
-	return JsonResponse(serializer.data, safe=False)
+	data = {
+		'expense_data': serializer.data,
+		'fund_names': [fund.name for fund in Fund.objects.filter(account=request.user.bank_account)],
+		'category_names': [expense_type.name for expense_type in ExpenseType.objects.all()],
+	}
+	return JsonResponse(data, safe=False)
 
 @login_required
 def get_stats_view(request):
