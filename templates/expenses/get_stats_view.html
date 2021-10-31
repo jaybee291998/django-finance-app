@@ -1,7 +1,7 @@
 {% extends 'expense_base.html' %}
 
 {% block content %}
-	<h3>I shit you not</h3>
+	<h3>Ligth Wood Laminate</h3>
 	    <label for="interval">Interval:</label>
 	    <select id="interval" onchange="update_chart(this)">
 	    	<option value="WEEK">Week</option>
@@ -18,6 +18,7 @@
 		const get_data = async () => {
 			const res = await fetch('{{domain}}?interval='+interval.value);
 			const data = await res.json();
+			console.log(data)
 			return data;
 		}
 		// generate a random rgba color
