@@ -280,11 +280,12 @@ def get_stats(request):
 	end_date = date.today() + timedelta(days=1)
 	start_date = end_date - interval
 	expenses = Expense.objects.filter(account=request.user.bank_account, timestamp__range=[start_date, end_date])
+	expenses_list = list(expenses)
 	data = {
 		'data': [expense.price for expense in expenses],
 		'labels': [expense.timestamp.day for expense in expenses],
 		'interval': given_interval,
-		'expenses': expenses
+		'expenses': expenses_list
 	}
 	return JsonResponse(data, safe=False)
 
