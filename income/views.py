@@ -54,15 +54,16 @@ class IncomeListView(ListView):
 	model = Income
 	template_name = 'income/list.html'
 	context_object_name = 'incomes'
-	paginate_by = 10
+	paginate_by = 50
 
 	def get_queryset(self):
 		entry_date = date.today()
 
 		if self.request.GET:
 			entry_date = datetime.strptime(self.request.GET['date'][:10].replace('-',''), "%Y%m%d").date()
-
-		queryset = Income.objects.filter(account=self.request.user.bank_account, timestamp__year=entry_date.year, timestamp__month=entry_date.month, timestamp__day=entry_date.day).order_by('-timestamp')
+		# only get month and year of the entry date
+		# in effect only the income for the month will be queried
+		queryset = Income.objects.filter(account=self.request.user.bank_account, timestamp__year=entry_date.year, timestamp__month=entry_date.month).order_by('-timestamp')
 		return queryset
 
 	def get_context_data(self, **kwargs):
