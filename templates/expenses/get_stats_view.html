@@ -43,6 +43,8 @@
 			// label for fund-control
 			let fund_control_label = document.createElement("LABEL");
 			fund_control_label.htmlFor = fund_control.id;
+			fund_control_label.text = "Fund";
+
 			// generate the options
 			createOptions(fund_control, fund_names);
 
@@ -50,14 +52,14 @@
 			category_control.id = 'category-control';
 			let category_control_label = document.createElement("LABEL");
 			category_control_label.htmlFor = category_control.id;
+			category_control_label.text = "Category"
 			createOptions(category_control, category_names)
 
 			// add the select controls to the control-div
-			controlDiv.appendChild(fund_control);
 			controlDiv.appendChild(fund_control_label);
-			controlDiv.appendChild(category_control);
+			controlDiv.appendChild(fund_control);
 			controlDiv.appendChild(category_control_label);
-
+			controlDiv.appendChild(category_control);
 		}
 
 		// create options for a select
