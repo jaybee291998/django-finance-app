@@ -1,7 +1,7 @@
 {% extends 'expense_base.html' %}
 
 {% block content %}
-	<h3>Ligth Wood Laminate6</h3>
+	<h3>Hard Wood Laminate</h3>
 	    <label for="interval">Interval:</label>
 	    <select id="interval" onchange="get_data(this)">
 	    	<option value="WEEK">Week</option>
@@ -10,22 +10,58 @@
 	    </select>
 	    <button id="make_chart_btn" onclick="make_expense_chart(this)">make chart</button>
 	<div id="canvas_div_id">
+	</div>
+	<div id="control-div">
 		
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script type="text/javascript">
 		// the expense data from the selected interval
-		var raw_expense_data = [];
+		let raw_expense_data = [];
+		let fund_names = {};
+		let category_names = {};
+
 		// get the data from the server
 		const get_data = async () => {
 			const res = await fetch('{{domain}}?interval='+interval.value);
 			const data = await res.json();
 			// set the variable
-			raw_expense_data = data["expense_data"]
+			raw_expense_data = data["expense_data"];
+			fund_names = data["fund_names"];
+			category_names = data["category_names"];
+			// generate the controls
+			createControls()
 			console.log(data["fund_names"])
 			console.log(data["category_names"])
 			return data
+		}
+
+		const createControls = () => {
+			let fund_control = document.createElement("SELECT")
+			// generate the options
+			createOptions(fund_control, fund_names);
+
+			let category_control = document.createElement("SELECT");
+			createOptions(category_control, category_names)
+
+			// add the select controls to the control-div
+			controlDiv.appendChild(fund_control);
+			controlDiv.appendChild(category_control);
+
+		}
+
+		// create options for a select
+		const createOptions = (select_object, key_value_dict) => {
+			// generate options
+			let keys = Object.keys(key_value_dict);
+			keys.forEach((key) => {
+				let new_option = document.createElement("OPTION");
+				new_option.text = key_value_dict[key];
+				new_option.value = key;
+				// add the option to the select object
+				select_object.add(new_option);
+			})
 		}
 
 		// make a expense chart
@@ -155,5 +191,6 @@
 
 		var interval = document.getElementById('interval');
 		var canvasDiv = document.getElementById('canvas_div_id');
+		let controlDiv = document.getElementById('control-div')
 	</script>
 {% endblock %}
