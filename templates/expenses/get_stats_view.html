@@ -254,7 +254,7 @@
 		// find all of the indices of the unique elements of the array
 		const findAllIndices = (items, array) => {
 			let unique = items.filter((e, i, a) => a.indexOf(e) == i);
-			let object = {label:unique, data:[]};
+			let object = {labels:unique, data:[]};
 			unique.forEach((item) => {
 				object["data"].push(sumElementOfIndices(array, findIndices(items, item)));
 			})
