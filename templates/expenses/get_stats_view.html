@@ -136,7 +136,7 @@
 		const make_fund_chart = () => {
 			let expense_data = filterData();
 			let chart_data = findAllIndices(expense_data.map((expense) => expense.fund), expense_data.map((expense) => expense.price));
-			make_chart(chart_data, 'FUND');
+			make_chart(chart_data, "FUND");
 		}
 
 		// make a chart
