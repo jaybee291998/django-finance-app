@@ -146,7 +146,7 @@
 		const make_category_chart = () => {
 			let category = raw_expense_data.map((expense) => expense.category);
 			let price = raw_expense_data.map((expense) => expense.price)
-			let chart_data = findAllIndices(fund, price);
+			let chart_data = findAllIndices(category, price);
 			chart_data["labels"] = chart_data["labels"].map((label) => category_names[label]);
 			make_chart(chart_data, "Total Expenses per Category");
 		}
