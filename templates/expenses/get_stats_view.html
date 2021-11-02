@@ -52,16 +52,40 @@
 		const createTable = () => {
 			let fund_select = document.getElementById('fund-control');
 			let category_select = document.getElementById('category-control');
-			let data = raw_expense_data;
+			let expenses = raw_expense_data;
 			// if the fund selected is not all
 			// fiter the data to the selected fund
-			if(fund_select.value != -1) data = data.filter((expense) => expense['fund'] == fund_select.value);
+			if(fund_select.value != -1) expenses = expenses.filter((expense) => expense['fund'] == fund_select.value);
 			// if category is not all
 			// filter the data based on the value of category
-			if(category_select.value != -1) data = data.filter((expense) => expense['category'] == category_select.value)
-			console.log(data)
+			if(category_select.value != -1) expenses = expenses.filter((expense) => expense['category'] == category_select.value);
+			console.log(expenses);
+			// table to tabulate all of the expense data
 			let table = document.createElement("TABLE");
-
+			// loop thriugh all the expense data
+			// and create a row for each expense entry
+			expenses.forEach((expense, i) => {
+				// insert a row on table for each expense entry
+				let row = table.insert(i);
+				// the properties of the expense such as desctription, price, ...etc
+				let expense_properties = Object.keys(expense);
+				expense_properties.forEach((expense_property, j) => {
+					// the value of the expense property i.e. description="pambili ng ulam"
+					let expense_property_value = expense[key];
+					// add the cells that contain the properties of the expenses
+					let cell = row.insertCell(j);
+					if(expense_property == 'fund'){
+						cell.innerHTML = fund_names[expense_property_value];
+					}else if(expense_property == 'category'){
+						cell.innerHTML = category_names[expense_property_value];
+					}else{
+						cell.innerHTML = expense_property_value
+					}
+				});
+			});
+			// empty the div first before adding the new table
+			tableDiv.innerHTML = '';
+			tableDiv.appendChild(table);
 		}
 
 		// create options for a select
