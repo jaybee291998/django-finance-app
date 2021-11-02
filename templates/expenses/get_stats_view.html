@@ -9,11 +9,15 @@
 	    	<option value="THREEMONTHS">3 Months</option>
 	    </select>
 	    <button id="make_chart_btn" onclick="make_expense_chart(this)">make chart</button>
+	    <button onclick="createTable(this)">make table</button>
 	<div id="canvas_div_id">
 	</div>
 	<div id="control-div">
 		
 	</div>
+	<div id="table-div">
+		
+	</div>	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script type="text/javascript">
@@ -40,6 +44,21 @@
 		const createControls = () => {
 			createSelectControl(fund_names, 'fund', 'fund-control');
 			createSelectControl(category_names, 'category', 'category-control');
+		}
+
+		// create a table base on fund and category
+		const createTable = () => {
+			let fund_select = document.getElementById('fund-control');
+			let category_select = document.getElementById('category-control');
+			let data = raw_expense_data;
+			// if the fund selected is not all
+			// fiter the data to the selected fund
+			if(fund_select.value != -1) data = data.filter((expense) => expense['fund'] == fund_select.value);
+			// if category is not all
+			// filter the data based on the value of category
+			if(category_select.value != -1) data = data.filter((expense) => expense['category'] == category_select.value)
+			console.log(data)
+			let table = document.createElement("TABLE");
 		}
 
 		// create options for a select
@@ -196,8 +215,9 @@
 			return object;
 		}
 
-		var interval = document.getElementById('interval');
-		var canvasDiv = document.getElementById('canvas_div_id');
-		let controlDiv = document.getElementById('control-div')
+		let interval = document.getElementById('interval');
+		let canvasDiv = document.getElementById('canvas_div_id');
+		let controlDiv = document.getElementById('control-div');
+		let tableDiv = document.getElementById('table-div');
 	</script>
 {% endblock %}
