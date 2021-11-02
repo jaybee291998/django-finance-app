@@ -253,7 +253,7 @@
 			let unique = items.filter((e, i, a) => a.indexOf(e) == i);
 			let object = {label:unique, data:[]};
 			items.forEach((item) => {
-				object[data].push(sumElementOfIndices(array, findIndices(items, item)));
+				object["data"].push(sumElementOfIndices(array, findIndices(items, item)));
 			})
 			return object;
 		}
