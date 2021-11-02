@@ -42,8 +42,10 @@
 		}
 
 		const createControls = () => {
-			createSelectControl(fund_names, 'fund', 'fund-control');
-			createSelectControl(category_names, 'category', 'category-control');
+			// remove all the elements on the control div
+			controlDiv.innerHTML = '';
+			createSelectControl(fund_names, 'fund', 'fund-control', createTable);
+			createSelectControl(category_names, 'category', 'category-control', createTable);
 		}
 
 		// create a table base on fund and category
@@ -59,12 +61,14 @@
 			if(category_select.value != -1) data = data.filter((expense) => expense['category'] == category_select.value)
 			console.log(data)
 			let table = document.createElement("TABLE");
+
 		}
 
 		// create options for a select
-		const createSelectControl = (key_value_dict, label_name, id) => {
+		const createSelectControl = (key_value_dict, label_name, id, func) => {
 			let select_object = document.createElement("SELECT");
 			select_object.id = id;
+			select_object.onchange = func
 			let label = document.createElement("LABEL");
 			label.htmlFor = select_object.id;
 			label.innerHTML = label_name;
