@@ -48,9 +48,8 @@
 			createSelectControl(category_names, 'category', 'category-control', createTable);
 		}
 
-		// create a table base on fund and category
-		const createTable = () => {
-
+		// filter expenses bases on selected controls
+		const filterData = () => {
 			// data processing section
 			let fund_select = document.getElementById('fund-control');
 			let category_select = document.getElementById('category-control');
@@ -61,9 +60,12 @@
 			// if category is not all
 			// filter the data based on the value of category
 			if(category_select.value != -1) expenses = expenses.filter((expense) => expense['category'] == category_select.value);
-			console.log(expenses);
+			return expenses;
+		}
 
-
+		// create a table base on fund and category
+		const createTable = () => {
+			let expenses = filterData();
 			// table to tabulate all of the expense data
 			let table = document.createElement("TABLE");
 			table.className = "table";
