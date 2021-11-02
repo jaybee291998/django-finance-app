@@ -8,17 +8,16 @@
 	    	<option value="MONTH">Month</option>
 	    	<option value="THREEMONTHS">3 Months</option>
 	    </select>
-	    <button id="make_chart_btn" onclick="make_expense_chart(this)">make chart</button>
-	    <button id="make_fund_chart_btn" onclick="make_fund_chart(this)">make fund expense chart</button>
-	    <button id="make_category_chart_btn" onclick="make_category_chart(this)">make category expense chart</button>
-	    <button onclick="createTable(this)">make table</button>
+	<div id="button-div">
+	    <button id="make_chart_btn" onclick="make_expense_chart(this)" class="btn btn-success">expense chart</button>
+	    <button id="make_fund_chart_btn" onclick="make_fund_chart(this)" class="btn btn-info">fund chart</button>
+	    <button id="make_category_chart_btn" onclick="make_category_chart(this)" class="btn btn-secondary">category chart</button>
+	</div>
 	<div id="canvas_div_id">
 	</div>
 	<div id="control-div">
-		
 	</div>
 	<div id="table-div">
-		
 	</div>	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
