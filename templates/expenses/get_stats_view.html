@@ -50,6 +50,8 @@
 
 		// create a table base on fund and category
 		const createTable = () => {
+
+			// data processing section
 			let fund_select = document.getElementById('fund-control');
 			let category_select = document.getElementById('category-control');
 			let expenses = raw_expense_data;
@@ -60,8 +62,11 @@
 			// filter the data based on the value of category
 			if(category_select.value != -1) expenses = expenses.filter((expense) => expense['category'] == category_select.value);
 			console.log(expenses);
+
+
 			// table to tabulate all of the expense data
 			let table = document.createElement("TABLE");
+			table.class = "table";
 			// loop thriugh all the expense data
 			// and create a row for each expense entry
 			expenses.forEach((expense, i) => {
