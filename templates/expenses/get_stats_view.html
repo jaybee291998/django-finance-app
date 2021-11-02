@@ -131,6 +131,13 @@
 			make_chart(chart_data, "expenses");
 		}
 
+		// make a chart for fund and category
+		const make_fund_chart = () => {
+			let expense_data = filterData();
+			let chart_data = findAllIndices(expense_data.map((expense) => expense.fund), expense_data.map((expense) => expense.price));
+			make_chart(chart_data, 'FUND');
+		}
+
 		// make a chart
 		const make_chart = (chart_data, label) => {
 			// create a new canvas inside the canvas div
