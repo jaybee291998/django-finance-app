@@ -49,6 +49,13 @@
 			let label = document.createElement("LABEL");
 			label.htmlFor = select_object.id;
 			label.innerHTML = label_name;
+
+			// add an option to select all
+			let all_option = document.createElement("OPTION");
+			all_option.text = "ALL";
+			all_option.value = -1;
+			// add the option to the select object
+			select_object.add(all_option);
 			// generate options
 			let keys = Object.keys(key_value_dict);
 			keys.forEach((key) => {
