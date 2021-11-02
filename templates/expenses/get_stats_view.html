@@ -38,32 +38,17 @@
 		}
 
 		const createControls = () => {
-			let fund_control = document.createElement("SELECT")
-			fund_control.id = 'fund-control';
-			// label for fund-control
-			let fund_control_label = document.createElement("LABEL");
-			fund_control_label.htmlFor = fund_control.id;
-			fund_control_label.innerHTML= "Fund";
-
-			// generate the options
-			createOptions(fund_control, fund_names);
-
-			let category_control = document.createElement("SELECT");
-			category_control.id = 'category-control';
-			let category_control_label = document.createElement("LABEL");
-			category_control_label.htmlFor = category_control.id;
-			category_control_label.innerHTML = "Category"
-			createOptions(category_control, category_names)
-
-			// add the select controls to the control-div
-			controlDiv.appendChild(fund_control_label);
-			controlDiv.appendChild(fund_control);
-			controlDiv.appendChild(category_control_label);
-			controlDiv.appendChild(category_control);
+			createSelectControl(fund_names, 'fund', 'fund-control');
+			createSelectControl(category_names, 'category', 'category-control');
 		}
 
 		// create options for a select
-		const createOptions = (select_object, key_value_dict) => {
+		const createSelectControl = (key_value_dict, label_name, id) => {
+			let select_object = document.createElement("SELECT");
+			select_object.id = id;
+			let label = document.createElement("LABEL");
+			label.htmlFor = select_object.id;
+			label.innerHTML = label_name;
 			// generate options
 			let keys = Object.keys(key_value_dict);
 			keys.forEach((key) => {
@@ -72,7 +57,11 @@
 				new_option.value = key;
 				// add the option to the select object
 				select_object.add(new_option);
-			})
+			});
+
+			// add the select object and label to control div
+			controlDiv.appendChild(label);
+			controlDiv.appendChild(select_object);
 		}
 
 		// make a expense chart
