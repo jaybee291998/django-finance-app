@@ -9,7 +9,8 @@
 	    	<option value="THREEMONTHS">3 Months</option>
 	    </select>
 	    <button id="make_chart_btn" onclick="make_expense_chart(this)">make chart</button>
-	    <button id="make_fund_chart_btn" onclick="make_fund_chart(this)">make chart</button>
+	    <button id="make_fund_chart_btn" onclick="make_fund_chart(this)">make fund expense chart</button>
+	    <button id="make_category_chart_btn" onclick="make_category_chart(this)">make category expense chart</button>
 	    <button onclick="createTable(this)">make table</button>
 	<div id="canvas_div_id">
 	</div>
@@ -138,7 +139,16 @@
 			let price = raw_expense_data.map((expense) => expense.price)
 			let chart_data = findAllIndices(fund, price);
 			chart_data["labels"] = chart_data["labels"].map((label) => fund_names[label]);
-			make_chart(chart_data, "FUND");
+			make_chart(chart_data, "Total Expenses per Fund");
+		}
+
+		// make a chart for fund and category
+		const make_category_chart = () => {
+			let category = raw_expense_data.map((expense) => expense.category);
+			let price = raw_expense_data.map((expense) => expense.price)
+			let chart_data = findAllIndices(fund, price);
+			chart_data["labels"] = chart_data["labels"].map((label) => category_names[label]);
+			make_chart(chart_data, "Total Expenses per Category");
 		}
 
 		// make a chart
