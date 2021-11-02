@@ -8,6 +8,15 @@
 	    	<option value="MONTH">Month</option>
 	    	<option value="THREEMONTHS">3 Months</option>
 	    </select>
+	    <label></label>
+	    <select id="chart-type">
+	    	<option value="bar">Bar</option>
+	    	<option value="line">Line</option>
+	    	<option value="radar">Radar</option>
+	    	<option value="pie">Pie</option>
+	    	<option value="doughnut">Doughnut</option>
+	    	<option value="polarArea">Polar Area</option>
+	    </select>
 	<div id="button-div">
 	    <button id="make_chart_btn" onclick="make_expense_chart(this)" class="btn btn-success">expense chart</button>
 	    <button id="make_fund_chart_btn" onclick="make_fund_chart(this)" class="btn btn-info">fund chart</button>
@@ -167,7 +176,7 @@
 
 			// the actual chart object
 			var myChart = new Chart(ctx,{
-				type: 'pie',
+				type: chartType.value,
 				data: {
 					labels: chart_data.labels,
 					datasets: [dataset]
@@ -274,5 +283,6 @@
 		let canvasDiv = document.getElementById('canvas_div_id');
 		let controlDiv = document.getElementById('control-div');
 		let tableDiv = document.getElementById('table-div');
+		let chartType = document.getElementById('chart-type');
 	</script>
 {% endblock %}
