@@ -137,8 +137,7 @@
 			let fund = raw_expense_data.map((expense) => expense.fund);
 			let price = raw_expense_data.map((expense) => expense.price)
 			let chart_data = findAllIndices(fund, price);
-			console.log(fund);
-			console.log(price);
+			chart_data["labels"] = chart_data["labels"].map((label) => fund_names[label]);
 			make_chart(chart_data, "FUND");
 		}
 
