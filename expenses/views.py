@@ -274,7 +274,7 @@ class ExpenseTypeDetailView(DetailView):
 		update_link = reverse_lazy('expense_type_update', kwargs={'pk':expense_type.pk})
 
 		# check if the expense type is already used, dont allow update and deletion
-		if not fund.fund_expenses.exists(): 
+		if not expense_type.expense.exists(): 
 			context['delete_link'] = delete_link
 			context['update_link'] = update_link
 			context['is_expired'] = False
