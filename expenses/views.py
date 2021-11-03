@@ -298,7 +298,7 @@ class ExpenseTypeUpdateView(UpdateView):
 		obj = super(ExpenseTypeUpdateView, self).get_object(queryset=queryset)
 		if obj.account != self.request.user.bank_account:
 			raise Http404()
-		if obj.fund_expenses.exists():
+		if obj.expense.exists():
 			raise Http404()
 		return obj
 
