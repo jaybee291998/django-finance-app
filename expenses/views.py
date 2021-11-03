@@ -293,7 +293,7 @@ def get_stats(request):
 	# dictionary that conatains the id of expense types as key
 	# and expense type name as value
 	category_names = {}
-	for expense_type in ExpenseType.objects.filter(account=self.user.bank_account):
+	for expense_type in ExpenseType.objects.filter(account=request.user.bank_account):
 		category_names[expense_type.id] = expense_type.name
 
 	data = {
