@@ -217,19 +217,18 @@ class ExpenseDeleteView(DeleteView):
 		queryset = super(ExpenseDeleteView, self).get_queryset()
 		return queryset.filter(account=self.request.user.bank_account)
 
+# views for expense type
 @method_decorator(login_required, name='dispatch')
-class FundCreateView(CreateView):
-	model = Fund
-	template_name = 'fund/create.html'
-	success_url = reverse_lazy('funds_list')
+class ExpenseTypeCreateView(CreateView):
+	model = ExpenseType
+	template_name = 'expense_type/create.html'
+	success_url = reverse_lazy('expense_types_list')
 	fields = ('name', 'description')
 
 	def form_valid(self, form):
 		form.instance.account = self.request.user.bank_account
-		form.instance.amount = 0
-		return super(FundCreateView, self).form_valid(form)
+		return super(ExpenseTypeCreateView, self).form_valid(form)
 
-# views for expense type
 @method_decorator(login_required, name='dispatch')
 class ExpenseTypeListView(ListView):
 	model = ExpenseType
@@ -286,7 +285,7 @@ class ExpenseTypeDetailView(DetailView):
 
 
 @method_decorator(login_required, name='dispatch')
-class FundUpdateView(UpdateView):
+class ExpenseTypeUpdateView(UpdateView):
 	model = ExpenseType
 	template_name = 'expense_type/update.html'
 	context_object_name = 'expense_type'
@@ -308,7 +307,7 @@ class FundUpdateView(UpdateView):
 		return queryset.filter(account=self.request.user.bank_account)
 
 @method_decorator(login_required, name='dispatch')
-class FundDeleteView(DeleteView):
+class ExpenseTypeDeleteView(DeleteView):
 	model = ExpenseType
 	template_name = 'expense_type/delete.html'
 	success_url = reverse_lazy('expense_types_list')
