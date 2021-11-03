@@ -8,6 +8,7 @@ User = get_user_model()
 class ExpenseType(models.Model):
 	name 				= models.CharField(max_length=32)
 	description			= models.TextField()
+	account 			= models.ForeignKey(BankAccount, related_name='account_expense_type', on_delete=models.CASCADE, null=True)
 
 	def __str__(self):
 		return self.name
