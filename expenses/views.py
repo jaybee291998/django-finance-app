@@ -217,6 +217,114 @@ class ExpenseDeleteView(DeleteView):
 		queryset = super(ExpenseDeleteView, self).get_queryset()
 		return queryset.filter(account=self.request.user.bank_account)
 
+@method_decorator(login_required, name='dispatch')
+class FundCreateView(CreateView):
+	model = Fund
+	template_name = 'fund/create.html'
+	success_url = reverse_lazy('funds_list')
+	fields = ('name', 'description')
+
+	def form_valid(self, form):
+		form.instance.account = self.request.user.bank_account
+		form.instance.amount = 0
+		return super(FundCreateView, self).form_valid(form)
+
+# views for expense type
+@method_decorator(login_required, name='dispatch')
+class ExpenseTypeListView(ListView):
+	model = ExpenseType
+	template_name = 'expense_type/list.html'
+	context_object_name = 'expense_types'
+
+	def get_queryset(self):
+		queryset = ExpenseType.objects.filter(account=self.request.user.bank_account)
+		return queryset
+
+	def get_context_data(self, **kwargs):
+		context = super(ExpenseTypeListView, self).get_context_data(**kwargs)
+		expense_types = self.get_queryset()
+
+		expense_types = context['expense_types']
+		
+		detail_links = [reverse_lazy('expense_type_detail', kwargs={'pk':expense_type.pk}) for expense_type in expense_types]
+		context['expense_type_details'] = zip(expense_types, detail_links)
+		context['add_expense_type_link'] = reverse_lazy('expense_type_create')
+		context['go_home_link'] = reverse_lazy('home')
+		return context
+
+@method_decorator(login_required, name='dispatch')
+class ExpenseTypeDetailView(DetailView):
+	model = ExpenseType
+	template_name = 'expense_type/detail.html'
+	context_object_name = 'expense_type'
+
+	def get_object(self, queryset=None):
+		obj = super(ExpenseTypeDetailView, self).get_object(queryset=queryset)
+		if obj.account != self.request.user.bank_account:
+			raise Http404()
+		return obj
+
+	def get_queryset(self):
+		queryset = super(FundDetailView, self).get_queryset()
+		return queryset.filter(account=self.request.user.bank_account)
+
+	def get_context_data(self, **kwargs):
+		context = super(ExpenseTypeDetailView, self).get_context_data(**kwargs)
+		expense_type = context['expense_type']
+		delete_link = reverse_lazy('expense_type_delete', kwargs={'pk':expense_type.pk})
+		update_link = reverse_lazy('expense_type_update', kwargs={'pk':expense_type.pk})
+
+		# check if the expense type is already used, dont allow update and deletion
+		if not fund.fund_expenses.exists(): 
+			context['delete_link'] = delete_link
+			context['update_link'] = update_link
+			context['is_expired'] = False
+		else:
+			context['is_expired'] = True
+		context['go_back_link'] = reverse_lazy('expense_types_list')
+		return context
+
+
+@method_decorator(login_required, name='dispatch')
+class FundUpdateView(UpdateView):
+	model = ExpenseType
+	template_name = 'expense_type/update.html'
+	context_object_name = 'expense_type'
+	fields = ( 'name' ,'description')
+
+	def get_success_url(self):
+		return reverse_lazy('expense_type_detail', kwargs={'pk':self.object.id})
+
+	def get_object(self, queryset=None):
+		obj = super(ExpenseTypeUpdateView, self).get_object(queryset=queryset)
+		if obj.account != self.request.user.bank_account:
+			raise Http404()
+		if obj.fund_expenses.exists():
+			raise Http404()
+		return obj
+
+	def get_queryset(self):
+		queryset = super(ExpenseTypeUpdateView, self).get_queryset()
+		return queryset.filter(account=self.request.user.bank_account)
+
+@method_decorator(login_required, name='dispatch')
+class FundDeleteView(DeleteView):
+	model = ExpenseType
+	template_name = 'expense_type/delete.html'
+	success_url = reverse_lazy('expense_types_list')
+
+	def get_object(self, queryset=None):
+		obj = super(ExpenseTypeDeleteView, self).get_object(queryset=queryset)
+		if obj.account != self.request.user.bank_account:
+			raise Http404()
+		if obj.fund_expenses.exists():
+			raise Http404()
+		return obj
+
+	def get_queryset(self):
+		queryset = super(ExpenseTypeDeleteView, self).get_queryset()
+		return queryset.filter(account=self.request.user.bank_account)
+
 
 @method_decorator(login_required, name='dispatch')
 class ExpenseList(APIView):
