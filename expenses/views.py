@@ -264,7 +264,7 @@ class ExpenseTypeDetailView(DetailView):
 		return obj
 
 	def get_queryset(self):
-		queryset = super(FundDetailView, self).get_queryset()
+		queryset = super(ExpenseTypeDetailView, self).get_queryset()
 		return queryset.filter(account=self.request.user.bank_account)
 
 	def get_context_data(self, **kwargs):
