@@ -1,5 +1,5 @@
 from django import forms 
-from .models import Expense, Fund
+from .models import Expense, Fund, ExpenseType
 from django.contrib.admin import widgets 
 from django.core.exceptions import ValidationError  
 
@@ -18,9 +18,12 @@ class ExpenseAddForm(forms.ModelForm):
 		self.prev_instance = kwargs.pop('prev_instance')
 		super(ExpenseAddForm, self).__init__(*args, **kwargs)
 		self.fields['fund'].queryset = Fund.objects.filter(account=account)
+		# set the queryset for the modelchoicefield of expensetype
+		self.fields['category'].queryset = ExpenseType.objects.filter(account=account)
 		
 
 	fund 		= forms.ModelChoiceField(queryset=None, initial=0)
+	category 	= forms.ModelChoiceField(queryset=None, initial=0)
 
 	class Meta:
 		model = Expense
