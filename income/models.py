@@ -10,7 +10,7 @@ class IncomeType(models.Model):
 	account 			= models.ForeignKey(BankAccount, related_name='user_income_type', on_delete=models.CASCADE, null=True)
 
 	def __str__(self):
-		return self.name
+		return f'{self.name} - {self.account}'
 
 class Income(models.Model):
 	description 		= models.TextField()
