@@ -1,13 +1,17 @@
 from django import forms 
-from .models import Income
+from .models import Income, IncomeType
 from django.core.exceptions import ValidationError  
 
 class IncomeAddForm(forms.ModelForm):
+	# the income category should be based on the bank account of the user
+	category = forms.ModelChoiceField(queryset=None, initial=0)
 
 	def __init__(self, *args, **kwargs):
 		self.prev_instance = kwargs.pop('prev_instance')
 		self.bank_account = kwargs.pop('account')
 		super(IncomeAddForm, self).__init__(*args, **kwargs)
+		# set the queryset equal to the incometypes to the user
+		self.fields["category"].queryset = IncomeType.objects.filter(account=self.bank_account)
 
 	class Meta:
 		model = Income
