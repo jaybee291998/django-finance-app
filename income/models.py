@@ -7,6 +7,7 @@ from bank_account.models import BankAccount
 class IncomeType(models.Model):
 	name 				= models.CharField(max_length=32)
 	description			= models.TextField()
+	account 			= models.ForeignKey(BankAccount, related_name='user_income_type', on_delete=models.CASCADE, null=True)
 
 	def __str__(self):
 		return self.name
