@@ -329,37 +329,20 @@ class ExpenseTypeListView(EITBaseListView):
 	add_object_url_name = 'expense_type_create'
 
 @method_decorator(login_required, name='dispatch')
-class ExpenseTypeDetailView(DetailView):
+class ExpenseTypeDetailView(EITBaseDetailView):
 	model = ExpenseType
 	template_name = 'expense_type/detail.html'
 	context_object_name = 'expense_type'
-
-	def get_object(self, queryset=None):
-		pk = self.kwargs.get(self.pk_url_kwarg)
-		if pk is None:
-			raise AttributeError("Generic Delete view must be called with a PK")
-		try:
-			obj = self.model.objects.get(pk=pk)
-		except self.model.DoesNotExist:
-			raise Http404("You suck")
-		if obj.account != self.request.user.bank_account:
-			raise Http404()
-		return obj
+	delete_url_name = 'expense_type_delete'
+	update_url_name = 'expense_type_update'
+	go_back_url_name = 'expense_types_list'
 
 	def get_context_data(self, **kwargs):
 		context = super(ExpenseTypeDetailView, self).get_context_data(**kwargs)
-		expense_type = context['expense_type']
-		delete_link = reverse_lazy('expense_type_delete', kwargs={'pk':expense_type.pk})
-		update_link = reverse_lazy('expense_type_update', kwargs={'pk':expense_type.pk})
-
-		# check if the expense type is already used, dont allow update and deletion
-		if not expense_type.expense.exists(): 
-			context['delete_link'] = delete_link
-			context['update_link'] = update_link
-			context['is_expired'] = False
-		else:
+		expense_type = context[self.context_object_name]
+		context['is_expired'] = False
+		if expense_type.expense.exists():
 			context['is_expired'] = True
-		context['go_back_link'] = reverse_lazy('expense_types_list')
 		return context
 
 @method_decorator(login_required, name='dispatch')
