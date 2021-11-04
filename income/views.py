@@ -16,11 +16,12 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 
 
-from .models import Income
+from .models import Income, IncomeType
 from .forms import IncomeAddForm
 
 from accounts.utils import is_object_expired
 from expenses.forms import DateSelectorForm
+from expenses.views import EITBaseCreateView, EITBaseDetailView, EITBaseListView, EITBaseUpdateView, EITBaseDeleteView
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -206,3 +207,65 @@ class IncomeDeleteView(DeleteView):
 	def get_queryset(self):
 		queryset = super(IncomeDeleteView, self).get_queryset()
 		return queryset.filter(account=self.request.user.bank_account)
+
+# views for the income type
+
+# views for expense type
+
+@method_decorator(login_required, name='dispatch')
+class IncomeTypeCreateView(EITBaseCreateView):
+	model = IncomeType
+	template_name = 'Income_type/create.html'
+	success_url = reverse_lazy('income_types_list')
+
+@method_decorator(login_required, name='dispatch')
+class ExpenseTypeListView(EITBaseListView):
+	model = IncomeType
+	template_name = 'income_type/list.html'
+	context_object_name = 'income_types'
+	detail_url_name = 'income_type_detail'
+	add_object_url_name = 'income_type_create'
+
+@method_decorator(login_required, name='dispatch')
+class IncomeTypeDetailView(EITBaseDetailView):
+	model = IncomeType
+	template_name = 'income_type/detail.html'
+	context_object_name = 'income_type'
+	delete_url_name = 'income_type_delete'
+	update_url_name = 'income_type_update'
+	go_back_url_name = 'income_types_list'
+
+	def get_context_data(self, **kwargs):
+		context = super(ExpenseTypeDetailView, self).get_context_data(**kwargs)
+		income_type = context[self.context_object_name]
+		context['is_expired'] = False
+		if income_type.income.exists():
+			context['is_expired'] = True
+		return context
+
+@method_decorator(login_required, name='dispatch')
+class ExpenseTypeUpdateView(EITBaseUpdateView):
+	model = IncomeType
+	template_name = 'income_type/update.html'
+	context_object_name = 'income_type'
+	fields = ( 'name' ,'description')
+	go_back_url_name = 'income_type_detail'
+
+	def get_object(self, queryset=None):
+		obj = super(ExpenseTypeUpdateView, self).get_object(queryset=queryset)
+		if obj.expense.exists():
+			raise Http404()
+		return obj
+
+
+@method_decorator(login_required, name='dispatch')
+class IncomeTypeDeleteView(EITBaseDeleteView):
+	model = IncomeType
+	template_name = 'income_type/delete.html'
+	success_url = reverse_lazy('income_types_list')
+
+	def get_object(self, queryset=None):
+		obj = super(ExpenseTypeDeleteView, self).get_object(queryset=queryset)
+		if obj.expense.exists():
+			raise Http404()
+		return obj
