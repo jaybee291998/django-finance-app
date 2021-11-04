@@ -270,7 +270,7 @@ class EITBaseDetailView(DetailView):
 		context_object = context[self.context_object_name]
 		context['delete_link'] = reverse_lazy(self.delete_url_name, kwargs={'pk':context_object.pk})
 		context['update_link'] = reverse_lazy(self.update_url_name, kwargs={'pk':context_object.pk})
-		context['go_back_link'] = reverse_lazy(self.go_back_url_name)s
+		context['go_back_link'] = reverse_lazy(self.go_back_url_name)
 		return context
 
 @method_decorator(login_required, name='dispatch')
