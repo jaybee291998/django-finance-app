@@ -310,15 +310,15 @@ class ExpenseTypeDeleteView(DeleteView):
 	success_url = reverse_lazy('expense_types_list')
 
 	def get_object(self, queryset=None):
-		obj = super(ExpenseTypeDeleteView, self).get_object(queryset=queryset)
+		pk = self.kwargs.get(self.pk_url_kwarg)
+		if pk is None:
+			raise AttributeError("Generic Delete view must be called with a PK")
+		obj = self.model.objects.get(account=pk)
 		if obj.account != self.request.user.bank_account:
 			raise Http404()
-		if obj.fund_expenses.exists():
+		if obj.expense.exists():
 			raise Http404()
 		return obj
-
-	def get_queryset(self):
-		return self.model.objects.filter(account=self.request.user.bank_account)
 
 
 @method_decorator(login_required, name='dispatch')
