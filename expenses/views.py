@@ -321,7 +321,7 @@ class ExpenseTypeCreateView(EITBaseCreateView):
 	success_url = reverse_lazy('expense_types_list')
 
 @method_decorator(login_required, name='dispatch')
-class ExpenseTypeListView(ListView):
+class ExpenseTypeListView(EITBaseListView):
 	model = ExpenseType
 	template_name = 'expense_type/list.html'
 	context_object_name = 'expense_types'
