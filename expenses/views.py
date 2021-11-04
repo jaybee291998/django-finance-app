@@ -257,13 +257,16 @@ class ExpenseTypeDetailView(DetailView):
 	context_object_name = 'expense_type'
 
 	def get_object(self, queryset=None):
-		obj = super(ExpenseTypeDetailView, self).get_object(queryset=queryset)
+		pk = self.kwargs.get(self.pk_url_kwarg)
+		if pk is None:
+			raise AttributeError("Generic Delete view must be called with a PK")
+		try:
+			obj = self.model.objects.get(pk=pk)
+		except self.model.DoesNotExist:
+			raise Http404("You suck")
 		if obj.account != self.request.user.bank_account:
 			raise Http404()
 		return obj
-
-	def get_queryset(self):
-		return self.model.objects.filter(account=self.request.user.bank_account)
 
 	def get_context_data(self, **kwargs):
 		context = super(ExpenseTypeDetailView, self).get_context_data(**kwargs)
