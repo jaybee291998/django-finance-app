@@ -236,12 +236,12 @@ class ExpenseTypeListView(ListView):
 	context_object_name = 'expense_types'
 
 	def get_queryset(self):
-		queryset = ExpenseType.objects.filter(account=self.request.user.bank_account)
+		queryset = self.model.objects.filter(account=self.request.user.bank_account)
 		return queryset
 
 	def get_context_data(self, **kwargs):
 		context = super(ExpenseTypeListView, self).get_context_data(**kwargs)
-		
+
 		expense_types = context['expense_types']
 		
 		detail_links = [reverse_lazy('expense_type_detail', kwargs={'pk':expense_type.pk}) for expense_type in expense_types]
