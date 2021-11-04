@@ -268,9 +268,9 @@ class EITBaseDetailView(DetailView):
 	def get_context_data(self, **kwargs):
 		context = super(ExpenseTypeDetailView, self).get_context_data(**kwargs)
 		context_object = context[self.context_object_name]
-		context['delete_link'] = reverse_lazy(EITBaseDetailView.delete_url_name, kwargs={'pk':context_object.pk})
-		context['update_link'] = reverse_lazy(EITBaseDetailView.update_url_name, kwargs={'pk':context_object.pk})
-		context['go_back_link'] = reverse_lazy(EITBaseDetailView.go_back_url_name)
+		context['delete_link'] = reverse_lazy(self.delete_url_name, kwargs={'pk':context_object.pk})
+		context['update_link'] = reverse_lazy(self.update_url_name, kwargs={'pk':context_object.pk})
+		context['go_back_link'] = reverse_lazy(self.go_back_url_name)s
 		return context
 
 @method_decorator(login_required, name='dispatch')
@@ -279,7 +279,7 @@ class EITBaseUpdateView(UpdateView):
 	fields = ( 'name' ,'description')
 
 	def get_success_url(self):
-		return reverse_lazy(EITBaseUpdateView.go_back_url_name, kwargs={'pk':self.object.id})
+		return reverse_lazy(self.go_back_url_name, kwargs={'pk':self.object.id})
 
 	def get_object(self, queryset=None):
 		pk = self.kwargs.get(self.pk_url_kwarg)
