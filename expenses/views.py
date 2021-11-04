@@ -217,7 +217,103 @@ class ExpenseDeleteView(DeleteView):
 		queryset = super(ExpenseDeleteView, self).get_queryset()
 		return queryset.filter(account=self.request.user.bank_account)
 
+# base class for the expense type and income
+# ExpenseIncomeTypeBase Class
+@method_decorator(login_required, name='dispatch')
+class EITBaseCreateView(CreateView):
+	fields = ('name', 'description')
+
+	def form_valid(self, form):
+		form.instance.account = self.request.user.bank_account
+		return super(EITBaseCreateView, self).form_valid(form)
+
+@method_decorator(login_required, name='dispatch')
+class EITBaseListView(ListView):
+	detail_url_name = None
+	add_object_url_name = None
+	def get_queryset(self):
+		queryset = self.model.objects.filter(account=self.request.user.bank_account)
+		return queryset
+
+	def get_context_data(self, **kwargs):
+		context = super(EITBaseListView, self).get_context_data(**kwargs)
+
+		context_objects = context[self.context_object_name]
+		
+		detail_links = [reverse_lazy(EITBaseListView.detail_url_name, kwargs={'pk':context_object.pk}) for context_object in context_objects]
+		context['context_object_details'] = zip(context_objects, detail_links)
+		context['add_object_link'] = reverse_lazy(EITBaseListView.add_object_url_name)
+		context['go_home_link'] = reverse_lazy('home')
+		return context
+
+@method_decorator(login_required, name='dispatch')
+class EITBaseDetailView(DetailView):
+	delete_url_name = None
+	update_url_name = None
+	go_back_url_name = None
+
+	def get_object(self, queryset=None):
+		pk = self.kwargs.get(self.pk_url_kwarg)
+		if pk is None:
+			raise AttributeError("Generic Delete view must be called with a PK")
+		try:
+			obj = self.model.objects.get(pk=pk)
+		except self.model.DoesNotExist:
+			raise Http404("You suck")
+
+		if obj.account != self.request.user.bank_account:
+			raise Http404()
+		return obj
+
+	def get_context_data(self, **kwargs):
+		context = super(ExpenseTypeDetailView, self).get_context_data(**kwargs)
+		context_object = context[self.context_object_name]
+		context['delete_link'] = reverse_lazy(EITBaseDetailView.delete_url_name, kwargs={'pk':context_object.pk})
+		context['update_link'] = reverse_lazy(EITBaseDetailView.update_url_name, kwargs={'pk':context_object.pk})
+		context['go_back_link'] = reverse_lazy(EITBaseDetailView.go_back_url_name)
+		return context
+
+@method_decorator(login_required, name='dispatch')
+class EITBaseUpdateView(UpdateView):
+	go_back_url_name = None
+	fields = ( 'name' ,'description')
+
+	def get_success_url(self):
+		return reverse_lazy(EITBaseUpdateView.go_back_url_name, kwargs={'pk':self.object.id})
+
+	def get_object(self, queryset=None):
+		pk = self.kwargs.get(self.pk_url_kwarg)
+		if pk is None:
+			raise AttributeError("Generic Update view must be called with a PK")
+		try:
+			obj = self.model.objects.get(pk=pk)
+		except self.model.DoesNotExist:
+			raise Http404("You suck")
+		if obj.account != self.request.user.bank_account:
+			raise Http404()
+		if obj.expense.exists():
+			raise Http404()
+		return obj
+
+
+@method_decorator(login_required, name='dispatch')
+class EITBaseDeleteView(DeleteView):
+
+	def get_object(self, queryset=None):
+		pk = self.kwargs.get(self.pk_url_kwarg)
+		if pk is None:
+			raise AttributeError("Generic Delete view must be called with a PK")
+		try:
+			obj = self.model.objects.get(pk=pk)
+		except self.model.DoesNotExist:
+			raise Http404("You suck")
+
+		if obj.account != self.request.user.bank_account:
+			raise Http404()
+		return obj
+
 # views for expense type
+
 @method_decorator(login_required, name='dispatch')
 class ExpenseTypeCreateView(CreateView):
 	model = ExpenseType
@@ -283,7 +379,6 @@ class ExpenseTypeDetailView(DetailView):
 			context['is_expired'] = True
 		context['go_back_link'] = reverse_lazy('expense_types_list')
 		return context
-
 
 @method_decorator(login_required, name='dispatch')
 class ExpenseTypeUpdateView(UpdateView):
