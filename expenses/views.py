@@ -266,7 +266,7 @@ class EITBaseDetailView(DetailView):
 		return obj
 
 	def get_context_data(self, **kwargs):
-		context = super(ExpenseTypeDetailView, self).get_context_data(**kwargs)
+		context = super(EITBaseDetailView, self).get_context_data(**kwargs)
 		context_object = context[self.context_object_name]
 		context['delete_link'] = reverse_lazy(self.delete_url_name, kwargs={'pk':context_object.pk})
 		context['update_link'] = reverse_lazy(self.update_url_name, kwargs={'pk':context_object.pk})
