@@ -313,7 +313,7 @@ class ExpenseTypeDeleteView(DeleteView):
 		pk = self.kwargs.get(self.pk_url_kwarg)
 		if pk is None:
 			raise AttributeError("Generic Delete view must be called with a PK")
-		obj = self.model.objects.get(account=pk)
+		obj = self.model.objects.get(pk=pk)
 		if obj.account != self.request.user.bank_account:
 			raise Http404()
 		if obj.expense.exists():
