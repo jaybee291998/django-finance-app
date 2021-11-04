@@ -253,7 +253,7 @@ class IncomeTypeUpdateView(EITBaseUpdateView):
 
 	def get_object(self, queryset=None):
 		obj = super(IncomeTypeUpdateView, self).get_object(queryset=queryset)
-		if obj.expense.exists():
+		if obj.income.exists():
 			raise Http404()
 		return obj
 
