@@ -296,7 +296,6 @@ class EITBaseUpdateView(UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class EITBaseDeleteView(DeleteView):
-
 	def get_object(self, queryset=None):
 		pk = self.kwargs.get(self.pk_url_kwarg)
 		if pk is None:
@@ -359,22 +358,13 @@ class ExpenseTypeUpdateView(EITBaseUpdateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class ExpenseTypeDeleteView(DeleteView):
+class ExpenseTypeDeleteView(EITBaseDeleteView):
 	model = ExpenseType
 	template_name = 'expense_type/delete.html'
 	success_url = reverse_lazy('expense_types_list')
 
 	def get_object(self, queryset=None):
-		pk = self.kwargs.get(self.pk_url_kwarg)
-		if pk is None:
-			raise AttributeError("Generic Delete view must be called with a PK")
-		try:
-			obj = self.model.objects.get(pk=pk)
-		except self.model.DoesNotExist:
-			raise Http404("You suck")
-
-		if obj.account != self.request.user.bank_account:
-			raise Http404()
+		obj = super(ExpenseTypeDeleteView, self).get_object(queryset=queryset)
 		if obj.expense.exists():
 			raise Http404()
 		return obj
