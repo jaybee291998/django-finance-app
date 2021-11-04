@@ -291,8 +291,6 @@ class EITBaseUpdateView(UpdateView):
 			raise Http404("You suck")
 		if obj.account != self.request.user.bank_account:
 			raise Http404()
-		if obj.expense.exists():
-			raise Http404()
 		return obj
 
 
@@ -346,25 +344,15 @@ class ExpenseTypeDetailView(EITBaseDetailView):
 		return context
 
 @method_decorator(login_required, name='dispatch')
-class ExpenseTypeUpdateView(UpdateView):
+class ExpenseTypeUpdateView(EITBaseUpdateView):
 	model = ExpenseType
 	template_name = 'expense_type/update.html'
 	context_object_name = 'expense_type'
 	fields = ( 'name' ,'description')
-
-	def get_success_url(self):
-		return reverse_lazy('expense_type_detail', kwargs={'pk':self.object.id})
+	go_back_url_name = 'expense_type_detail'
 
 	def get_object(self, queryset=None):
-		pk = self.kwargs.get(self.pk_url_kwarg)
-		if pk is None:
-			raise AttributeError("Generic Update view must be called with a PK")
-		try:
-			obj = self.model.objects.get(pk=pk)
-		except self.model.DoesNotExist:
-			raise Http404("You suck")
-		if obj.account != self.request.user.bank_account:
-			raise Http404()
+		obj = super(ExpenseTypeUpdateView, self).get_object(queryset=queryset)
 		if obj.expense.exists():
 			raise Http404()
 		return obj
