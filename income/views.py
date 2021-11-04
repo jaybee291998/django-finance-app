@@ -219,7 +219,7 @@ class IncomeTypeCreateView(EITBaseCreateView):
 	success_url = reverse_lazy('income_types_list')
 
 @method_decorator(login_required, name='dispatch')
-class ExpenseTypeListView(EITBaseListView):
+class IncomeTypeListView(EITBaseListView):
 	model = IncomeType
 	template_name = 'income_type/list.html'
 	context_object_name = 'income_types'
@@ -244,7 +244,7 @@ class IncomeTypeDetailView(EITBaseDetailView):
 		return context
 
 @method_decorator(login_required, name='dispatch')
-class ExpenseTypeUpdateView(EITBaseUpdateView):
+class IncomeTypeUpdateView(EITBaseUpdateView):
 	model = IncomeType
 	template_name = 'income_type/update.html'
 	context_object_name = 'income_type'
