@@ -293,15 +293,19 @@ class ExpenseTypeUpdateView(UpdateView):
 		return reverse_lazy('expense_type_detail', kwargs={'pk':self.object.id})
 
 	def get_object(self, queryset=None):
-		obj = super(ExpenseTypeUpdateView, self).get_object(queryset=queryset)
+		pk = self.kwargs.get(self.pk_url_kwarg)
+		if pk is None:
+			raise AttributeError("Generic Update view must be called with a PK")
+		try:
+			obj = self.model.objects.get(pk=pk)
+		except self.model.DoesNotExist:
+			raise Http404("You suck")
 		if obj.account != self.request.user.bank_account:
 			raise Http404()
 		if obj.expense.exists():
 			raise Http404()
 		return obj
 
-	def get_queryset(self):
-		return self.model.objects.filter(account=self.request.user.bank_account)
 
 @method_decorator(login_required, name='dispatch')
 class ExpenseTypeDeleteView(DeleteView):
