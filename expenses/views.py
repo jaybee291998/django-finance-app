@@ -263,8 +263,7 @@ class ExpenseTypeDetailView(DetailView):
 		return obj
 
 	def get_queryset(self):
-		queryset = super(ExpenseTypeDetailView, self).get_queryset()
-		return queryset.filter(account=self.request.user.bank_account)
+		return self.model.objects.filter(account=self.request.user.bank_account)
 
 	def get_context_data(self, **kwargs):
 		context = super(ExpenseTypeDetailView, self).get_context_data(**kwargs)
@@ -302,8 +301,7 @@ class ExpenseTypeUpdateView(UpdateView):
 		return obj
 
 	def get_queryset(self):
-		queryset = super(ExpenseTypeUpdateView, self).get_queryset()
-		return queryset.filter(account=self.request.user.bank_account)
+		return self.model.objects.filter(account=self.request.user.bank_account)
 
 @method_decorator(login_required, name='dispatch')
 class ExpenseTypeDeleteView(DeleteView):
@@ -320,8 +318,7 @@ class ExpenseTypeDeleteView(DeleteView):
 		return obj
 
 	def get_queryset(self):
-		queryset = super(ExpenseTypeDeleteView, self).get_queryset()
-		return queryset.filter(account=self.request.user.bank_account)
+		return self.model.objects.filter(account=self.request.user.bank_account)
 
 
 @method_decorator(login_required, name='dispatch')
