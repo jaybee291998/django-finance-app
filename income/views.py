@@ -236,7 +236,7 @@ class IncomeTypeDetailView(EITBaseDetailView):
 	go_back_url_name = 'income_types_list'
 
 	def get_context_data(self, **kwargs):
-		context = super(ExpenseTypeDetailView, self).get_context_data(**kwargs)
+		context = super(IncomeTypeDetailView, self).get_context_data(**kwargs)
 		income_type = context[self.context_object_name]
 		context['is_expired'] = False
 		if income_type.income.exists():
@@ -252,7 +252,7 @@ class IncomeTypeUpdateView(EITBaseUpdateView):
 	go_back_url_name = 'income_type_detail'
 
 	def get_object(self, queryset=None):
-		obj = super(ExpenseTypeUpdateView, self).get_object(queryset=queryset)
+		obj = super(IncomeTypeUpdateView, self).get_object(queryset=queryset)
 		if obj.expense.exists():
 			raise Http404()
 		return obj
@@ -265,7 +265,7 @@ class IncomeTypeDeleteView(EITBaseDeleteView):
 	success_url = reverse_lazy('income_types_list')
 
 	def get_object(self, queryset=None):
-		obj = super(ExpenseTypeDeleteView, self).get_object(queryset=queryset)
+		obj = super(IncomeTypeDeleteView, self).get_object(queryset=queryset)
 		if obj.expense.exists():
 			raise Http404()
 		return obj
