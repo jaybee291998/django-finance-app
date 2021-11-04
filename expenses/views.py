@@ -240,9 +240,9 @@ class EITBaseListView(ListView):
 
 		context_objects = context[self.context_object_name]
 		
-		detail_links = [reverse_lazy(EITBaseListView.detail_url_name, kwargs={'pk':context_object.pk}) for context_object in context_objects]
+		detail_links = [reverse_lazy(self.detail_url_name, kwargs={'pk':context_object.pk}) for context_object in context_objects]
 		context['context_object_details'] = zip(context_objects, detail_links)
-		context['add_object_link'] = reverse_lazy(EITBaseListView.add_object_url_name)
+		context['add_object_link'] = reverse_lazy(self.add_object_url_name)
 		context['go_home_link'] = reverse_lazy('home')
 		return context
 
