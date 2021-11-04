@@ -325,21 +325,8 @@ class ExpenseTypeListView(ListView):
 	model = ExpenseType
 	template_name = 'expense_type/list.html'
 	context_object_name = 'expense_types'
-
-	def get_queryset(self):
-		queryset = self.model.objects.filter(account=self.request.user.bank_account)
-		return queryset
-
-	def get_context_data(self, **kwargs):
-		context = super(ExpenseTypeListView, self).get_context_data(**kwargs)
-
-		expense_types = context['expense_types']
-		
-		detail_links = [reverse_lazy('expense_type_detail', kwargs={'pk':expense_type.pk}) for expense_type in expense_types]
-		context['expense_type_details'] = zip(expense_types, detail_links)
-		context['add_expense_type_link'] = reverse_lazy('expense_type_create')
-		context['go_home_link'] = reverse_lazy('home')
-		return context
+	detail_url_name = 'expense_type_detail'
+	add_object_url_name = 'expense_type_create'
 
 @method_decorator(login_required, name='dispatch')
 class ExpenseTypeDetailView(DetailView):
