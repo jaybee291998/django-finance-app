@@ -215,7 +215,7 @@ class IncomeDeleteView(DeleteView):
 @method_decorator(login_required, name='dispatch')
 class IncomeTypeCreateView(EITBaseCreateView):
 	model = IncomeType
-	template_name = 'Income_type/create.html'
+	template_name = 'income_type/create.html'
 	success_url = reverse_lazy('income_types_list')
 
 @method_decorator(login_required, name='dispatch')
