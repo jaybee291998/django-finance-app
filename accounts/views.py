@@ -35,5 +35,6 @@ def home_view(request):
 		'diary_home_link': reverse_lazy('diaries_list'),
 		'fund_home_link': reverse_lazy('funds_list'),
 		'list_home_link': reverse_lazy('lists_list'),
+		'expense_type_link': reverse_lazy('expense_types_list')
 	}
 	return render(request, 'accounts/home.html', context)
