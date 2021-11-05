@@ -46,8 +46,6 @@
 			category_names = data["category_names"];
 			// generate the controls
 			createControls()
-			console.log(data["fund_names"])
-			console.log(data["category_names"])
 			return data
 		}
 
@@ -56,6 +54,10 @@
 			controlDiv.innerHTML = '';
 			createSelectControl(fund_names, 'fund', 'fund-control', createTable);
 			createSelectControl(category_names, 'category', 'category-control', createTable);
+			// create a selector for dates
+			let dict = {}
+			raw_expense_data.map((expense_data) => expense_data.timestamp).forEach((date) => dict[date]=date)
+			createSelectControl(dict, 'date', 'start-date-control', createTable);
 		}
 
 		// filter expenses bases on selected controls
