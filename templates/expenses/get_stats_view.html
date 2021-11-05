@@ -18,9 +18,6 @@
 	    	<option value="polarArea">Polar Area</option>
 	    </select>
 	<div id="button-div">
-	    <button id="make_chart_btn" onclick="make_expense_chart(this)" class="btn btn-success">expense chart</button>
-	    <button id="make_fund_chart_btn" onclick="make_fund_chart(this)" class="btn btn-info">fund chart</button>
-	    <button id="make_category_chart_btn" onclick="make_category_chart(this)" class="btn btn-secondary">category chart</button>
 	    <input type="radio" id="expense-chart" name="chart-type" value="expense-chart">Expense Chart<br>
 	    <input type="radio" id="fund-chart" name="chart-type" value="fund-chart">Fund Chart<br>
 	    <input type="radio" id="category-chart" name="chart-type" value="category-chart">Category Chart<br>
@@ -36,6 +33,7 @@
 	<script type="text/javascript">
 		// the expense data from the selected interval
 		let raw_expense_data = [];
+		let filteredData = [];
 		let fund_names = {};
 		let category_names = {};
 
@@ -55,8 +53,8 @@
 		const createControls = () => {
 			// remove all the elements on the control div
 			controlDiv.innerHTML = '';
-			createSelectControl(fund_names, 'fund', 'fund-control', createTable);
-			createSelectControl(category_names, 'category', 'category-control', createTable);
+			createSelectControl(fund_names, 'fund', 'fund-control', updateChartAndTable);
+			createSelectControl(category_names, 'category', 'category-control', updateChartAndTable);
 			// create a selector for dates
 			let dict = {}
 			raw_expense_data.map((expense_data) => expense_data.timestamp.slice(5,10)).forEach((date) => dict[date]=date)
@@ -75,17 +73,29 @@
 			if(fund_select.value != -1) expenses = expenses.filter((expense) => expense['fund'] == fund_select.value);
 			// if category is not all
 			// filter the data based on the value of category
-			if(category_select.value != -1) expenses = expenses.filter((expense) => expense['category'] == category_select.value);
-			let getSelectedValue = document.querySelector('input[name="chart-type"]:checked');
-			if(getSelectedValue!=null){
-				console.log(getSelectedValue.value);
-			}			
+			if(category_select.value != -1) expenses = expenses.filter((expense) => expense['category'] == category_select.value);		
 			return expenses;
 		}
 
+		// update the table and chart based on the selected parameters
+		const updateChartAndTable() = () => {
+			filteredData = filterData();
+			let getSelectedValue = document.querySelector('input[name="chart-type"]:checked');
+			if(getSelectedValue!=null){
+				let selectedValue = getSelectedValue.value;
+				if(selectedValue=='expense-chart') make_expense_chart();
+				else if(selectedValue=='fund-chart') make_fund_chart();
+				else if(selectedValue=='category-chart') make_category_chart();
+				else() cosole.log("RAdio buttons are fucked");
+			}	
+			createTable();
+		} 
+
+
+
 		// create a table base on fund and category
 		const createTable = () => {
-			let expenses = filterData();
+			let expenses = filteredData;
 			// table to tabulate all of the expense data
 			let table = document.createElement("TABLE");
 			table.className = "table";
@@ -147,14 +157,14 @@
 
 		// make a expense chart
 		const make_expense_chart = async() =>{
-			let expense_data = filterData()
+			let expense_data = filteredData;
 			var chart_data = process_chart_data(expense_data.map((data) => data.price), expense_data.map((data) => data.timestamp.slice(5, 10)));
 			make_chart(chart_data, "expenses");
 		}
 
 		// make a chart for fund and category
 		const make_fund_chart = () => {
-			let expense_data = filterData()
+			let expense_data = filteredData;
 			let fund = expense_data.map((expense) => expense.fund);
 			let price = expense_data.map((expense) => expense.price)
 			let chart_data = findAllIndices(fund, price);
@@ -164,7 +174,7 @@
 
 		// make a chart for fund and category
 		const make_category_chart = () => {
-			let expense_data = filterData()
+			let expense_data = filteredData;
 			let category = expense_data.map((expense) => expense.category);
 			let price = expense_data.map((expense) => expense.price)
 			let chart_data = findAllIndices(category, price);
