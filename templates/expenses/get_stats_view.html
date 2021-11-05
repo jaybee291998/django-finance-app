@@ -116,6 +116,8 @@
 						cell.innerHTML = fund_names[expense_property_value];
 					}else if(expense_property == 'category'){
 						cell.innerHTML = category_names[expense_property_value];
+					}else if(expense_property == 'timestamp'){
+						cell.innerHTML = convertDate(expense_property_value.slice(5,10));
 					}else{
 						cell.innerHTML = expense_property_value
 					}
