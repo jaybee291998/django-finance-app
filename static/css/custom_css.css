@@ -1,0 +1,13 @@
+.flex-container {
+	display: flex;
+	background: dodgerblue;
+	flex-wrap: wrap;
+}
+
+.flex-container .flex-item{
+	background-color: #f1f1f1;
+	margin: 10px;
+	padding: 20px;
+	font-size: 30px;
+	width: 18rem;
+}
