@@ -96,6 +96,7 @@ class ExpenseListView(ListView):
 			expenses = paginator.page(paginator.num_pages)
 		context['expenses_details'] = zip(expenses, detail_links)
 		context['add_expense_link'] = reverse_lazy('expenses_create')
+		context['stats_link']  = reverse_lazy('get_stats_view')
 		context['go_home_link'] = reverse_lazy('home')
 		context['total_expenditure'] = total_expenditure
 		context['entry_date'] = entry_date
