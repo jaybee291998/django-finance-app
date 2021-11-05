@@ -36,6 +36,7 @@
 		let filteredData = [];
 		let fund_names = {};
 		let category_names = {};
+		const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 		// get the data from the server
 		const get_data = async () => {
@@ -57,9 +58,9 @@
 			createSelectControl(category_names, 'category', 'category-control', updateChartAndTable);
 			// create a selector for dates
 			let dict = {}
-			raw_expense_data.map((expense_data) => expense_data.timestamp.slice(5,10)).forEach((date) => dict[date]=date)
-			createSelectControl(dict, 'start-date', 'start-date-control', createTable);
-			createSelectControl(dict, 'end-date', 'end-date-control', createTable);
+			raw_expense_data.map((expense_data) => expense_data.timestamp.slice(5,10)).forEach((date) => dict[date]=convertDate(date))
+			createSelectControl(dict, 'start-date', 'start-date-control', updateChartAndTable);
+			createSelectControl(dict, 'end-date', 'end-date-control', updateChartAndTable);
 		}
 
 		// filter expenses bases on selected controls
@@ -300,6 +301,13 @@
 			})
 			console.log(object);
 			return object;
+		}
+
+		// convert the raw date
+		const convertDate = (raw_date) => {
+			let month_str = raw_date.substr(0,2);
+			let day_str = raw_date.substr(3,2);
+			return months[parseInt(month_str, 10)] + ' ' + day_str;
 		}
 
 		let interval = document.getElementById('interval');
