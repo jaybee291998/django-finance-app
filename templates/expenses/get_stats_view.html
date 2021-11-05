@@ -21,6 +21,9 @@
 	    <button id="make_chart_btn" onclick="make_expense_chart(this)" class="btn btn-success">expense chart</button>
 	    <button id="make_fund_chart_btn" onclick="make_fund_chart(this)" class="btn btn-info">fund chart</button>
 	    <button id="make_category_chart_btn" onclick="make_category_chart(this)" class="btn btn-secondary">category chart</button>
+	    <input type="radio" id="expense-chart" name="chart-type" value="expense-chart">Expense Chart<br>
+	    <input type="radio" id="fund-chart" name="chart-type" value="fund-chart">Fund Chart<br>
+	    <input type="radio" id="category-chart" name="chart-type" value="category-chart">Category Chart<br>
 	</div>
 	<div id="control-div">
 	</div>
@@ -73,6 +76,10 @@
 			// if category is not all
 			// filter the data based on the value of category
 			if(category_select.value != -1) expenses = expenses.filter((expense) => expense['category'] == category_select.value);
+			let getSelectedValue = document.querySelector('input[name="chart-type"]:checked');
+			if(getSelectedValue!=null){
+				console.log(getSelectedValue.value);
+			}			
 			return expenses;
 		}
 
