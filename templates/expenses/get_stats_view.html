@@ -79,7 +79,7 @@
 			if(category_select.value != -1) expenses = expenses.filter((expense) => expense['category'] == category_select.value);
 			if(start_date_select.value != -1 && end_date_select.value != -1){
 				if(start_date_select.value < end_date_select.value){
-					expenses = expenses.filter((expense) => (start_date_select <= expense.timestamp.slice(5,10) && expense.timestamp.slice(5,10) <= end_date_select.value));
+					expenses = expenses.filter((expense) => (start_date_select.value <= expense.timestamp.slice(5,10) && expense.timestamp.slice(5,10) <= end_date_select.value));
 					console.log(expenses);
 				}
 			}		
