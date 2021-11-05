@@ -58,7 +58,7 @@
 			createSelectControl(category_names, 'category', 'category-control', updateChartAndTable);
 			// create a selector for dates
 			let dict = {}
-			raw_expense_data.map((expense_data) => expense_data.timestamp.slice(5,10)).forEach((date) => dict[date]=convertDate(date))
+			raw_expense_data.map((expense_data) => expense_data.timestamp.slice(0,10)).forEach((date) => dict[date]=convertDate(date.slice(5,10)))
 			createSelectControl(dict, 'start-date', 'start-date-control', updateChartAndTable);
 			createSelectControl(dict, 'end-date', 'end-date-control', updateChartAndTable);
 		}
