@@ -68,13 +68,20 @@
 			// data processing section
 			let fund_select = document.getElementById('fund-control');
 			let category_select = document.getElementById('category-control');
+			let start_date_select = document.getElementById('start-date-control');
+			let end_date_select = document.getElementById('end-date-control');
 			let expenses = raw_expense_data;
 			// if the fund selected is not all
 			// fiter the data to the selected fund
-			if(fund_select.value != -1) expenses = expenses.filter((expense) => expense['fund'] == fund_select.value);
+			if(fund_select.value != -1) expenses = expenses.filter((expense) => expense['fund'] == fund_select.value );
 			// if category is not all
 			// filter the data based on the value of category
-			if(category_select.value != -1) expenses = expenses.filter((expense) => expense['category'] == category_select.value);		
+			if(category_select.value != -1) expenses = expenses.filter((expense) => expense['category'] == category_select.value);
+			if(start_date_select.value != -1 && end_date_select.value != -1){
+				if(start_date_select.value < end_date_select.value){
+					expenses = expenses.filter((expense) => start_date_select <= expense.timestamp.slice(5,10) && expense.timestamp.slice(5,10));
+				}
+			}		
 			return expenses;
 		}
 
