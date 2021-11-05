@@ -78,7 +78,7 @@
 		}
 
 		// update the table and chart based on the selected parameters
-		const updateChartAndTable() = () => {
+		const updateChartAndTable = () => {
 			filteredData = filterData();
 			let getSelectedValue = document.querySelector('input[name="chart-type"]:checked');
 			if(getSelectedValue!=null){
