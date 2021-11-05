@@ -158,7 +158,7 @@
 		// make a chart for fund and category
 		const make_category_chart = () => {
 			let expense_data = filterData()
-			let category = xpense_data.map((expense) => expense.category);
+			let category = expense_data.map((expense) => expense.category);
 			let price = expense_data.map((expense) => expense.price)
 			let chart_data = findAllIndices(category, price);
 			chart_data["labels"] = chart_data["labels"].map((label) => category_names[label]);
