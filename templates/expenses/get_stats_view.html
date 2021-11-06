@@ -136,7 +136,7 @@
 
 			// parahrapg to display the total expenses
 			let total_expense_p = document.createElement("P");
-			total_expense_p.innerHTML = "<br>Total</br>: " + expenses.reduce((sum ,data) => sum + data.price);
+			total_expense_p.innerHTML = "<br>Total</br>: " + expenses.reduce((sum ,data) => sum + data.price, 0);
 			// empty the div first before adding the new table
 			tableDiv.innerHTML = '';
 			tableDiv.appendChild(table);
