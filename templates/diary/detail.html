@@ -1,9 +1,11 @@
-{% extends 'diary_base.html' %}
-
+{% extends 'base.html' %}
+{% block title %}
+	Expense | Detail
+{% endblock %}
 {% block content %}
 	<div class="card">
 	    <div class="card-header">
-	        <h5 class="card-title">Income Details #{{income.id}}</h5>
+	        <h5 class="card-title">Diary Details #{{income.id}}</h5>
 	    </div>
 	    <div class="card-body">
 	    <dl class="row">
