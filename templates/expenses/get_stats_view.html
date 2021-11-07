@@ -57,9 +57,9 @@
 			// remove all the elements on the control div
 			controlDiv.innerHTML = '';
 			// create the radio buttons
-			createRadioControl("chart-type", "expense-chart", "expense-chart", "Expense Chart", updateChartAndTable);
-			createRadioControl("chart-type", "fund-chart", "fund-chart", "Fund Chart", updateChartAndTable);
-			createRadioControl("chart-type", "category-chart", "category-chart", "Category Chart", updateChartAndTable);
+			createRadioControl("chart-type", "expense-chart", "expense-chart", "Expense Chart ", updateChart);
+			createRadioControl("chart-type", "fund-chart", "fund-chart", "Fund Chart ", updateChart);
+			createRadioControl("chart-type", "category-chart", "category-chart", "Category Chart ", updateChart);
 
 
 			createSelectControl(fund_names, 'fund', 'fund-control', updateChartAndTable);
@@ -97,6 +97,12 @@
 		// update the table and chart based on the selected parameters
 		const updateChartAndTable = () => {
 			filteredData = filterData();
+			updateChart();
+			createTable();
+		} 
+
+		// update chart based on the selected radio controls
+		const updateChart = () => {
 			let getSelectedValue = document.querySelector('input[name="chart-type"]:checked');
 			if(getSelectedValue!=null){
 				let selectedValue = getSelectedValue.value;
@@ -104,9 +110,8 @@
 				else if(selectedValue=='fund-chart') make_fund_chart();
 				else if(selectedValue=='category-chart') make_category_chart();
 				else console.log("RAdio buttons are fucked");
-			}	
-			createTable();
-		} 
+			}
+		}
 
 
 
