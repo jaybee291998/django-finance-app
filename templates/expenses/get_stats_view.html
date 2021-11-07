@@ -56,6 +56,12 @@
 		const createControls = () => {
 			// remove all the elements on the control div
 			controlDiv.innerHTML = '';
+			// create the radio buttons
+			createRadioControl("chart-type", "expense-chart", "expense-chart", "Expense Chart", updateChartAndTable);
+			createRadioControl("chart-type", "fund-chart", "fund-chart", "Fund Chart", updateChartAndTable);
+			createRadioControl("chart-type", "category-chart", "category-chart", "Category Chart", updateChartAndTable);
+
+
 			createSelectControl(fund_names, 'fund', 'fund-control', updateChartAndTable);
 			createSelectControl(category_names, 'category', 'category-control', updateChartAndTable);
 			// create a selector for dates
@@ -142,6 +148,22 @@
 			tableDiv.appendChild(table);
 			tableDiv.appendChild(total_expense_p);
 
+		}
+
+		// create radio button controls
+		const createRadioControl = (name, id, value, inner, func) => {
+			let radio = document.createElement("INPUT");
+			radio.setAttribute("type", "radio");
+			radio.id = id;
+			radio.name = name;
+			radio.value = value;
+			radion.click = func;
+			let label = document.createElement("LABEL");
+			label.htmlFor = radio.id;
+			label.innerHTML = inner;
+
+			controlDiv.appendChild(label);
+			controlDiv.appendChild(radio);
 		}
 
 		// create options for a select
