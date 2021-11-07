@@ -20,9 +20,9 @@
 	    	<option value="polarArea">Polar Area</option>
 	    </select>
 	<div id="button-div">
-	    <input type="radio" id="expense-chart" name="chart-type" value="expense-chart">Expense Chart<br>
+<!-- 	    <input type="radio" id="expense-chart" name="chart-type" value="expense-chart">Expense Chart<br>
 	    <input type="radio" id="fund-chart" name="chart-type" value="fund-chart">Fund Chart<br>
-	    <input type="radio" id="category-chart" name="chart-type" value="category-chart">Category Chart<br>
+	    <input type="radio" id="category-chart" name="chart-type" value="category-chart">Category Chart<br> -->
 	</div>
 	<div id="control-div">
 	</div>
@@ -162,8 +162,8 @@
 			label.htmlFor = radio.id;
 			label.innerHTML = inner;
 
-			controlDiv.appendChild(label);
-			controlDiv.appendChild(radio);
+			buttonDiv.appendChild(label);
+			buttonDiv.appendChild(radio);
 		}
 
 		// create options for a select
@@ -353,6 +353,7 @@
 		let interval = document.getElementById('interval');
 		let canvasDiv = document.getElementById('canvas_div_id');
 		let controlDiv = document.getElementById('control-div');
+		let buttonDiv = document.getElementById("button-div");
 		let tableDiv = document.getElementById('table-div');
 		let chartType = document.getElementById('chart-type');
 	</script>
