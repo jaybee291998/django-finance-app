@@ -4,16 +4,16 @@
 {% endblock %}
 {% block content %}
 	<script src="https://cdn.tiny.cloud/1/7ycmwc1x5jcxbm0s80s67b2fipepck73uh51jlmwawhneu95/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-<!-- 	<p>
+	<p>
 		<label for="id_title">Title:</label> 
 		<input type="text" name="title" maxlength="32" required="" id="id_title">
 	</p>
- -->
+
 	<textarea id="mytextarea">
 		Welcome to TinyMCE!
 	</textarea>
 
-	<!-- <button onclick="post(this)">post</button> -->
+	<button onclick="post(this)">post</button>
 
 
 <script>
@@ -28,7 +28,7 @@
 	}
 
 	const get_diary_data = () => {
-		const url = {{domain}};
+		const url = '{{domain}}';
 		const diary_data = {
 			title: diaryTitle.value,
 			content: tinymce.get("mytextarea").getContent()
