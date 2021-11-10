@@ -3,23 +3,59 @@
 	Diary
 {% endblock %}
 {% block content %}
-<script src="https://cdn.tiny.cloud/1/7ycmwc1x5jcxbm0s80s67b2fipepck73uh51jlmwawhneu95/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+	
+	<p>
+		<label for="id_title">Title:</label> 
+		<input type="text" name="title" maxlength="32" required="" id="id_title">
+	</p>
 
-  <textarea id="mytextarea" onchange="update(this)">
-    Welcome to TinyMCE!
-  </textarea>
+	<textarea id="mytextarea" onchange="update(this)">
+		Welcome to TinyMCE!
+	</textarea>
 
-  <script>
-      tinymce.init({
-        selector: '#mytextarea'
-      });
-    const update = () => {
-	    let content = tinymce.get('mytextarea').getContent();
+	<button onclick="post(this)">post</button>
 
-	    console.log(content);
-    }
+	<script src="https://cdn.tiny.cloud/1/7ycmwc1x5jcxbm0s80s67b2fipepck73uh51jlmwawhneu95/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+	// initialize tiny mce
+	tinymce.init({
+    		selector: '#mytextarea'
+		});
+	const update = () => {
+		let content = tinymce.get('mytextarea').getContent();
 
-    let click = document.getElementById("click");
+		console.log(content);
+	}
 
-  </script>
+	const get_diary_data = () => {
+		const url = {{domain}};
+		const diary_data = {
+			title: diaryTitle.value,
+			content: tinymce.get("mytextarea").getContent()
+		};
+
+		const request = new Request(url, {
+			method: 'POST',
+			body: JSON.stringify(diary_data),
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			})
+		});
+
+		return request;
+	}
+
+	const post = async () => {
+		const request = get_diary_data;
+		const res = await fetch(request);
+		const data = await res.json();
+
+		console.log(data);
+
+		return data;
+	}
+
+	let diaryTitle = document.getElementById('id_title');
+
+</script>
 {% endblock %}
