@@ -386,9 +386,6 @@ class ExpenseList(APIView):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-	def perform_create(self, serializer):
-		serializer.save(user=request.user)
-
 @method_decorator(login_required, name='dispatch')
 class ExpenseDetail(APIView):
 
