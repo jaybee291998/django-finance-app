@@ -62,7 +62,7 @@
 		const data = await res.json();
 
 		console.log(data);
-		outputDiv.innerHTML = data;
+		outputDiv.innerHTML = data["content"];
 
 		return data;
 	}
