@@ -382,7 +382,7 @@ class ExpenseList(APIView):
 	def post(self, request, format=None):
 		serializer = ExpenseSerializer(data=request.data)
 		if serializer.is_valid():
-			serializer.save(user=request.user)
+			serializer.save(account=request.user.bank_account)
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
