@@ -15,6 +15,7 @@ from django.views.generic.detail import DetailView
 
 
 from .models import Diary
+from .serializers import DiarySerializer
 
 from expenses.forms import DateSelectorForm
 
@@ -131,3 +132,50 @@ class DiaryDeleteView(DeleteView):
 	def get_queryset(self):
 		queryset = super(DiaryDeleteView, self).get_queryset()
 		return queryset.filter(user=self.request.user)
+
+
+# api for Diary
+
+@method_decorator(login_required, name='dispatch')
+class DiaryList(APIView):
+
+	def get(self, request, format=None):
+		diaries = Diary.objects.filter(user=request.user)
+		serializer = DiarySerializer(diaries, many=True)
+		return Response(serializer.data)
+
+	def post(self, request, format=None):
+		serializer = DiarySerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save(user=request.user)
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@method_decorator(login_required, name='dispatch')
+class DiaryDetail(APIView):
+	def get_object(self, pk):
+		try:
+			diary = Diary.objects.get(pk=pk)
+			if diary.user != self.request.user:
+				raise Http404()
+			return expense
+		except Expense.DoesNotExist:
+			raise Http404()
+
+	def get(self, request, pk, format=None):
+		diary = self.get_object(pk)
+		serializer = DiarySerializer(diary)
+		return Response(serializer.data)
+
+	def put(self, request, pk, format=None):
+		diary = self.get_object(pk)
+		serializer = DiarySerializer(Diary, data=request.data)
+		if serializer.is_valid():
+			serializer.save(user=request.user)
+			return Response(serializer.data)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+	def delete(self, request, pk, format=None):
+		diary = self.get_object(pk)
+		diary.delete()
+		return Response(status=status.HTTP_204_NO_CONTENT)
