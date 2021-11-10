@@ -184,3 +184,10 @@ class DiaryDetail(APIView):
 		diary = self.get_object(pk)
 		diary.delete()
 		return Response(status=status.HTTP_204_NO_CONTENT)
+
+@login_required
+def get_stats_view(request):
+	context = {
+		'domain': reverse_lazy('diaries-list-api'),
+	}
+	return render(request, 'diary/diary_create.html', context)
