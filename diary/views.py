@@ -186,7 +186,7 @@ class DiaryDetail(APIView):
 		return Response(status=status.HTTP_204_NO_CONTENT)
 
 @login_required
-def get_stats_view(request):
+def diary_create_view(request):
 	context = {
 		'domain': reverse_lazy('diaries-list-api'),
 	}
