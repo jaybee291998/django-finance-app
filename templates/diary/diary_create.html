@@ -34,7 +34,7 @@
 
 	const get_diary_data = () => {
 		const url = '{{domain}}';
-		const csrftoken = getCookie();
+		const csrftoken = getCookie('csrftoken');
 		const diary_data = {
 			title: diaryTitle.value,
 			content: tinymce.get("mytextarea").getContent()
@@ -53,7 +53,7 @@
 	}
 
 	const post = async () => {
-		const request = get_diary_data('csrftoken');
+		const request = get_diary_data();
 		const res = await fetch(request);
 		const data = await res.json();
 
