@@ -46,7 +46,7 @@
 	}
 
 	const post = async () => {
-		const request = get_diary_data;
+		const request = get_diary_data();
 		const res = await fetch(request);
 		const data = await res.json();
 
