@@ -4,4 +4,4 @@ from .models import Diary
 class DiarySerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Diary 
-		fields = ['title', 'content', 'timestamp', 'user']
+		fields = ['id', 'title', 'content', 'timestamp', 'user']
