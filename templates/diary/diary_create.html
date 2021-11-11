@@ -61,10 +61,8 @@
 		const res = await fetch(request);
 		const data = await res.json();
 
-		console.log(data);
-		outputDiv.innerHTML = data["content"];
-
-		return data;
+		// redirect to list of diary entries
+		window.location.replace("{{diaries_list_url}}");
 	}
 
 	function getCookie(name) {
