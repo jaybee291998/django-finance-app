@@ -145,7 +145,16 @@ class DiaryDeleteView(DeleteView):
 class DiaryList(APIView):
 
 	def get(self, request, format=None):
-		diaries = Diary.objects.filter(user=request.user)
+		given_interval = None
+		interval = timedelta(months=1)
+		if request.GET:
+			given_interval = int(request.GET.get('interval'))
+			interval = timedelta(months=given_interval)
+
+		end_date = date.today() + timedelta(days=1);
+		start_date = end_date - interval
+
+		diaries = Diary.objects.filter(user=request.user, timestamp__range=[start_date, end_date])
 		serializer = DiarySerializer(diaries, many=True)
 		return Response(serializer.data)
 
