@@ -189,6 +189,6 @@ class DiaryDetail(APIView):
 def diary_create_view(request):
 	context = {
 		'domain': reverse_lazy('diaries-list-api'),
-		'diaries_list_link': reverse_lazy('diaries_list')
+		'diaries_list': 'jayvee291998'
 	}
 	return render(request, 'diary/diary_create.html', context)
