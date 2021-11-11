@@ -146,10 +146,10 @@ class DiaryList(APIView):
 
 	def get(self, request, format=None):
 		given_interval = None
-		interval = timedelta(months=1)
+		interval = timedelta(days=31)
 		if request.GET:
 			given_interval = int(request.GET.get('interval'))
-			interval = timedelta(months=given_interval)
+			interval = timedelta(days=given_interval)
 
 		end_date = date.today() + timedelta(days=1);
 		start_date = end_date - interval
