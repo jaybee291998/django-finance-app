@@ -16,6 +16,7 @@
 	</div>
 	<div id="control-div">
 		<button onclick="createTable(this)">table</button>
+		<button onclick="showTable(this)" id="show-table-btn">show table</button>
 	</div>
 	<div id="content-div">
 	</div>
@@ -38,13 +39,20 @@
 		const update_selected_index = (e) => {
 			// the index of the selected element
 			selected_index = e.srcElement.parentNode.id;
-			console.log(diary_data[selected_index]);
 			displayContent(diary_data[selected_index]);
+			// hide the table
+			tableDiv.style.visibility = "hidden";
+			showTableBtn.style.visibility = "visible";
+		}
+
+		const showTable = () => {
+			tableDiv.style.visibility = "visible";
+			showTableBtn.style.visibility = "hidden";
 		}
 
 		const displayContent = (content) => {
 			contentDiv.innerHTML = "";
-			contentDiv.innerHTML = "<p>" + content["title"] + "</p>" + content["timestamp"];
+			contentDiv.innerHTML = "<p>" + content["title"] + "<br>" + content["timestamp"] + "</p>";
 			contentDiv.innerHTML += content["content"];
 		}
 
@@ -78,11 +86,15 @@
 			// empty the div first before adding the new table
 			tableDiv.innerHTML = '';
 			tableDiv.appendChild(table);
+
+			// hide the show table button
+			showTableBtn.style.visibility = "hiddent";
 		}
 
 		const controlDiv = document.getElementById("control-div");
 		const tableDiv = document.getElementById("table-div");
 		const contentDiv = document.getElementById("content-div");
+		const showTableBtn = document.getElementById("show-table-btn");
 
 	</script>
 {% endblock %}
