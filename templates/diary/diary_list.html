@@ -44,6 +44,7 @@
 			diaries.forEach((diary, i) => {
 				// insert a row on table for each expense entry
 				let row = table.insertRow(i);
+				row.id = diary['id'];
 				// the properties of the expense such as desctription, price, ...etc
 				let diary_properties = Object.keys(diary);
 				diary_properties.forEach((diary_property, j) => {
