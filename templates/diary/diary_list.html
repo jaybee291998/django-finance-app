@@ -41,14 +41,14 @@
 			selected_index = e.srcElement.parentNode.id;
 			displayContent(diary_data[selected_index]);
 			// hide the table
-			tableDiv.style.visibility = "hidden";
-			showTableBtn.style.visibility = "visible";
+			tableDiv.style.display = "none";
+			showTableBtn.style.display = "inline";
 		}
 
 		const showTable = () => {
-			tableDiv.style.visibility = "visible";
-			showTableBtn.style.visibility = "hidden";
-			contentDiv.style.visibility = "hidden";
+			tableDiv.style.display = "block";
+			showTableBtn.style.display = "none";
+			contentDiv.style.display = "none";
 		}
 
 		const displayContent = (content) => {
@@ -89,7 +89,7 @@
 			tableDiv.appendChild(table);
 
 			// hide the show table button
-			showTableBtn.style.visibility = "hidden";
+			showTableBtn.style.display = "none";
 		}
 
 		const controlDiv = document.getElementById("control-div");
