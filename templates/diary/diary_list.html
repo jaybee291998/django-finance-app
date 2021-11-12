@@ -48,6 +48,7 @@
 		const showTable = () => {
 			tableDiv.style.visibility = "visible";
 			showTableBtn.style.visibility = "hidden";
+			contentDiv.style.visibility = "hiddent";
 		}
 
 		const displayContent = (content) => {
@@ -88,7 +89,7 @@
 			tableDiv.appendChild(table);
 
 			// hide the show table button
-			showTableBtn.style.visibility = "hiddent";
+			showTableBtn.style.visibility = "hidden";
 		}
 
 		const controlDiv = document.getElementById("control-div");
