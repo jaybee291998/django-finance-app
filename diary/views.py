@@ -172,8 +172,8 @@ class DiaryDetail(APIView):
 			diary = Diary.objects.get(pk=pk)
 			if diary.user != self.request.user:
 				raise Http404()
-			return expense
-		except Expense.DoesNotExist:
+			return diary
+		except Diary.DoesNotExist:
 			raise Http404()
 
 	def get(self, request, pk, format=None):
