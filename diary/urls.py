@@ -9,6 +9,6 @@ urlpatterns = [
     path('delete/<int:pk>', views.DiaryDeleteView.as_view(), name='diary_delete'),
 
     path('diaries_list_api', views.DiaryList.as_view(), name='diaries-list-api'),
-    path('diary_detail_api', views.DiaryDetail.as_view(), name='diary-detail-api'),
+    path('diary_detail_api/<int:pk>', views.DiaryDetail.as_view(), name='diary-detail-api'),
     path('diary_create', views.diary_create_view, name='diary-create'),
 ]
