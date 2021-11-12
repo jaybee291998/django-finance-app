@@ -17,6 +17,8 @@
 	<div id="control-div">
 		<button onclick="createTable(this)">table</button>
 	</div>
+	<div id="content-div">
+	</div>
 	<div id="table-div">
 	</div>
 	<script>
@@ -37,6 +39,13 @@
 			// the index of the selected element
 			selected_index = e.srcElement.parentNode.id;
 			console.log(diary_data[selected_index]);
+			displayContent(diary_data[selected_index]);
+		}
+
+		const displayContent = (content) => {
+			contentDiv.innerHTML = "";
+			contentDiv.innerHTML = "<p>" + content["title"] + "</p>" + content["timestamp"];
+			contentDiv.innerHTML += content["content"];
 		}
 
 		// create a table base on fund and category
@@ -73,6 +82,7 @@
 
 		const controlDiv = document.getElementById("control-div");
 		const tableDiv = document.getElementById("table-div");
+		const contentDiv = document.getElementById("content-div");
 
 	</script>
 {% endblock %}
