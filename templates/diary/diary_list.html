@@ -22,6 +22,7 @@
 	<script>
 		let diary_data = [];
 		let filteredData = [];
+		let selected_index = null;
 
 		// get the data from the server
 		const get_data = async () => {
@@ -32,6 +33,10 @@
 			return data;
 		}
 
+		const update_selected_index = () => {
+			selected_index = this.id;
+			console.log(selected_index);
+		}
 
 		// create a table base on fund and category
 		const createTable = () => {
@@ -45,6 +50,7 @@
 				// insert a row on table for each expense entry
 				let row = table.insertRow(i);
 				row.id = diary['id'];
+				row.onclick = update_selected_index;
 				// the properties of the expense such as desctription, price, ...etc
 				let diary_properties = Object.keys(diary);
 				diary_properties.forEach((diary_property, j) => {
