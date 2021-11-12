@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}
+	Diary | List
+{% endblock %}
+{% block content %}
+	<h3>Hard Wood Laminate</h3>
+	<div>
+	    <label for="interval">Interval:</label>
+	    <select id="interval" onchange="get_data(this)">
+	    	<option value=93>3 Months</option>
+	    	<option value=186>6 Month</option>
+	    	<option value=365>1 Year</option>
+	    	<option value=744>2 Years</option>
+	    	<option value=1116>3 Years</option>
+	    </select>
+	</div>
+	<div id="control-div">
+		<button onclick="createTable(this)">table</button>
+	</div>
+	<div id="table-div">
+	</div>
+	<script>
+		let diary_data = [];
+		let filteredData = [];
+
+		// get the data from the server
+		const get_data = async () => {
+			const res = await fetch('{{domain}}?interval='+interval.value);
+			const data = await res.json();
+			// set the variable
+			diary_data = data;
+			return data;
+		}
+
+
+		// create a table base on fund and category
+		const createTable = () => {
+			let diaries = diary_data;
+			// table to tabulate all of the expense data
+			let table = document.createElement("TABLE");
+			table.className = "table";
+			// loop thriugh all the expense data
+			// and create a row for each expense entry
+			diaries.forEach((diary, i) => {
+				// insert a row on table for each expense entry
+				let row = table.insertRow(i);
+				// the properties of the expense such as desctription, price, ...etc
+				let diary_properties = Object.keys(diary);
+				diary_properties.forEach((diary_property, j) => {
+					// the value of the expense property i.e. description="pambili ng ulam"
+					let diary_property_value = diary[diary_property];
+					// add the cells that contain the properties of the expenses
+					let cell = row.insertCell(j);
+					if(expense_property == 'content'){
+						// do nothing if the property is the content
+					}else{
+						cell.innerHTML = diary_property
+					}
+				});
+			});
+			// empty the div first before adding the new table
+			tableDiv.innerHTML = '';
+			tableDiv.appendChild(table);
+		}
+
+		const controlDiv = document.getElementById("control-div");
+		const tableDiv = document.getElementById("table-div");
+
+	</script>
+{% endblock %}
