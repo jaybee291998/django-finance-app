@@ -69,7 +69,7 @@ class DiaryListView(ListView):
 		except EmptyPage:
 			diaries = paginator.page(paginator.num_pages)
 		context['diary_details'] = zip(diaries, detail_links)
-		context['add_diary_link'] = reverse_lazy('diary_create')
+		context['add_diary_link'] = reverse_lazy('diary-create')
 		context['go_home_link'] = reverse_lazy('home')
 		context['entry_date'] = entry_date
 		context['form'] = DateSelectorForm()
