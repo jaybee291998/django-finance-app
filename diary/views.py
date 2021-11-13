@@ -206,6 +206,8 @@ def diary_create_view(request):
 def diary_list_view(request):
 	context = {
 		'domain': reverse_lazy('diaries-list-api'),
-		'diaries_list': reverse_lazy('diaries_list')
+		'diaries_list': reverse_lazy('diaries_list'),
+		'delete_diary': reverse_lazy('diary_delete'),
+		'update_diary': reverse_lazy('diary_update')
 	}
 	return render(request, 'diary/diary_list.html', context)
