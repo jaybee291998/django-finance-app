@@ -32,7 +32,7 @@ def home_view(request):
 		'logout_link': reverse_lazy('logout'),
 		'expense_home_link': reverse_lazy('expenses_list'),
 		'income_home_link': reverse_lazy('incomes_list'),
-		'diary_home_link': reverse_lazy('diaries_list'),
+		'diary_home_link': reverse_lazy('diaries-list-api'),
 		'fund_home_link': reverse_lazy('funds_list'),
 		'list_home_link': reverse_lazy('lists_list'),
 		'expense_type_link': reverse_lazy('expense_types_list'),
