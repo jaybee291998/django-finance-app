@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
 	<h3>Hard Wood Laminate</h3>
-	<div>
+	<div id="interval-div">
 	    <label for="interval">Interval:</label>
 	    <select id="interval" onchange="get_data(this)">
 	    	<option value=93>3 Months</option>
@@ -17,7 +17,10 @@
 	<div id="control-div">
 		<button onclick="createTable(this)">table</button>
 		<button onclick="showTable(this)" id="show-table-btn">show table</button>
-		<a href="{{diary_create}}" class="btn btn-success">create diary</a>
+		<a href="{{diary_create}}" class="btn btn-success" id="create-diary-btn">create diary</a>
+
+		<button onclick="showTable(this)">Display Table</button>
+		<button onclick="showTable(this)">Hide Table</button>
 	</div>
 	<div id="content-div">
 	</div>
@@ -47,10 +50,12 @@
 			contentDiv.style.display = "block";
 		}
 
-		const showTable = () => {
-			tableDiv.style.display = "block";
-			showTableBtn.style.display = "none";
-			contentDiv.style.display = "none";
+		const displayDiaryList = () => setElementsDisplay(diaryListComponents, 'block');
+			
+		const hideDiaryList = () => setElementsDisplay(diaryListComponents, 'none');
+
+		const setElementsDisplay = (elements, display_type) => {
+			elements.forEach((element) => element.style.display = display)
 		}
 
 		const displayContent = (content) => {
@@ -95,9 +100,17 @@
 		}
 
 		const controlDiv = document.getElementById("control-div");
+		// diary list conponent
 		const tableDiv = document.getElementById("table-div");
+		const createDiaryBtn = document.getElementById("create-diary-btn");
+		const intervalDiv = document.getElementById("interval-div");
+
+		const diaryListComponents = [tableDiv, createDiaryBtn, intervalDiv];
+
+
 		const contentDiv = document.getElementById("content-div");
 		const showTableBtn = document.getElementById("show-table-btn");
+		const createDiaryBtn = document.getElementById("create-diary-btn");
 
 	</script>
 {% endblock %}
