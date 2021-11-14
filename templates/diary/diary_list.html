@@ -55,8 +55,7 @@
 		const hideDiaryList = () => setElementsDisplay(diaryListComponents, 'none');
 
 		const setElementsDisplay = (elements, display_type) => {
-			console.log(elements)
-			elements.forEach((element) => {element.style.display = display})
+			elements.forEach((element) => element.style.display = display_type)
 		}
 
 		const displayContent = (content) => {
