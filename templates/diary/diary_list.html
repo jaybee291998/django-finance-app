@@ -4,28 +4,27 @@
 {% endblock %}
 {% block content %}
 	<h3>Hard Wood Laminate</h3>
-	<div id="interval-div">
-	    <label for="interval">Interval:</label>
-	    <select id="interval" onchange="get_data(this)">
-	    	<option value=93>3 Months</option>
-	    	<option value=186>6 Month</option>
-	    	<option value=365>1 Year</option>
-	    	<option value=744>2 Years</option>
-	    	<option value=1116>3 Years</option>
-	    </select>
-	</div>
-	<div id="control-div">
-		<button onclick="createTable(this)">table</button>
-		<button onclick="displayDiaryList(this)" id="show-table-btn">show table</button>
+	<div id="list">
+		<label for="interval">Interval:</label>
+		<select id="interval" onchange="get_data(this)">
+		    <option value=93>3 Months</option>
+		    <option value=186>6 Month</option>
+		    <option value=365>1 Year</option>
+		    <option value=744>2 Years</option>
+		    <option value=1116>3 Years</option>
+		</select>
 		<a href="{{diary_create}}" class="btn btn-success" id="create-diary-btn">create diary</a>
+		<div id="table-div">
+		</div>
+	</div>
 
-		<button onclick="displayDiaryList(this)">Display Table</button>
-		<button onclick="hideDiaryList(this)">Hide Table</button>
+	<div id="detail">
+		<!-- display list -->
+		<button onclick="displayList(this)" id="show-table-btn">show table</button>
+		<div id="content-div">
+		</div>
 	</div>
-	<div id="content-div">
-	</div>
-	<div id="table-div">
-	</div>
+
 	<script>
 		let diary_data = [];
 		let filteredData = [];
@@ -44,18 +43,27 @@
 			// the index of the selected element
 			selected_index = e.srcElement.parentNode.id;
 			displayContent(diary_data[selected_index]);
-			// hide the table
-			tableDiv.style.display = "none";
-			showTableBtn.style.display = "inline";
-			contentDiv.style.display = "block";
+
+			// display detail
+			displayDetails();
 		}
 
-		const displayDiaryList = () => setElementsDisplay(diaryListComponents, 'block');
+		const displayList = () => {
+			listDiv.style.display = "block";
+
+			// hide detail
+			detailDiv.style.display = "none";
+		}
 			
-		const hideDiaryList = () => setElementsDisplay(diaryListComponents, 'none');
+		const displayDetail = () => {
+			detailDiv.style.display = "block";
+
+			// hide list
+			listDiv.style.display = "none";
+		}
 
 		const setElementsDisplay = (elements, display_type) => {
-			elements.forEach((element) => {element.style.display = display_type})
+			elements.forEach((element) => element.style.display = display_type)
 		}
 
 		const displayContent = (content) => {
@@ -110,5 +118,10 @@
 
 		const contentDiv = document.getElementById("content-div");
 		const showTableBtn = document.getElementById("show-table-btn");
+
+		const listDiv = document.getElementById("list");
+		const detailDiv = document.getElementById("detail");
+
+		createTable();
 	</script>
 {% endblock %}
