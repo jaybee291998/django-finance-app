@@ -31,7 +31,7 @@
 		</div>
 	</div>
 
-	<div id="create">
+	<div id="create-update">
 		<p>
 			<label for="id_title">Title:</label> 
 			<input type="text" name="title" maxlength="32" required="" id="id_title">
@@ -97,8 +97,8 @@
 			listDiv.style.display = "none";
 		}
 
-		const displayCreate = () => {
-			createDiv.style.display = "block";
+		const displayUpdateCreate = () => {
+			createUpdateDiv.style.display = "block";
 
 			// hide list
 			listDiv.style.display = 'none';
@@ -189,7 +189,7 @@
 			createTable();
 
 			// hide the create
-			createDiv.style.display = 'none';
+			createUpdateDiv.style.display = 'none';
 
 			// display the list
 			listDiv.style.display = "block";
@@ -222,8 +222,8 @@
 		const contentDiv = document.getElementById("content-div");
 		const showTableBtn = document.getElementById("show-table-btn");
 
-		// create
-		const createDiv = document.getElementById('create');
+		// create and update
+		const createUpdateDiv = document.getElementById('create-update');
 		let diaryTitle = document.getElementById('id_title');
 
 		initialize();
