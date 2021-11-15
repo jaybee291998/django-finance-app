@@ -42,6 +42,7 @@
 		</textarea>
 
 		<button onclick="post(this)">post</button>
+		<button onclick="displayList(this)">go back</button>
 	</div>
 </div>
 
@@ -84,6 +85,9 @@
 
 			// hide detail
 			detailDiv.style.display = "none";
+
+			// hide create
+			createDiv.style.display = "none";
 		}
 			
 		const displayDetail = () => {
@@ -150,8 +154,6 @@
 			let data = await get_data();
 			createTable();
 			displayList();
-			// hide create 
-			createDiv.style.display = 'none';
 		}
 
 		// create
@@ -182,6 +184,9 @@
 
 			// add the new data to the diary data
 			diary_data.push(data);
+
+			// update the table
+			createTable();
 
 			// hide the create
 			createDiv.style.display = 'none';
