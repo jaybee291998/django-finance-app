@@ -117,6 +117,9 @@
 
 			// hide list
 			listDiv.style.display = 'none';
+
+			// hide update btn
+			updateBtn.style.display = 'none';
 		}
 
 		const displayDelete = () => {
@@ -135,6 +138,9 @@
 			const data = diary_data[selected_index];
 			diaryTitle.value = data['title'];
 			tinymce.get("mytextarea").setContent(data['content']);
+
+			// hide post btn
+			postBtn.style.display = 'none';
 
 			// hide detail
 			detailDiv.style.display = 'none';
@@ -296,6 +302,8 @@
 		const createUpdateDiv = document.getElementById('create-update');
 		let diaryTitle = document.getElementById('id_title');
 		const mytextarea = document.getElementById('mytextarea');
+		const postBtn = document.getElementById('post-btn');
+		const updateBtn = document.getElementById('update-btn');
 
 		// delete
 		const deleteDiv = document.getElementById('delete');
