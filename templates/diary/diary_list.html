@@ -54,7 +54,7 @@
 		let selected_index = null;
 
 		let post_domain = '{{domain}}';
-		let update_domain = '{{diary_detail}}';
+		let update_domain = 'diary/diary_detail_api/';
 
 
 		// initialize tiny mce
@@ -212,7 +212,7 @@
 		}
 
 		const update = async () => {
-			const request = get_diary_data('PUT', update_domain+'/'+selected_index);
+			const request = get_diary_data('PUT', update_domain+selected_index);
 			const res = await fetch(request);
 			const data = await res.json();
 
