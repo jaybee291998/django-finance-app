@@ -183,7 +183,7 @@ class DiaryDetail(APIView):
 
 	def put(self, request, pk, format=None):
 		diary = self.get_object(pk)
-		serializer = DiarySerializer(Diary, data=request.data)
+		serializer = DiarySerializer(diary, data=request.data)
 		if serializer.is_valid():
 			serializer.save(user=request.user)
 			return Response(serializer.data)
