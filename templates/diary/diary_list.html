@@ -7,7 +7,7 @@
 	<h3>Hard Wood Laminate</h3>
 	<div id="list">
 		<label for="interval">Interval:</label>
-		<select id="interval" onchange="updateTable(this)">
+		<select id="interval" onchange="updateTableOnIntervalChange(this)">
 			<option value=7>1 Week</option>
 		    <option value=93>3 Months</option>
 		    <option value=186>6 Month</option>
@@ -72,7 +72,7 @@
 		}
 
 		// update the table when the interval is changed
-		const updateTable = async () => {
+		const updateTableOnIntervalChange = async () => {
 			// get the data
 			const data = await get_data();
 			createTable();
@@ -83,7 +83,7 @@
 			let diaries = diary_data;
 			// table to tabulate all of the expense data
 			let table = document.createElement("TABLE");
-			table.className = "table";
+			table.className = "table table-striped";
 			// loop thriugh all the expense data
 			// and create a row for each expense entry
 			diaries.forEach((diary, i) => {
