@@ -26,8 +26,9 @@
 
 	<div id="detail">
 		<!-- display list -->
-		<button onclick="displayList(this)" id="show-table-btn">show table</button>
-		<button onclick="displayUpdate(this)" id="show-table-btn">update</button>
+		<button onclick="displayList(this)">show table</button>
+		<button onclick="displayUpdate(this)">update</button>
+		<button onclick="displayDelete(this)">delete</button>
 		<div id="content-div">
 		</div>
 	</div>
@@ -42,9 +43,14 @@
 			Welcome to TinyMCE!
 		</textarea>
 
-		<button onclick="post(this)">post</button>
-		<button onclick="update(this)">update</button>
+		<button onclick="post(this)" id="post-btn">post</button>
+		<button onclick="update(this)" id="update-btn">update</button>
 		<button onclick="displayList(this)">go back</button>
+	</div>
+
+	<div id="delete">
+		<button onclick="del(this)">yes</button>
+		<button onclick="displayList(this)">no</button>
 	</div>
 </div>
 
@@ -107,6 +113,13 @@
 
 			// hide list
 			listDiv.style.display = 'none';
+		}
+
+		const displayDelete = () => {
+			deleteDiv.style.display = 'block';
+
+			// hide detail
+			detailDiv.style.display = 'none';
 		}
 
 		// update
@@ -229,6 +242,22 @@
 			listDiv.style.display = "block";			
 		}
 
+		// delete
+		const del = async () => {
+			const request = get_diary_data('DELETE', update_domain+diary_data[selected_index].id);
+			await fetch(request);
+			// delete the item
+			delete diary_data[selected_index];
+
+			// update the table
+			createTable();
+
+			// hide delete
+			deleteDiv.style.display = 'none';
+
+			// display list
+			listDiv.style.display = 'block';
+		}
 		function getCookie(name) {
 		    var cookieValue = null;
 		    if (document.cookie && document.cookie !== '') {
@@ -260,6 +289,9 @@
 		const createUpdateDiv = document.getElementById('create-update');
 		let diaryTitle = document.getElementById('id_title');
 		const mytextarea = document.getElementById('mytextarea');
+
+		// delete
+		const deleteDiv = document.getElementById('delete');
 
 		initialize();
 	</script>
