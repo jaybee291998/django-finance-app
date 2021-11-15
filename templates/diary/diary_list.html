@@ -53,6 +53,9 @@
 		let filteredData = [];
 		let selected_index = null;
 
+		let post_domain = '{{domain}}';
+		let update_domain = '{{diary_detail}}';
+
 
 		// initialize tiny mce
 		tinymce.init({
@@ -170,8 +173,8 @@
 		}
 
 		// create
-		const get_diary_data = (type) => {
-			const url = '{{domain}}';
+		const get_diary_data = (type, domain) => {
+			const url = domain;
 			const csrftoken = getCookie('csrftoken');
 			const diary_data = {
 				title: diaryTitle.value,
@@ -191,7 +194,7 @@
 		}
 
 		const post = async () => {
-			const request = get_diary_data('POST');
+			const request = get_diary_data('POST', post_domain);
 			const res = await fetch(request);
 			const data = await res.json();
 
@@ -209,7 +212,7 @@
 		}
 
 		const update = async () => {
-			const request = get_diary_data('PUT');
+			const request = get_diary_data('PUT', update_domain+'/'+selected_index);
 			const res = await fetch(request);
 			const data = await res.json();
 
