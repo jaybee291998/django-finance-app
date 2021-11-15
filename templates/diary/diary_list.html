@@ -27,6 +27,7 @@
 	<div id="detail">
 		<!-- display list -->
 		<button onclick="displayList(this)" id="show-table-btn">show table</button>
+		<button onclick="displayUpdate(this)" id="show-table-btn">update</button>
 		<div id="content-div">
 		</div>
 	</div>
@@ -42,6 +43,7 @@
 		</textarea>
 
 		<button onclick="post(this)">post</button>
+		<button onclick="update(this)">update</button>
 		<button onclick="displayList(this)">go back</button>
 	</div>
 </div>
@@ -104,6 +106,14 @@
 			listDiv.style.display = 'none';
 		}
 
+		// update
+		const displayUpdate = () => {
+			displayUpdateCreate();
+			const data = diary_data[selected_index];
+			diaryTitle.innerHTML = data['title'];
+			tinymce.get("mytextarea").setContent(data['content']);
+		}
+
 		const displayContent = (content) => {
 			contentDiv.innerHTML = "";
 			contentDiv.innerHTML = "<p>" + content["title"] + "<br>" + content["timestamp"] + "</p>";
@@ -157,7 +167,7 @@
 		}
 
 		// create
-		const get_diary_data = () => {
+		const get_diary_data = (type) => {
 			const url = '{{domain}}';
 			const csrftoken = getCookie('csrftoken');
 			const diary_data = {
@@ -166,7 +176,7 @@
 			};
 
 			const request = new Request(url, {
-				method: 'POST',
+				method: type,
 				body: JSON.stringify(diary_data),
 				headers: new Headers({
 					'Content-Type': 'application/json',
@@ -178,7 +188,7 @@
 		}
 
 		const post = async () => {
-			const request = get_diary_data();
+			const request = get_diary_data('POST');
 			const res = await fetch(request);
 			const data = await res.json();
 
@@ -193,6 +203,24 @@
 
 			// display the list
 			listDiv.style.display = "block";
+		}
+
+		const update = async () => {
+			const request = get_diary_data('PUT');
+			const res = await fetch(request);
+			const data = await res.json();
+
+			// replace the updated content
+			diary_data[selected_index] = data;
+
+			// update the table
+			createTable();
+
+			// hide the create
+			createUpdateDiv.style.display = 'none';
+
+			// display the list
+			listDiv.style.display = "block";			
 		}
 
 		function getCookie(name) {
@@ -225,6 +253,7 @@
 		// create and update
 		const createUpdateDiv = document.getElementById('create-update');
 		let diaryTitle = document.getElementById('id_title');
+		const mytextarea = document.getElementById('mytextarea');
 
 		initialize();
 	</script>
