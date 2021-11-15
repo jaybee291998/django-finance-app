@@ -4,6 +4,9 @@
 {% endblock %}
 {% block content %}
 <div>
+	<!-- script for the tinymce -->
+	<script src="https://cdn.tiny.cloud/1/7ycmwc1x5jcxbm0s80s67b2fipepck73uh51jlmwawhneu95/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
 	<h3>Hard Wood Laminate</h3>
 	<div id="list">
 		<label for="interval">Interval:</label>
@@ -15,7 +18,8 @@
 		    <option value=744>2 Years</option>
 		    <option value=1116>3 Years</option>
 		</select>
-		<a href="{{diary_create}}" class="btn btn-success" id="create-diary-btn">create diary</a>
+		<!-- <a href="{{diary_create}}" class="btn btn-success" id="create-diary-btn">create diary</a> -->
+		<button onclick="displayCreate(this)" class="btn btn-success">new entry</button>
 		<div id="table-div">
 		</div>
 	</div>
@@ -26,12 +30,36 @@
 		<div id="content-div">
 		</div>
 	</div>
+
+	<div id="create">
+		<p>
+			<label for="id_title">Title:</label> 
+			<input type="text" name="title" maxlength="32" required="" id="id_title">
+		</p>
+
+		<textarea id="mytextarea">
+			Welcome to TinyMCE!
+		</textarea>
+
+		<button onclick="post(this)">post</button>
+	</div>
 </div>
 
 	<script>
 		let diary_data = [];
 		let filteredData = [];
 		let selected_index = null;
+
+
+		// initialize tiny mce
+		tinymce.init({
+    		selector: '#mytextarea',
+			plugins: 'a11ychecker advcode casechange export formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+			toolbar: 'a11ycheck addcomment showcomments casechange checklist code export formatpainter pageembed permanentpen table',
+			toolbar_mode: 'floating', 
+			tinycomments_mode: 'embedded',
+			tinycomments_author: 'Author name', 
+		});
 
 		// get the data from the server
 		const get_data = async () => {
@@ -63,6 +91,13 @@
 
 			// hide list
 			listDiv.style.display = "none";
+		}
+
+		const displayCreate = () => {
+			createDiv.style.display = "block";
+
+			// hide list
+			listDiv.style.display = 'none';
 		}
 
 		const displayContent = (content) => {
@@ -117,6 +152,57 @@
 			displayList();
 		}
 
+		// create
+		const get_diary_data = () => {
+			const url = '{{domain}}';
+			const csrftoken = getCookie('csrftoken');
+			const diary_data = {
+				title: diaryTitle.value,
+				content: tinymce.get("mytextarea").getContent()
+			};
+
+			const request = new Request(url, {
+				method: 'POST',
+				body: JSON.stringify(diary_data),
+				headers: new Headers({
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrftoken
+				})
+			});
+
+			return request;
+		}
+
+		const post = async () => {
+			const request = get_diary_data();
+			const res = await fetch(request);
+			const data = await res.json();
+
+			// add the new data to the diary data
+			diary_data.push(data);
+
+			// hide the create
+			createDiv.style.display = 'none';
+
+			// display the list
+			listDiv.style.display = "block";
+		}
+
+		function getCookie(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+
 		// diary list conponent
 		const listDiv = document.getElementById("list");
 		const tableDiv = document.getElementById("table-div");
@@ -128,6 +214,10 @@
 		const detailDiv = document.getElementById("detail");
 		const contentDiv = document.getElementById("content-div");
 		const showTableBtn = document.getElementById("show-table-btn");
+
+		// create
+		const createDiv = document.getElementById('create');
+		let diaryTitle = document.getElementById('id_title');
 
 		initialize();
 	</script>
