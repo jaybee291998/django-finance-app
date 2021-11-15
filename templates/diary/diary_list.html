@@ -98,7 +98,7 @@
 					let diary_property_value = diary[diary_property];
 					// add the cells that contain the properties of the expenses
 					let cell = row.insertCell(j);
-					if(diary_property == 'content' || diary_property == 'user'){
+					if(diary_property == 'content' || diary_property == 'user' || diary_property == 'id'){
 						// do nothing if the property is the content
 					}else{
 						cell.innerHTML = diary_property_value;
