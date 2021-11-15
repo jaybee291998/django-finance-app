@@ -49,6 +49,7 @@
 	</div>
 
 	<div id="delete">
+		<p id="confirmation-p">Are you sure to want to delete: </p>
 		<button onclick="del(this)">yes</button>
 		<button onclick="displayList(this)">no</button>
 	</div>
@@ -120,6 +121,9 @@
 
 		const displayDelete = () => {
 			deleteDiv.style.display = 'block';
+
+			// display confirmation
+			confirmationP.innerHTML += diary_data[selected_index].title + '?';
 
 			// hide detail
 			detailDiv.style.display = 'none';
@@ -295,6 +299,7 @@
 
 		// delete
 		const deleteDiv = document.getElementById('delete');
+		const confirmationP = document.getElementById('confirmation-p');
 
 		initialize();
 	</script>
