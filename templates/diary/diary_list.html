@@ -7,7 +7,7 @@
 	<h3>Hard Wood Laminate</h3>
 	<div id="list">
 		<label for="interval">Interval:</label>
-		<select id="interval" onchange="get_data(this)">
+		<select id="interval" onchange="update_table(this)">
 		    <option value=93>3 Months</option>
 		    <option value=186>6 Month</option>
 		    <option value=365>1 Year</option>
@@ -15,7 +15,6 @@
 		    <option value=1116>3 Years</option>
 		</select>
 		<a href="{{diary_create}}" class="btn btn-success" id="create-diary-btn">create diary</a>
-		<button onclick="createTable(this)">create table</button>
 		<div id="table-div">
 		</div>
 	</div>
@@ -69,6 +68,13 @@
 			contentDiv.innerHTML = "";
 			contentDiv.innerHTML = "<p>" + content["title"] + "<br>" + content["timestamp"] + "</p>";
 			contentDiv.innerHTML += content["content"];
+		}
+
+		// update the table when the interval is changed
+		const updateTable = async () => {
+			// get the data
+			const data = await get_data();
+			createTable();
 		}
 
 		// create a table base on fund and category
