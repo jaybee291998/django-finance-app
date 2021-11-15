@@ -212,7 +212,7 @@
 		}
 
 		const update = async () => {
-			const request = get_diary_data('PUT', update_domain+selected_index);
+			const request = get_diary_data('PUT', update_domain+data[selected_index].id);
 			const res = await fetch(request);
 			const data = await res.json();
 
