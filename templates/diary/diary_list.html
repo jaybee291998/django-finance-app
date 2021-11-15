@@ -110,8 +110,11 @@
 		const displayUpdate = () => {
 			displayUpdateCreate();
 			const data = diary_data[selected_index];
-			diaryTitle.innerHTML = data['title'];
+			diaryTitle.value = data['title'];
 			tinymce.get("mytextarea").setContent(data['content']);
+
+			// hide detail
+			detailDiv.style.display = 'none';
 		}
 
 		const displayContent = (content) => {
