@@ -115,6 +115,9 @@
 		const displayUpdateCreate = () => {
 			createUpdateDiv.style.display = "block";
 
+			// display post btn
+			postBtn.style.display = 'block';
+
 			// hide list
 			listDiv.style.display = 'none';
 
@@ -138,6 +141,9 @@
 			const data = diary_data[selected_index];
 			diaryTitle.value = data['title'];
 			tinymce.get("mytextarea").setContent(data['content']);
+
+			// display update 
+			updateBtn.style.display = 'block';
 
 			// hide post btn
 			postBtn.style.display = 'none';
