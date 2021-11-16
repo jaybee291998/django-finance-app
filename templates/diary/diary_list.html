@@ -18,7 +18,6 @@
 		    <option value=744>2 Years</option>
 		    <option value=1116>3 Years</option>
 		</select>
-		<!-- <a href="{{diary_create}}" class="btn btn-success" id="create-diary-btn">create diary</a> -->
 		<button onclick="displayUpdateCreate(this)" class="btn btn-success">new entry</button>
 		<div id="table-div">
 		</div>
@@ -199,9 +198,9 @@
 
 		// initialize the list
 		const initialize = async () => {
+			displayList();
 			let data = await get_data();
 			createTable();
-			displayList();
 		}
 
 		// create
