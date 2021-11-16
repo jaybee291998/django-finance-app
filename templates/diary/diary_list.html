@@ -204,7 +204,7 @@
 
 	const post = async () => {
 		const obj_data = get_text_area_content();
-		const data = post_update(post_domain, 'POST', obj_data, csrftoken);
+		const data = await post_update(post_domain, 'POST', obj_data, csrftoken);
 
 		// post processing
 
@@ -227,7 +227,7 @@
 
 	const update = async () => {
 		const obj_data = get_text_area_content();
-		const data = post_update(update_domain+diary_data[selected_index].id, 'PUT', obj_data, csrftoken);
+		const data = await post_update(update_domain+diary_data[selected_index].id, 'PUT', obj_data, csrftoken);
 
 
 		// replace the updated content
