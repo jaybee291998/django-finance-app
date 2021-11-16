@@ -206,7 +206,7 @@ const del = async () => {
 const listDiv = document.getElementById("list");
 const tableDiv = document.getElementById("table-div");
 const createDiaryBtn = document.getElementById("create-diary-btn");
-const intervalDiv = document.getElementById("interval-div");
+const interval = document.getElementById("interval");
 
 
 
