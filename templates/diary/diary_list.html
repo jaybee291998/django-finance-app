@@ -61,7 +61,7 @@
 	let selected_index = null;
 
 	let post_domain = 'diaries_list_api';
-	let update_domain = 'diary_detail_api/';
+	let update_domain = 'diary_detail_api';
 	const domain = post_domain;
 
 	const csrftoken = getCookie('csrftoken');
@@ -174,30 +174,39 @@
 
 
 	// create
-	const get_diary_data = (type, domain) => {
-		const url = domain;
-		const csrftoken = getCookie('csrftoken');
-		const diary_data = {
+	// const get_diary_data = (type, domain) => {
+	// 	const url = domain;
+	// 	const csrftoken = getCookie('csrftoken');
+	// 	const diary_data = {
+	// 		title: diaryTitle.value,
+	// 		content: tinymce.get("mytextarea").getContent()
+	// 	};
+
+	// 	const request = new Request(url, {
+	// 		method: type,
+	// 		body: JSON.stringify(diary_data),
+	// 		headers: new Headers({
+	// 			'Content-Type': 'application/json',
+	// 			'X-CSRFToken': csrftoken
+	// 		})
+	// 	});
+
+	// 	return request;
+	// }
+
+	const get_text_area_content = () => {
+		const data = {
 			title: diaryTitle.value,
 			content: tinymce.get("mytextarea").getContent()
 		};
-
-		const request = new Request(url, {
-			method: type,
-			body: JSON.stringify(diary_data),
-			headers: new Headers({
-				'Content-Type': 'application/json',
-				'X-CSRFToken': csrftoken
-			})
-		});
-
-		return request;
+		return data;
 	}
 
 	const post = async () => {
-		const request = get_diary_data('POST', post_domain);
-		const res = await fetch(request);
-		const data = await res.json();
+		const obj_data = get_text_area_content();
+		const data = post_update(post_domain, 'POST', obj_data, csrftoken);
+
+		// post processing
 
 		// add the new data to the diary data
 		diary_data.push(data);
@@ -217,9 +226,9 @@
 	}
 
 	const update = async () => {
-		const request = get_diary_data('PUT', update_domain+diary_data[selected_index].id);
-		const res = await fetch(request);
-		const data = await res.json();
+		const obj_data = get_text_area_content();
+		const data = post_update(update_domain+diary_data[selected_index].id, 'PUT', obj_data, csrftoken);
+
 
 		// replace the updated content
 		diary_data[selected_index] = data;
