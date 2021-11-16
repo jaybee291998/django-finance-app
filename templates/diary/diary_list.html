@@ -50,7 +50,7 @@
 
 	<div id="delete">
 		<p id="confirmation-p">Are you sure to want to delete: </p>
-		<button onclick="del(this)">yes</button>
+		<button onclick="del_wr(this)">yes</button>
 		<button onclick="displayList(this)">no</button>
 	</div>
 </div>
@@ -172,28 +172,6 @@
 	// create a table base on fund and category
 	const createTableWr = () => createTable(diary_data, ['title', 'timestamp'], tableDiv, update_selected_index);
 
-
-	// create
-	// const get_diary_data = (type, domain) => {
-	// 	const url = domain;
-	// 	const csrftoken = getCookie('csrftoken');
-	// 	const diary_data = {
-	// 		title: diaryTitle.value,
-	// 		content: tinymce.get("mytextarea").getContent()
-	// 	};
-
-	// 	const request = new Request(url, {
-	// 		method: type,
-	// 		body: JSON.stringify(diary_data),
-	// 		headers: new Headers({
-	// 			'Content-Type': 'application/json',
-	// 			'X-CSRFToken': csrftoken
-	// 		})
-	// 	});
-
-	// 	return request;
-	// }
-
 	const get_text_area_content = () => {
 		const data = {
 			title: diaryTitle.value,
@@ -248,9 +226,10 @@
 	}
 
 	// delete
-	const del = async () => {
-		const request = get_diary_data('DELETE', update_domain+diary_data[selected_index].id);
-		await fetch(request);
+	const del_wr = async () => {
+		const obj_data = get_text_area_content();
+		const response = await del(`${update_domain}/${diary_data[selected_index].id}`, obj_data, csrftoken);
+
 		// delete the item
 		delete diary_data[selected_index];
 

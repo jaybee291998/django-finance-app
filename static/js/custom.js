@@ -74,11 +74,11 @@ async function post_update(domain, type, obj_data, csrftoken){
 
 
 // delete
-// async function del(domain, data, csrftoken){
-// 	const request = get_request_obj('DELETE', domain, data, csrftoken);
-// 	const response = await fetch(request);
-// 	return response;
-// }
+async function del(domain, data, csrftoken){
+	const request = get_request_obj('DELETE', domain, data, csrftoken);
+	const response = await fetch(request);
+	return response;
+}
 
 
 // convert raw timestamp into a more huma readbable format
