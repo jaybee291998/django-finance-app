@@ -65,8 +65,8 @@ function get_request_obj(type, domain, data, csrftoken){
 }
 
 // post and put
-async function post_update(domain, type, data, csrftoken){
-	const request = get_request_obj(type, domain, data, csrftoken);
+async function post_update(domain, type, obj_data, csrftoken){
+	const request = get_request_obj(type, domain, obj_data, csrftoken);
 	const res = await fetch(request);
 	const data = await res.json();
 	return data;
