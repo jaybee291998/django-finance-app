@@ -110,7 +110,7 @@ const updateTableOnIntervalChange = async () => {
 
 // create a table base on fund and category
 const createTableWr = () => {
-	console.log(months);
+	createT();
 }
 
 // initialize the list
