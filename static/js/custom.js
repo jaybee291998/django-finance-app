@@ -107,4 +107,3 @@ function processDateStr(date_str){
 
 	return `${date} ${time}`;
 }
-
