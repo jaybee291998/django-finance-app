@@ -1,11 +1,11 @@
 const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 // get the data from the server
-async function get_data(domain){
-	const res = await fetch(domain);
-	const data = await res.json();
-	return data;
-}
+// async function get_data(domain){
+// 	const res = await fetch(domain);
+// 	const data = await res.json();
+// 	return data;
+// }
 
 // create a table base on fund and category
 function createT(raw_data, data_properties, tableDiv, row_selection_func){
