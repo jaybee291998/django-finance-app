@@ -4,6 +4,7 @@ let selected_index = null;
 
 let post_domain = 'diary_list_api';
 let update_domain = 'diary_detail_api/';
+const domain = post_domain;
 
 
 // initialize tiny mce
@@ -18,7 +19,7 @@ tinymce.init({
 
 // get the data from the server
 const get_data = async () => {
-	const res = await fetch('{{domain}}?interval='+interval.value);
+	const res = await fetch(`${post_domain}?interval=${interval.value}`);
 	const data = await res.json();
 	// set the variable
 	diary_data = data;
@@ -206,6 +207,7 @@ const listDiv = document.getElementById("list");
 const tableDiv = document.getElementById("table-div");
 const createDiaryBtn = document.getElementById("create-diary-btn");
 const intervalDiv = document.getElementById("interval-div");
+
 
 
 // detail
