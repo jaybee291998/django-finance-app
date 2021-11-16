@@ -5,7 +5,6 @@
 {% block content %}
 <div>
 	{% load static %}
-	<script type="text/javascript" src='{% static "js/custom.js" %}'></script>
 	<!-- script for the tinymce -->
 	<script src="https://cdn.tiny.cloud/1/7ycmwc1x5jcxbm0s80s67b2fipepck73uh51jlmwawhneu95/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
@@ -55,5 +54,6 @@
 		<button onclick="displayList(this)">no</button>
 	</div>
 </div>
-	<script src="{% static 'js/diary.js' %}"></script>
+<script type="text/javascript" src='{% static "js/custom.js" %}' defer='defer'></script>
+<script type="text/javascript" src="{% static 'js/diary.js' %}" defer='defer'></script>
 {% endblock %}
