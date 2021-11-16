@@ -8,7 +8,7 @@ async function get_data(domain){
 }
 
 // create a table base on fund and category
-function createT(raw_data, data_properties, tableDiv, row_selection_func){
+function createTable(raw_data, data_properties, tableDiv, row_selection_func){
 	// table to tabulate all of the expense data
 	let table = document.createElement("TABLE");
 	table.className = "table table-striped";
