@@ -163,46 +163,17 @@
 		const updateTableOnIntervalChange = async () => {
 			// get the data
 			const data = await get_data();
-			createTable();
+			createTableWr();
 		}
 
 		// create a table base on fund and category
-		const createTable = (e) => {
-			let diaries = diary_data;
-			// table to tabulate all of the expense data
-			let table = document.createElement("TABLE");
-			table.className = "table table-striped";
-			// loop thriugh all the expense data
-			// and create a row for each expense entry
-			diaries.forEach((diary, i) => {
-				// insert a row on table for each expense entry
-				let row = table.insertRow(i);
-				row.id = i;
-				row.onclick = update_selected_index;
-				// the properties of the expense such as desctription, price, ...etc
-				let diary_properties = Object.keys(diary);
-				diary_properties.forEach((diary_property, j) => {
-					// the value of the expense property i.e. description="pambili ng ulam"
-					let diary_property_value = diary[diary_property];
-					// add the cells that contain the properties of the expenses
-					let cell = row.insertCell(j);
-					if(diary_property == 'content' || diary_property == 'user' || diary_property == 'id'){
-						// do nothing if the property is the content
-					}else{
-						cell.innerHTML = diary_property_value;
-					}
-				});
-			});
-			// empty the div first before adding the new table
-			tableDiv.innerHTML = '';
-			tableDiv.appendChild(table);
-		}
+		const createTableWr = () => createTable(diary_data, ['title', 'timestamp'], tableDiv, update_selected_index);
 
 		// initialize the list
 		const initialize = async () => {
 			displayList();
 			let data = await get_data();
-			createTable();
+			createTableWr();
 		}
 
 		// create
@@ -235,7 +206,7 @@
 			diary_data.push(data);
 
 			// update the table
-			createTable();
+			createTableWr();
 
 			// hide the create
 			createUpdateDiv.style.display = 'none';
@@ -257,7 +228,7 @@
 			diary_data[selected_index] = data;
 
 			// update the table
-			createTable();
+			createTableWr();
 
 			// hide the create
 			createUpdateDiv.style.display = 'none';
@@ -278,7 +249,7 @@
 			delete diary_data[selected_index];
 
 			// update the table
-			createTable();
+			createTableWr();
 
 			// hide delete
 			deleteDiv.style.display = 'none';
