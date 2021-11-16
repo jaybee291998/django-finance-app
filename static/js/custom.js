@@ -108,8 +108,3 @@ function processDateStr(date_str){
 	return `${date} ${time}`;
 }
 
-function isuck(){
-	console.log("I suck");
-}
-
-isuck();
