@@ -2,7 +2,7 @@ let diary_data = [];
 let filteredData = [];
 let selected_index = null;
 
-let post_domain = '{{domain}}';
+let post_domain = 'diary_list_api';
 let update_domain = 'diary_detail_api/';
 
 
