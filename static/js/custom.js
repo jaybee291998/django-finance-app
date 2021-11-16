@@ -1,14 +1,14 @@
 const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 // get the data from the server
-const get_data = async (domain) => {
+async function get_data(domain){
 	const res = await fetch(domain);
 	const data = await res.json();
 	return data;
 }
 
 // create a table base on fund and category
-const createTable = (raw_data, data_properties, tableDiv, row_selection_func) => {
+function createTable(raw_data, data_properties, tableDiv, row_selection_func){
 	// table to tabulate all of the expense data
 	let table = document.createElement("TABLE");
 	table.className = "table table-striped";
@@ -50,7 +50,7 @@ function getCookie(name) {
 }
 
 // get the request object
-const get_request_obj = (type, domain, data, csrftoken) => {
+function get_request_obj(type, domain, data, csrftoken){
 	const url = domain;
 	const request = new Request(url, {
 		method: type,
@@ -65,7 +65,7 @@ const get_request_obj = (type, domain, data, csrftoken) => {
 }
 
 // post and put
-const post_update = async (domain, type, data, csrftoken) => {
+async function post_update(domain, type, data, csrftoken){
 	const request = get_request_obj(type, domain, data, csrftoken);
 	const res = await fetch(request);
 	const data = await res.json();
@@ -74,7 +74,7 @@ const post_update = async (domain, type, data, csrftoken) => {
 
 
 // delete
-const del = async (domain, data, csrftoken) => {
+async function del(domain, data, csrftoken){
 	const request = get_request_obj('DELETE', domain, data, csrftoken);
 	const response = await fetch(request);
 	return response;
@@ -82,7 +82,7 @@ const del = async (domain, data, csrftoken) => {
 
 
 // convert raw timestamp into a more huma readbable format
-const convert_date = (raw_date) => {
+function convert_date(raw_date){
 	const year_str = raw_date.substr(0, 4);
 	const month_str = raw_date.substr(5, 2);
 	const day_str = raw_date.substr(8, 2);
@@ -90,7 +90,7 @@ const convert_date = (raw_date) => {
 	return `${months[parseInt(month_str)]} ${day_str}, ${year_str}`
 }
 
-const convert_time = (raw_time) => {
+function convert_time(raw_time){
 	let hour = parseInt(raw_time.substr(0, 2));
 	let timestamp = 'AM';
 	if(hour > 12){
@@ -101,7 +101,7 @@ const convert_time = (raw_time) => {
 	return `${hour}${raw_time.slice(2)} ${timestamp}`;
 }
 
-const processDateStr = (date_str) => {
+function processDateStr(date_str){
 	const date = convert_date(date_str.slice(0, 10));
 	const time = convert_time(date_str.slice(11, 19));
 
