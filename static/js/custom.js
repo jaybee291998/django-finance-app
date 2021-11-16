@@ -111,3 +111,5 @@ function processDateStr(date_str){
 function isuck(){
 	console.log("I suck");
 }
+
+isuck();
