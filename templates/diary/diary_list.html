@@ -64,6 +64,8 @@
 	let update_domain = 'diary_detail_api/';
 	const domain = post_domain;
 
+	const csrftoken = getCookie('csrftoken');
+
 
 	// initialize tiny mce
 	tinymce.init({
@@ -76,9 +78,9 @@
 	});
 
 	// get the data from the server
-	const get_data = async () => {
-		const res = await fetch(`${post_domain}?interval=${interval.value}`);
-		const data = await res.json();
+	const get_data_wr = async () => {
+		const domain = `{{domain}}?interval=${interval.value}`;
+		const data = await get_data(domain)
 		// set the variable
 		diary_data = data;
 		return data;
@@ -162,19 +164,13 @@
 	// update the table when the interval is changed
 	const updateTableOnIntervalChange = async () => {
 		// get the data
-		const data = await get_data();
+		const data = await get_data_wr();
 		createTableWr();
 	}
 
 	// create a table base on fund and category
 	const createTableWr = () => createT(diary_data, ['title', 'timestamp'], tableDiv, update_selected_index);
 
-	// initialize the list
-	const initialize = async () => {
-		displayList();
-		let data = await get_data();
-		createTableWr();
-	}
 
 	// create
 	const get_diary_data = (type, domain) => {
@@ -283,6 +279,6 @@
 	const confirmationP = document.getElementById('confirmation-p');
 
 
-	initialize();
+	updateTableOnIntervalChange();
 </script>
 {% endblock %}
