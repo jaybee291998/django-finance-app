@@ -226,6 +226,5 @@ const updateBtn = document.getElementById('update-btn');
 const deleteDiv = document.getElementById('delete');
 const confirmationP = document.getElementById('confirmation-p');
 
-isuck();
 
-// initialize();
+initialize();
