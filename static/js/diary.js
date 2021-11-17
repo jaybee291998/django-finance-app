@@ -3,8 +3,10 @@ let filteredData = [];
 let selected_index = null;
 
 let post_domain = 'diaries_list_api';
-let update_domain = 'diary_detail_api/';
+let update_domain = 'diary_detail_api';
 const domain = post_domain;
+
+const csrftoken = getCookie('csrftoken');
 
 
 // initialize tiny mce
@@ -18,9 +20,9 @@ tinymce.init({
 });
 
 // get the data from the server
-const get_data = async () => {
-	const res = await fetch(`${post_domain}?interval=${interval.value}`);
-	const data = await res.json();
+const get_data_wr = async () => {
+	const domain = `{{domain}}?interval=${interval.value}`;
+	const data = await get_data(domain)
 	// set the variable
 	diary_data = data;
 	return data;
@@ -37,7 +39,7 @@ const update_selected_index = (e) => {
 
 const displayList = () => {
 	listDiv.style.display = "block";
-
+	
 	// hide detail
 	detailDiv.style.display = "none";
 
@@ -47,7 +49,7 @@ const displayList = () => {
 	// hide delete
 	deleteDiv.style.display = 'none';
 }
-			
+				
 const displayDetail = () => {
 	detailDiv.style.display = "block";
 
@@ -76,7 +78,7 @@ const displayDelete = () => {
 
 	// hide detail
 	detailDiv.style.display = 'none';
-}
+}	
 
 // update
 const displayUpdate = () => {
@@ -103,48 +105,28 @@ const displayContent = (content) => {
 
 // update the table when the interval is changed
 const updateTableOnIntervalChange = async () => {
+	displayList();
 	// get the data
-	const data = await get_data();
+	const data = await get_data_wr();
 	createTableWr();
 }
 
 // create a table base on fund and category
-const createTableWr = () => {
-	createT();
-}
+const createTableWr = () => createTable(diary_data, ['title', 'timestamp'], tableDiv, update_selected_index);
 
-// initialize the list
-const initialize = async () => {
-	displayList();
-	let data = await get_data();
-	createTableWr();
-}
-
-// create
-const get_diary_data = (type, domain) => {
-	const url = domain;
-	const csrftoken = getCookie('csrftoken');
-	const diary_data = {
+const get_text_area_content = () => {
+	const data = {
 		title: diaryTitle.value,
 		content: tinymce.get("mytextarea").getContent()
 	};
-
-	const request = new Request(url, {
-		method: type,
-		body: JSON.stringify(diary_data),
-		headers: new Headers({
-			'Content-Type': 'application/json',
-			'X-CSRFToken': csrftoken
-		})
-	});
-
-	return request;
+	return data;
 }
 
 const post = async () => {
-	const request = get_diary_data('POST', post_domain);
-	const res = await fetch(request);
-	const data = await res.json();
+	const obj_data = get_text_area_content();
+	const data = await post_update(post_domain, 'POST', obj_data, csrftoken);
+
+	// post processing
 
 	// add the new data to the diary data
 	diary_data.push(data);
@@ -164,9 +146,9 @@ const post = async () => {
 }
 
 const update = async () => {
-	const request = get_diary_data('PUT', update_domain+diary_data[selected_index].id);
-	const res = await fetch(request);
-	const data = await res.json();
+	const obj_data = get_text_area_content();
+	const data = await post_update(`${update_domain}/${diary_data[selected_index].id}`, 'PUT', obj_data, csrftoken);
+
 
 	// replace the updated content
 	diary_data[selected_index] = data;
@@ -186,9 +168,10 @@ const update = async () => {
 }
 
 // delete
-const del = async () => {
-	const request = get_diary_data('DELETE', update_domain+diary_data[selected_index].id);
-	await fetch(request);
+const del_wr = async () => {
+	const obj_data = get_text_area_content();
+	const response = await del(`${update_domain}/${diary_data[selected_index].id}`, obj_data, csrftoken);
+
 	// delete the item
 	delete diary_data[selected_index];
 
@@ -206,25 +189,52 @@ const del = async () => {
 const listDiv = document.getElementById("list");
 const tableDiv = document.getElementById("table-div");
 const createDiaryBtn = document.getElementById("create-diary-btn");
+
 const interval = document.getElementById("interval");
+const newEntryBtn = document.getElementById("new-entry-btn");
+
+// when the interval is changed update the table
+interval.onchange = updateTableOnIntervalChange;
+
+// when add new entry is clicked
+newEntryBtn.onclick = displayUpdateCreate;
 
 
 
 // detail
 const detailDiv = document.getElementById("detail");
 const contentDiv = document.getElementById("content-div");
+
 const showTableBtn = document.getElementById("show-table-btn");
+const displayUpdateBtn = document.getElementById("display-update-btn");
+const displayDeleteBtn = document.getElementById("display-delete-btn");
+
+showTableBtn.onclick = displayList;
+displayUpdateBtn.onclick = displayUpdate;
+displayDeleteBtn.onclick = displayDelete;
+
 
 // create and update
 const createUpdateDiv = document.getElementById('create-update');
 let diaryTitle = document.getElementById('id_title');
 const mytextarea = document.getElementById('mytextarea');
+
 const postBtn = document.getElementById('post-btn');
 const updateBtn = document.getElementById('update-btn');
+const goBackBtn = document.getElementById("go-back-btn");
+
+postBtn.onclick = post;
+updateBtn.onclick = update;
+goBackBtn.onclick = displayList;
 
 // delete
 const deleteDiv = document.getElementById('delete');
 const confirmationP = document.getElementById('confirmation-p');
 
+const deleteYesBtn = document.getElementById("delete-yes-btn");
+const deleteNoBtn = document.getElementById("delete-no-btn");
 
-initialize();
+deleteYesBtn.onclick = del_wr;
+deleteNoBtn.onclick = displayList;
+
+updateTableOnIntervalChange();
