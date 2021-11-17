@@ -210,7 +210,7 @@ const displayUpdateBtn = document.getElementById("display-update-btn");
 const displayDeleteBtn = document.getElementById("display-delete-btn");
 
 showTableBtn.onclick = displayList;
-displayUpdateBtn.onclick = displayUpdateCreate;
+displayUpdateBtn.onclick = displayUpdate;
 displayDeleteBtn.onclick = displayDelete;
 
 
