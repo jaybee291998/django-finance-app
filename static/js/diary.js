@@ -41,7 +41,7 @@ const displayList = () => {
 	listDiv.style.display = "block";
 
 	// display search bar
-	searchBar.style.display = 'block';
+	searchBar.style.display = "block";
 	
 	// hide detail
 	detailDiv.style.display = "none";
@@ -60,7 +60,7 @@ const displayDetail = () => {
 	listDiv.style.display = "none";
 
 	// hide search bar
-	searchBar.style.display = 'none';
+	searchBar.style.display = "none";
 }
 
 const displayUpdateCreate = () => {
@@ -76,7 +76,7 @@ const displayUpdateCreate = () => {
 	updateBtn.style.display = 'none';
 
 	// hide search bar
-	searchBar.style.display = 'none';
+	searchBar.style.display = "none";
 }
 
 const displayDelete = () => {
