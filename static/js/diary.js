@@ -196,7 +196,7 @@ const del_wr = async () => {
 // search
 function search(){
 	const search_term = searchField.value;
-	if(!searh_term && search_term.length != 0){
+	if(!search_term && search_term.length != 0){
 		// display search results
 		displaySearch();
 		searchDiv.innerHTML = '';
