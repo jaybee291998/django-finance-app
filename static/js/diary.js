@@ -185,6 +185,12 @@ const del_wr = async () => {
 	listDiv.style.display = 'block';
 }
 
+// search
+function search(){
+	const search_term = searchField.value;
+	console.log(search_term);
+}
+
 // diary list conponent
 const listDiv = document.getElementById("list");
 const tableDiv = document.getElementById("table-div");
@@ -236,5 +242,11 @@ const deleteNoBtn = document.getElementById("delete-no-btn");
 
 deleteYesBtn.onclick = del_wr;
 deleteNoBtn.onclick = displayList;
+
+
+// search
+const searchField = document.getElementById("search-field");
+
+searchField.onchange = search;
 
 updateTableOnIntervalChange();
