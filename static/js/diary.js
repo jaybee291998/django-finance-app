@@ -21,7 +21,7 @@ tinymce.init({
 
 // get the data from the server
 const get_data_wr = async () => {
-	const domain = `{{domain}}?interval=${interval.value}`;
+	const domain = `${post_domain}?interval=${interval.value}`;
 	const data = await get_data(domain)
 	// set the variable
 	diary_data = data;
