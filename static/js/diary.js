@@ -97,6 +97,14 @@ const displayUpdate = () => {
 	detailDiv.style.display = 'none';
 }
 
+// search
+const displaySearch = () => {
+	searchDiv.style.display = 'block';
+
+	// hide table
+	listDiv.style.display = 'none';
+}
+
 const displayContent = (content) => {
 	contentDiv.innerHTML = "";
 	contentDiv.innerHTML = "<p>" + content["title"] + "<br>" + content["timestamp"] + "</p>";
@@ -188,7 +196,18 @@ const del_wr = async () => {
 // search
 function search(){
 	const search_term = searchField.value;
-	console.log(search_term);
+	if(!searh_term && search_term.length != 0){
+		// display search results
+		displaySearch();
+		searchDiv.innerHTML = '';
+		searchDiv.innerHTML = search_term;
+	}else{
+		// hide search results
+		searchDiv.style.display = 'none';
+
+		// display list
+		displayList();
+	}
 }
 
 // diary list conponent
@@ -245,6 +264,7 @@ deleteNoBtn.onclick = displayList;
 
 
 // search
+const searchDiv = document.getElementById('search');
 const searchField = document.getElementById("search-field");
 
 searchField.onchange = search;
