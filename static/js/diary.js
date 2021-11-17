@@ -189,11 +189,8 @@ const del_wr = async () => {
 	// update the table
 	createTableWr();
 
-	// hide delete
-	deleteDiv.style.display = 'none';
-
 	// display list
-	listDiv.style.display = 'block';
+	displayList();
 }
 
 // search
