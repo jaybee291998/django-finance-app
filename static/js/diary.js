@@ -196,7 +196,8 @@ const del_wr = async () => {
 // search
 function search(){
 	const search_term = searchField.value;
-	if(!search_term && search_term.length != 0){
+	console.log(search_term);
+	if(search_term.length != 0){
 		// display search results
 		displaySearch();
 		searchDiv.innerHTML = '';
@@ -217,6 +218,9 @@ const createDiaryBtn = document.getElementById("create-diary-btn");
 
 const interval = document.getElementById("interval");
 const newEntryBtn = document.getElementById("new-entry-btn");
+const searchField = document.getElementById("search-field");
+
+searchField.onchange = search;
 
 // when the interval is changed update the table
 interval.onchange = updateTableOnIntervalChange;
@@ -265,8 +269,5 @@ deleteNoBtn.onclick = displayList;
 
 // search
 const searchDiv = document.getElementById('search');
-const searchField = document.getElementById("search-field");
-
-searchField.onchange = search;
 
 updateTableOnIntervalChange();
