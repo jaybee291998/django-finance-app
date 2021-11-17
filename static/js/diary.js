@@ -151,11 +151,8 @@ const post = async () => {
 	// update the table
 	createTableWr();
 
-	// hide the create
-	createUpdateDiv.style.display = 'none';
-
 	// display the list
-	listDiv.style.display = "block";
+	displayList();
 
 	// clear the contents of the title and textbox
 	diaryTitle.value = '';
@@ -173,11 +170,8 @@ const update = async () => {
 	// update the table
 	createTableWr();
 
-	// hide the create
-	createUpdateDiv.style.display = 'none';
-
 	// display the list
-	listDiv.style.display = "block";	
+	displayList();
 
 	// clear the contents of the title and textbox
 	diaryTitle.value = '';
