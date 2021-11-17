@@ -39,6 +39,9 @@ const update_selected_index = (e) => {
 
 const displayList = () => {
 	listDiv.style.display = "block";
+
+	// display search bar
+	searchBar.style.display = 'block';
 	
 	// hide detail
 	detailDiv.style.display = "none";
@@ -55,6 +58,9 @@ const displayDetail = () => {
 
 	// hide list
 	listDiv.style.display = "none";
+
+	// hide search bar
+	searchBar.style.display = 'none';
 }
 
 const displayUpdateCreate = () => {
@@ -68,6 +74,9 @@ const displayUpdateCreate = () => {
 
 	// hide update btn
 	updateBtn.style.display = 'none';
+
+	// hide search bar
+	searchBar.style.display = 'none';
 }
 
 const displayDelete = () => {
@@ -269,5 +278,8 @@ deleteNoBtn.onclick = displayList;
 
 // search
 const searchDiv = document.getElementById('search');
+
+// search bar
+const searchBar = document.getElementById('search-bar');
 
 updateTableOnIntervalChange();
