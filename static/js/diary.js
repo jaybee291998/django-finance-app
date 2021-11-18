@@ -31,11 +31,17 @@ const get_data_wr = async () => {
 const update_selected_index = (e) => {
 	// the index of the selected element
 	selected_index = e.srcElement.parentNode.id;
-	displayContent(diary_data[selected_index]);
+}
 
+const select_item = (e, data) => {
+	update_selected_index(e);
+	displayContent(data[selected_index]);
 	// display detail
 	displayDetail();
 }
+
+const select_filtered_item = (e) => select_item(e, filteredData);
+const select_diary_item = (e) => select_item(e, diary_data); 
 
 const displayList = () => {
 	listDiv.style.display = "block";
@@ -129,7 +135,9 @@ const updateTableOnIntervalChange = async () => {
 }
 
 // create a table base on fund and category
-const createTableWr = () => createTable(diary_data, ['title', 'timestamp'], tableDiv, update_selected_index);
+const createTableWr = () => createTable(diary_data, ['title', 'timestamp'], tableDiv, select_diary_item);
+
+const createFilteredTable = () => createTable(filteredData, ['title', 'timestamp'], searchDiv, select_filtered_item);
 
 const get_text_area_content = () => {
 	const data = {
@@ -200,8 +208,9 @@ function search(){
 	if(search_term.length != 0){
 		// display search results
 		displaySearch();
-		searchDiv.innerHTML = '';
-		searchDiv.innerHTML = search_term;
+		filteredData = diary_data.filter((data) => data['content'].search(search_term)>0 || data['title'].search(search_term)>0);
+		createFilteredTable()
+		
 	}else{
 		// hide search results
 		searchDiv.style.display = 'none';
