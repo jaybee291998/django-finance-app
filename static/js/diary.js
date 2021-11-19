@@ -41,13 +41,13 @@ const select_item = (e, data) => {
 const select_filtered_item = (e) => {
 	select_item(e, filteredData);
 	// display
-	displayDetail(search)
+	displayDetail()
 
 }
 const select_diary_item = (e) => {
 	select_item(e, diary_data);
 	// display detail
-	displayDetail(listDiv);
+	displayDetail();
 } 
 
 const displayList = () => {
@@ -66,11 +66,14 @@ const displayList = () => {
 	deleteDiv.style.display = 'none';
 }
 				
-const displayDetail = (div_to_hide) => {
+const displayDetail = () => {
 	detailDiv.style.display = "block";
 
 	// hide list
-	div_to_hide.style.display = "none";
+	listDiv.style.display = "none";
+
+	// hide search 
+	searchDiv.style.display = 'none';
 
 	// hide search bar
 	searchBar.style.display = "none";
