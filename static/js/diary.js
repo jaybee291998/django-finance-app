@@ -36,12 +36,19 @@ const update_selected_index = (e) => {
 const select_item = (e, data) => {
 	update_selected_index(e);
 	displayContent(data[selected_index]);
-	// display detail
-	displayDetail();
 }
 
-const select_filtered_item = (e) => select_item(e, filteredData);
-const select_diary_item = (e) => select_item(e, diary_data); 
+const select_filtered_item = (e) => {
+	select_item(e, filteredData);
+	// display
+	displayDetail(search)
+
+}
+const select_diary_item = (e) => {
+	select_item(e, diary_data);
+	// display detail
+	displayDetail(listDiv);
+} 
 
 const displayList = () => {
 	listDiv.style.display = "block";
@@ -59,11 +66,11 @@ const displayList = () => {
 	deleteDiv.style.display = 'none';
 }
 				
-const displayDetail = () => {
+const displayDetail = (div_to_hide) => {
 	detailDiv.style.display = "block";
 
 	// hide list
-	listDiv.style.display = "none";
+	div_to_hide.style.display = "none";
 
 	// hide search bar
 	searchBar.style.display = "none";
@@ -278,6 +285,7 @@ deleteNoBtn.onclick = displayList;
 
 // search
 const searchDiv = document.getElementById('search');
+const searchTableDiv = document.getElementById("search-table");
 
 // search bar
 const searchBar = document.getElementById('search-bar');
