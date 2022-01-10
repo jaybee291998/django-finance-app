@@ -25,7 +25,7 @@ function createTable(raw_data, data_properties, tableDiv, row_selection_func){
 			let data_property_value = data[data_property];
 			// add the cells that contain the properties of the expenses
 			let cell = row.insertCell(j);
-			cell.innerHTML = data_property_value;
+			cell.textContent = data_property_value;
 		});
 	});
 	// empty the div first before adding the new table
