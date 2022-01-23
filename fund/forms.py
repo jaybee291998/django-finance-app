@@ -21,6 +21,7 @@ class FundAllocationForm(forms.Form):
 class FundTransferForm(forms.Form):
 	def __init__(self, account, current_fund, *args, **kwargs):
 		queryset = Fund.objects.filter(account=account).exclude(pk=current_fund.id)
+		self.current_fund = current_fund
 		super(FundTransferForm, self).__init__(*args, **kwargs)
 		self.fields['recipient_fund'].queryset = queryset
 
@@ -30,7 +31,7 @@ class FundTransferForm(forms.Form):
 	def clean_amount(self):
 		amount = self.cleaned_data.get('amount')
 
-		if amount > current_fund.amount:
+		if amount > self.current_fund.amount:
 			raise ValidationError(f'You have insufficient amount to transfer.\nCurrent balance:{current_fund.amount}')
 
 		return amount
