@@ -233,7 +233,8 @@ def transfer_FTF(request, fund_id, *args, **kwargs):
 	else:
 		raise Http404()
 	context = {
-		'form': form
+		'form': form,
+		'fund': fund
 	}
 
 	return render(request, 'fund/fund_transfer.html', context)
