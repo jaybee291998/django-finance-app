@@ -32,6 +32,6 @@ class FundTransferForm(forms.Form):
 		amount = self.cleaned_data.get('amount')
 
 		if amount > self.current_fund.amount:
-			raise ValidationError(f'You have insufficient amount to transfer.\nCurrent balance:{current_fund.amount}')
+			raise ValidationError(f'You have insufficient amount to transfer.\nCurrent balance:{self.current_fund.amount}')
 
 		return amount
