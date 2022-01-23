@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}
+	Fund Tranfer
+{% endblock %}
+{% block content %}
+	<h1>Fund Tranfer</h1>
+	<form method="POST">
+		{% csrftoken %}
+		{% form.as_p %}
+	</form>
+{% endblock %}
