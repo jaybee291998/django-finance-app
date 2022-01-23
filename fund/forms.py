@@ -25,12 +25,15 @@ class FundTransferForm(forms.Form):
 		super(FundTransferForm, self).__init__(*args, **kwargs)
 		self.fields['recipient_fund'].queryset = queryset
 
-	recipient_fund 		= forms.ModelChoiceField(queryset=None, initial=0)
+	description 		= forms.CharField(widget=forms.Textarea(attrs={'placeholder':'Description', 'class':'form-control'}))	
 	amount 				= forms.IntegerField()
+	recipient_fund 		= forms.ModelChoiceField(queryset=None, initial=0)
 
 	def clean_amount(self):
 		amount = self.cleaned_data.get('amount')
 
+		if amount < 0:
+			raise ValidationError("No Negative amount.")
 		if amount > self.current_fund.amount:
 			raise ValidationError(f'You have insufficient amount to transfer.\nCurrent balance:{self.current_fund.amount}')
 
