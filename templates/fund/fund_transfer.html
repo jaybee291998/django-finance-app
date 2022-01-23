@@ -5,7 +5,7 @@
 {% block content %}
 	<h1>Fund Tranfer</h1>
 	<form method="POST">
-		{% csrftoken %}
+		{% csrf_token %}
 		{% form.as_p %}
 	</form>
 {% endblock %}
