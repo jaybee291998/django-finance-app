@@ -17,7 +17,7 @@ from django.conf import settings
 
 
 from .models import Fund
-from .forms import FundAllocationForm
+from .forms import FundAllocationForm, FundTransferForm
 
 from expenses.forms import DateSelectorForm
 from accounts.utils import is_object_expired
@@ -208,3 +208,31 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 	}
 
 	return render(request, 'fund/fund_allocation.html', context)
+
+# transfer balance from an account to another account
+@login_required
+def transfer_FTF(request, fund_id, *args, **kwargs):
+	try:
+		fund = Fund.objects.get(id=fund_id)
+	except (ValueError, OverflowError, TypeError, Fund.DoesNotExist):
+		fund = None
+
+	# check if the fund exists, then check if the logged in user is the owner of the fund
+	if fund is not None and fund.account == request.user.bank_account:
+		form = FundTransferForm(request.user.bank_account, fund, request.POST or None)
+		if form.is_valid():
+			amount = form.cleaned_data.get('amount')
+			recipient_fund = form.cleaned_data.get('recipient_fund')
+
+			# tranfer the amount from the current fund to the recipient fund
+			fund.transfer(recipient_fund, amount)
+			# return to the detail page of the fund
+			return redirect('fund_detail', pk=fund.id)
+
+	else:
+		raise Http404()
+	context = {
+		'form': form
+	}
+
+	return render(request, 'fund/fund_transfer.html', context)
