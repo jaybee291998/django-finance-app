@@ -91,6 +91,7 @@ class FundDetailView(DetailView):
 		update_link = reverse_lazy('fund_update', kwargs={'pk':fund.pk})
 		# link to fund allocation page
 		context['fund_allocation_link'] = reverse_lazy('fund_allocation', kwargs={'fund_id':fund.pk})
+		context['fund_transfer_link'] = reverse_lazy('fund_transfer', kwargs={'fund_id':fund.pk})
 
 		# check if the fund is expired, if it is remove the ability to update
 		if not is_object_expired(fund, settings.TWELVE_HOUR_DURATION) and not fund.fund_expenses.exists(): 
