@@ -22,3 +22,22 @@ class Fund(models.Model):
 	def __str__(self):
 		return self.name
 
+	def transfer(self, other_fund, amount):
+		assert isinstance(other_fund, Fund)
+
+		if self.amount < amount:
+			raise ValidationError(f'{self.name} has insufficient balance.\nBalance: {self.amount}')
+		other_fund.deposit(self.withdraw(amount))
+
+	def deposit(self, amount):
+		assert amount > 0
+		self.amount += amount
+		# save the changes to the database
+		self.save()
+
+	def withdraw(self, amount):
+		assert amount > 0 and amount < self.amount 
+		self.amount -= amount
+		# save the changes to the database
+		self.save()
+		return amount
