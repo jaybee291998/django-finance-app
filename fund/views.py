@@ -16,7 +16,7 @@ from django.views.generic.detail import DetailView
 from django.conf import settings
 
 
-from .models import Fund
+from .models import Fund, FundTransferHistory
 from .forms import FundAllocationForm, FundTransferForm
 
 from expenses.forms import DateSelectorForm
@@ -222,11 +222,17 @@ def transfer_FTF(request, fund_id, *args, **kwargs):
 	if fund is not None and fund.account == request.user.bank_account:
 		form = FundTransferForm(request.user.bank_account, fund, request.POST or None)
 		if form.is_valid():
+			description = form.cleaned_data.get('description')
 			amount = form.cleaned_data.get('amount')
 			recipient_fund = form.cleaned_data.get('recipient_fund')
 
 			# tranfer the amount from the current fund to the recipient fund
 			fund.transfer(recipient_fund, amount)
+
+			# added the transaction to the history
+			fund_history = FundTransferHistory(sender_fund=fund, recipient_fund=recipient_fund, amount=amount, description=description)
+			fund_history.save()
+
 			# return to the detail page of the fund
 			return redirect('fund_detail', pk=fund.id)
 
