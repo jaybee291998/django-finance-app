@@ -41,3 +41,13 @@ class Fund(models.Model):
 		# save the changes to the database
 		self.save()
 		return amount
+
+# model to store fund transfer history
+class FundTransferHistory(models.Model):
+	sender_fund 		= models.ForeignKey(Fund, related_name='send_to', on_delete=models.CASCADE)
+	recipient_fund		= models.ForeignKey(Fund, related_name='receive_from', on_delete=models.CASCADE)
+	amount 				= models.IntegerField()
+	description 		= models.TextField()
+
+	def __str__(self):
+		return f'{self.sender_fund} to {self.recipient_fund}'
