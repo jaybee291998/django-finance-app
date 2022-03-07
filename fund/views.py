@@ -41,8 +41,6 @@ class FundListView(ListView):
 	model = Fund
 	template_name = 'fund/list.html'
 	context_object_name = 'funds'
-	paginate_by = 10
-
 	def get_queryset(self):
 		queryset = Fund.objects.filter(account=self.request.user.bank_account)
 		return queryset
