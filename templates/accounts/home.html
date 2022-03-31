@@ -4,69 +4,85 @@
 {% endblock %}
 {% block content %}
 <a href="{{logout_link}}" class="btn btn-danger" role='button'>logout</a>
-<div class="flex-container">
-	<div class="card flex-item">
-	  <div class="card-body">
-	    <h5 class="card-title">Expense</h5>
-	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
-	    <p class="card-text">records and analyze your daily expenditures</p>
-	    <a href="{{expense_home_link}}" class="card-link">Go to Expense</a>
-	  </div>
-	</div>
-	<div class="card flex-item">
-	  <div class="card-body">
-	    <h5 class="card-title">Income</h5>
-	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
-	    <p class="card-text">records and analyze your income</p>
-	    <a href="{{income_home_link}}" class="card-link">Go to Income</a>
-	  </div>
+{% load static %}
+<div class="flex-container container">
+	<div class="item">
+		<div class="card orange">
+			<h2 class="">Expense</h2>
+			<p class="">records and analyze your daily expenditures</p>
+			<a href="{{expense_home_link}}" class="card-link">Go to Expense</a>
+			<div class="image-container">
+				<img src="../media/icons/expense.png">
+			</div>
+		</div>
 	</div>
 
-	<div class="card flex-item">
-	  <div class="card-body">
-	    <h5 class="card-title">Diary</h5>
-	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
-	    <p class="card-text">record what happnens in your daily life</p>
-	    <a href="{{diary_home_link}}" class="card-link">Go to Diary</a>
-	  </div>
+	<div class="item">
+		<div class="card cyan">
+			<h2 class="">Income</h2>
+			<p class="">records and analyze income</p>
+			<a href="{{income_home_link}}" class="card-link">Go to Income</a>
+			<div class="image-container">
+				<img src="../media/icons/income.png">
+			</div>
+		</div>
 	</div>
 
-	<div class="card flex-item">
-	  <div class="card-body">
-	    <h5 class="card-title">Fund</h5>
-	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
-	    <p class="card-text">allocate and monitor yours funds</p>
-	    <a href="{{fund_home_link}}" class="card-link">Go to Fund</a>
-	  </div>
+	<div class="item">
+		<div class="card red">
+			<h2 class="">Diary</h2>
+			<p class="">records what happens in your daily life</p>
+			<a href="{{diary_home_link}}" class="card-link">Go to Diary</a>
+			<div class="image-container">
+				<img src="../media/icons/diary.png">
+			</div>
+		</div>
 	</div>
 
-	<div class="card flex-item">
-	  <div class="card-body">
-	    <h5 class="card-title">List</h5>
-	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
-	    <p class="card-text">an app that allows you to make list of stuff<br>
-	    like grocery list, to do list, and many more types of list</p>
-	    <a href="{{list_home_link}}" class="card-link">Go to List</a>
-	  </div>
+	<div class="item">
+		<div class="card blue">
+			<h2 class="">Funds</h2>
+			<p class="">allocate and monitor your funds</p>
+			<a href="{{fund_home_link}}" class="card-link">Go to Funds</a>
+			<div class="image-container">
+				<img src="../media/icons/fund.png">
+			</div>
+		</div>
 	</div>
 
-	<div class="card flex-item">
-	  <div class="card-body">
-	    <h5 class="card-title">Expense Type</h5>
-	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
-	    <p class="card-text">add expense types for your expenses</p>
-	    <a href="{{expense_type_link}}" class="card-link">Go to ExpenseType</a>
-	  </div>
+	<div class="item">
+		<div class="card">
+			<h2 class="">List</h2>
+			<p class="">allows you to take notes</p>
+			<a href="{{list_home_link}}" class="card-link">Go to List</a>
+			<div class="image-container">
+				<img src="../media/icons/list.png">
+			</div>
+		</div>
 	</div>
 
-	<div class="card flex-item">
-	  <div class="card-body">
-	    <h5 class="card-title">Income Type</h5>
-	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
-	    <p class="card-text">add income types for your expenses</p>
-	    <a href="{{income_type_link}}" class="card-link">Go to IncomeType</a>
-	  </div>
+	<div class="item">
+		<div class="card">
+			<h2 class="">Expense Type</h2>
+			<p class="">define expense types</p>
+			<a href="{{expense_type_link}}" class="card-link">Go to Expense Type</a>
+			<div class="image-container">
+				<img src="../media/icons/expense_type.png">
+			</div>
+		</div>
 	</div>
+
+	<div class="item">
+		<div class="card">
+			<h2 class="">Income Type</h2>
+			<p class="">define Income types</p>
+			<a href="{{income_type_link}}" class="card-link">Go to Income Type</a>
+			<div class="image-container">
+				<img src="../media/icons/income_type.png">
+			</div>
+		</div>
+	</div>
+
 </div>
 
 {% endblock %}
