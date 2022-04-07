@@ -29,7 +29,7 @@ body{
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.container {
+.my-container {
     max-width: 80%;
     margin: auto;
     overflow: hidden;
@@ -49,7 +49,7 @@ body{
     /*margin: 10px;*/
 }
 
-.card {
+.my-card {
     color: #000000;
     background-color: #FFF8DC;
     /*border: 1px solid black;*/
@@ -65,12 +65,12 @@ body{
     transition: all .2s ease-in-out;
 }
 
-.card img{
+.my-card img{
     height: 50px;
     width: 50px;
 }
 
-.card:hover{
+.my-card:hover{
     transform: scale(1.1);
 }
 
@@ -79,7 +79,7 @@ body{
     justify-content: flex-end;
 }
 
-.card p{
+.my-card p{
     color: var(--grayishBlue);
 }
 
@@ -101,13 +101,13 @@ h2 {
     font-weight: var(--weight3);
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 1079px) {
     .container {
         max-width: 100%;
         margin: 0;
         overflow: hidden;
     }
-    .card {
+    .my-card {
         color: #000000;
         background-color: #FFF8DC;
         /*border: 1px solid black;*/
@@ -118,7 +118,7 @@ h2 {
         box-shadow: 0 30px 40px -20px var(--grayishBlue);
         line-height: 1.8;
     
-        width: 200px;
+        width: 450px;
     
         transition: all .2s ease-in-out;
     }
