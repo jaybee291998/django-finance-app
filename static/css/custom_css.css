@@ -102,10 +102,9 @@ h2 {
 }
 
 @media only screen and (max-width: 1079px) {
-    .container {
+    .my-container {
         max-width: 100%;
         margin: 0;
-        overflow: hidden;
     }
     .my-card {
         color: #000000;
@@ -118,7 +117,7 @@ h2 {
         box-shadow: 0 30px 40px -20px var(--grayishBlue);
         line-height: 1.8;
     
-        width: 450px;
+        width: 300px;
     
         transition: all .2s ease-in-out;
     }
