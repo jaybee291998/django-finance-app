@@ -187,6 +187,8 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 					else:
 						# trying to deallocate an amount that is greater than the available to the fund
 						errors.append(f'You cannot deallocate more than {fund.amount}, current {fund.name} balance {fund.amount}')
+				fund_allocation_history = FundAllocationHistory(fund=fund, amount=amount, is_allocate=action=='AL')
+				fund_allocation_history.save()
 				# save the changes
 				fund.save()
 				bank_account.save()

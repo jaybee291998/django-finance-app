@@ -52,3 +52,16 @@ class FundTransferHistory(models.Model):
 
 	def __str__(self):
 		return f'{self.sender_fund} to {self.recipient_fund}'
+
+# model to store fund allocation history
+class FundAllocationHistory(models.Model):
+	fund = models.ForeignKey(Fund, related_name="allocation_history", on_delete=models.CASCADE)
+	amount = models.IntegerField()
+	is_allocate = models.BooleanField()
+	timestamp = models.DateTimeField(auto_now_add=True, null=True)
+
+	def __str__(self):
+		t = 'DL'
+		if self.is_allocate:
+			t = "AL"
+		return f'{self.fund.name}: {t}'
