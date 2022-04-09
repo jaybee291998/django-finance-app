@@ -194,6 +194,8 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 				if len(errors) == 0:
 					# return to fund_detail
 					return redirect('fund_detail', pk=fund.id)
+		else:
+			raise Http404()
 
 	else:
 		raise Http404()
