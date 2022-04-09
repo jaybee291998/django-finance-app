@@ -16,7 +16,7 @@ from django.views.generic.detail import DetailView
 from django.conf import settings
 
 
-from .models import Fund, FundTransferHistory
+from .models import Fund, FundTransferHistory, FundAllocationHistory
 from .forms import FundAllocationForm, FundTransferForm
 
 from expenses.forms import DateSelectorForm
