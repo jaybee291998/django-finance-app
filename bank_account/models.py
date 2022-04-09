@@ -10,3 +10,25 @@ class BankAccount(models.Model):
 
 	def __str__(self):
 		return f'{self.user.username} - Bank Account'
+
+	def deposit(self, amount: int):
+		"""
+			add the specefied amount to the balance
+		"""
+		assert amount > 0
+		assert isinstance(amount, int) or isinstance(amount, float)
+
+		# add the amount to balance
+		self.balance += amount
+	
+	def withdraw(self, amount: int):
+		"""
+			subtract the specified amount to the balance
+		"""
+		assert amount > 0 and amount <= self.balance
+
+		# subtract the amount from the balance
+		self.balance -= amount
+	
+	def get_balance(self):
+		return f'current balance: {self.balance}'
