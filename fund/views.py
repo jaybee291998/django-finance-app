@@ -15,6 +15,10 @@ from django.views.generic.detail import DetailView
 
 from django.conf import settings
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
 
 from .models import Fund, FundTransferHistory, FundAllocationHistory
 from .forms import FundAllocationForm, FundTransferForm
@@ -168,7 +172,7 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 				if action=='AL':
 					# check if the amount to allocate to the fund is 
 					# less than the unallocated balnace of the bank account
-					if amount < bank_account.balance:
+					if amount <= bank_account.balance:
 						# add the amount to the fund
 						fund.amount += amount
 						# subtract the amount to the bank account balance
@@ -211,6 +215,21 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 	}
 
 	return render(request, 'fund/fund_allocation.html', context)
+
+# a view to just serve the html for fund allocation history
+@login_required
+def fund_allocation_list_view(requests):
+	return render(requests, 'fund/fund_allocation_list.html',{})
+
+# returns the list of fund allocation history
+@method_decorator(login_required, name="dispatch")
+class FundAllocationHistoryList(APIView):
+
+	def get(self, requests, format=None):
+		history = FundAllocationHistory.objects.filter(fund__account=requests.user.bank_account)
+		serializer = FundAllocationHistorySerializer(history, many=True)
+		return Response(serializer.data)
+
 
 # transfer balance from an account to another account
 @login_required
