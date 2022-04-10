@@ -220,7 +220,11 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 # a view to just serve the html for fund allocation history
 @login_required
 def fund_allocation_list_view(requests):
-	return render(requests, 'fund/fund_allocation_list.html',{})
+	context = {
+		'fund_allocation_history_api': reverse_lazy('fund_allocation_history_list'),
+		'fund_api': requests.build_absolute_uri(reverse_lazy('fund_list_api'))
+	}
+	return render(requests, 'fund/fund_allocation_list.html', context)
 
 # returns the list of fund allocation history
 @method_decorator(login_required, name="dispatch")
