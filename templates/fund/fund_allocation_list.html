@@ -1,0 +1,29 @@
+{% extends 'fund_base.html' %}
+{% block title %}
+    Fund | Allocation History
+{% endblock %}
+{% block content %}
+    <h1>Hello</h1>
+    
+    {% load static %}
+    <script src="{% static 'js/api.js' %}"></script>
+    <script src="{% static 'js/ui.js' %}"></script>
+    <script>
+        // const fund_allocation_history_api = "{{fund_allocation_history_api}}";
+        const fund_allocation_history_api = "/fund/fund_allocation_history_list_api/";
+        const fund_api = "{{fund_api}}";
+        let fund_allocation_history;
+        let fund;
+
+        async function init_data(){
+            const {data:fund_data, status:fund_status} = await get_data(fund_api);
+            fund = fund_data;
+            console.log(fund);
+
+            const {data:history_data, status:history_status} = await get_data(fund_allocation_history_api);
+            fund_allocation_history = history_data;
+            console.log(fund_allocation_history);
+        }
+        init_data();
+    </script>
+{% endblock %}
