@@ -1,5 +1,10 @@
 from rest_framework import serializers
-from .models import FundAllocationHistory
+from .models import Fund, FundAllocationHistory
+
+class FundSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fund
+        fields = '__all__'
 
 class FundAllocationHistorySerializer(serializers.ModelSerializer):
     class Meta:

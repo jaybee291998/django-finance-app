@@ -22,7 +22,7 @@ from rest_framework import status
 
 from .models import Fund, FundTransferHistory, FundAllocationHistory
 from .forms import FundAllocationForm, FundTransferForm
-from .serializers import FundAllocationHistorySerializer
+from .serializers import FundAllocationHistorySerializer, FundSerializer
 
 from expenses.forms import DateSelectorForm
 from accounts.utils import is_object_expired
@@ -229,6 +229,13 @@ class FundAllocationHistoryList(APIView):
 	def get(self, requests, format=None):
 		history = FundAllocationHistory.objects.filter(fund__account=requests.user.bank_account)
 		serializer = FundAllocationHistorySerializer(history, many=True)
+		return Response(serializer.data)
+
+@method_decorator(login_required, name='dispatch')
+class FundList(APIView):
+	def get(self, requests, format=None):
+		fund = Fund.objects.filter(account=requests.user.bank_account)
+		serializer = FundSerializer(fund, many=True)
 		return Response(serializer.data)
 
 
