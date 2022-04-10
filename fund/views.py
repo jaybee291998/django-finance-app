@@ -22,6 +22,7 @@ from rest_framework import status
 
 from .models import Fund, FundTransferHistory, FundAllocationHistory
 from .forms import FundAllocationForm, FundTransferForm
+from .serializers import FundAllocationHistorySerializer
 
 from expenses.forms import DateSelectorForm
 from accounts.utils import is_object_expired
