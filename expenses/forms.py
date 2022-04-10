@@ -22,6 +22,7 @@ class ExpenseAddForm(forms.ModelForm):
 		self.fields['category'].queryset = ExpenseType.objects.filter(account=account)
 		
 
+	description = forms.CharField(max_length=1024, widget=forms.Textarea(attrs={'autofocus':True}))
 	fund 		= forms.ModelChoiceField(queryset=None, initial=0)
 	category 	= forms.ModelChoiceField(queryset=None, initial=0)
 
