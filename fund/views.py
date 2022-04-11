@@ -233,7 +233,7 @@ def fund_allocation_list_view(requests):
 class FundAllocationHistoryList(APIView):
 
 	def get(self, requests, format=None):
-		history = FundAllocationHistory.objects.filter(fund__account=requests.user.bank_account)
+		history = FundAllocationHistory.objects.filter(fund__account=requests.user.bank_account).order_by('timestamp')
 		serializer = FundAllocationHistorySerializer(history, many=True)
 		return Response(serializer.data)
 
