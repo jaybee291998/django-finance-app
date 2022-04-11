@@ -4,6 +4,9 @@
 {% endblock %}
 {% block content %}
     <h1>Hello</h1>
+    <div id="table-div">
+
+    </div>
     
     {% load static %}
     <script src="{% static 'js/api.js' %}"></script>
@@ -14,6 +17,11 @@
         const fund_api = "{{fund_api}}";
         let fund_allocation_history;
         let fund;
+        let fund_names = {};
+
+        function $(e){
+            return document.getElementById(e);
+        }
 
         async function init_data(){
             const {data:fund_data, status:fund_status} = await get_data(fund_api);
@@ -22,6 +30,24 @@
 
             const {data:history_data, status:history_status} = await get_data(fund_allocation_history_api);
             fund_allocation_history = history_data;
+            console.log(fund_allocation_history);
+            processData();
+        }
+
+        function processData(){
+            fund.forEach(f => {
+                fund_names[f.id] = f.name;
+            });
+            fund_allocation_history = fund_allocation_history.map((fah, i)=>{
+                fah.fund = fund_names[fah.fund];
+                fah.is_allocate = fah.is_allocate?'Allocate':'Deallocate';
+                fah.timestamp = processDateStr(fah.timestamp);
+                return fah;
+            })
+            let table = createTable(fund_allocation_history, ['description', 'fund', 'amount', 'is_allocate', 'timestamp'], ()=>{}, 'table table-striped', ['Description', 'Fund', 'Amount', 'Type', 'Date']);
+            $('table-div').innerHTML="";
+            $('table-div').appendChild(table);
+            console.log(fund_names);
             console.log(fund_allocation_history);
         }
         init_data();

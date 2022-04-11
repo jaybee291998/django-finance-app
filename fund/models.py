@@ -55,6 +55,7 @@ class FundTransferHistory(models.Model):
 
 # model to store fund allocation history
 class FundAllocationHistory(models.Model):
+	description = models.TextField(help_text="what is this action for?", null=True, default="")
 	fund = models.ForeignKey(Fund, related_name="allocation_history", on_delete=models.CASCADE)
 	amount = models.IntegerField()
 	is_allocate = models.BooleanField()

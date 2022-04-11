@@ -6,7 +6,8 @@ class FundAllocationForm(forms.Form):
 	ACTIONS = (
 		('AL', 'Allocate'),
 		('DL', 'Deallocate'))
-
+	
+	desciption 		= forms.CharField(max_length=1024, widget=forms.Textarea(attrs={'autofocus':True}))
 	amount 			= forms.IntegerField()
 	action 			= forms.ChoiceField(choices=ACTIONS)
 

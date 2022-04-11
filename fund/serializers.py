@@ -9,4 +9,4 @@ class FundSerializer(serializers.ModelSerializer):
 class FundAllocationHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = FundAllocationHistory
-        fields = ['fund', 'amount', 'is_allocate', 'timestamp']
+        fields = ['description', 'fund', 'amount', 'is_allocate', 'timestamp']
