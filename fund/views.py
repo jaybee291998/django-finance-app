@@ -1,3 +1,4 @@
+from cmath import log
 from datetime import date, datetime, timedelta
 import random
 
@@ -22,10 +23,12 @@ from rest_framework import status
 
 from .models import Fund, FundTransferHistory, FundAllocationHistory
 from .forms import FundAllocationForm, FundTransferForm
-from .serializers import FundAllocationHistorySerializer, FundSerializer
+from .serializers import FundSerializer, FundAllocationHistorySerializer
 
 from expenses.forms import DateSelectorForm
 from accounts.utils import is_object_expired
+
+from fund import serializers
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -157,7 +160,6 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 		fund = Fund.objects.get(pk=fund_id)
 	except (TypeError, ValueError, OverflowError, Fund.DoesNotExist):
 		fund = None
-
 	amount = None
 	action = None
 	bank_account = request.user.bank_account
@@ -166,6 +168,7 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 		form = FundAllocationForm(request.POST or None)
 		if fund.account.user == request.user:
 			if form.is_valid():
+				description = form.cleaned_data.get('description')
 				amount = form.cleaned_data.get('amount')
 				action = form.cleaned_data.get('action')
 
@@ -192,18 +195,17 @@ def fund_allocation_view(request, fund_id, *args, **kwargs):
 					else:
 						# trying to deallocate an amount that is greater than the available to the fund
 						errors.append(f'You cannot deallocate more than {fund.amount}, current {fund.name} balance {fund.amount}')
-				fund_allocation_history = FundAllocationHistory(fund=fund, amount=amount, is_allocate=action=='AL')
-				fund_allocation_history.save()
-				# save the changes
-				fund.save()
-				bank_account.save()
 				# if there are no errors
 				if len(errors) == 0:
+					# save the changes
+					fund.save()
+					bank_account.save()
+					fund_allocation_history = FundAllocationHistory(description=description, fund=fund, amount=amount, is_allocate=action=='AL')
+					fund_allocation_history.save()
 					# return to fund_detail
 					return redirect('fund_detail', pk=fund.id)
 		else:
 			raise Http404()
-
 	else:
 		raise Http404()
 
@@ -241,6 +243,7 @@ class FundList(APIView):
 		fund = Fund.objects.filter(account=requests.user.bank_account)
 		serializer = FundSerializer(fund, many=True)
 		return Response(serializer.data)
+
 
 
 # transfer balance from an account to another account
