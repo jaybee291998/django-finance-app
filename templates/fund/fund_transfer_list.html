@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %}
+    Fund | Transfer History
+{% endblock %}
+{% block content %}
+    <h1 class="center-text">Fund Transfer History</h1>
+    <h2 class="center-text">{{fund.name}}</h2>
+    <dl class="row">
+        <dt class="col-sm-3">Total Transfered: </dt>
+        <dd class="col-sm-1" id="total-transferred"></dd>
+        <dt class="col-sm-3">Total Received: </dt>
+        <dd class="col-sm-1" id="total-received"></dd>
+    </dl>
+    <div id="table-div">
+
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="my-container">
+                <div class="card-header">
+                    <h5 class="card-title">Fund Transfer Detail</h5>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <dl class="row">
+                          <dt class="col-sm-3">Description</dt>
+                          <dd class="col-sm-9" id="description-data">putang inang bola yan napaka mahal</dd>
+                          <dt class="col-sm-3">Amount</dt>
+                          <dd class="col-sm-9" id="amount-data">100</dd>
+                          <dt class="col-sm-3">From</dt>
+                          <dd class="col-sm-9" id="sender-data">pang grocery</dd>
+                          <dt class="col-sm-3">To</dt>
+                          <dd class="col-sm-9" id="recipient-data">pang grocery</dd>
+                          <dt class="col-sm-3">Date</dt>
+                          <dd class="col-sm-9" id="date-data">April 09, 2022 8:33:12 PM</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% load static %}
+    <script src="{% static 'js/api.js' %}"></script>
+    <script src="{% static 'js/ui.js' %}"></script>
+    <script src="{% static 'js/modal.js' %}"></script>
+    <script>
+        // const fund_allocation_history_api = "{{fund_allocation_history_api}}";
+        const fund_id = {{fund.id}};
+        const fund_received_from = "/fund/api/fund_received_from";
+        const fund_tranferred_to = "/fund/api/fund_transferred_to";
+        const fund_api = "/fund/api/fund_list/";
+        // all the funds that send money to the current fund
+        let sender_funds = {};
+        // all the funds that received money from the current fund
+        let recipient_funds = {};
+        let fund = [];
+        let fund_names = {};
+
+        function $(e){
+            return document.getElementById(e);
+        }
+
+        function updateModalContent(row_data){
+            const {description, amount, sender_fund, recipient_fund, timestamp} = row_data;
+            $('description-data').textContent = description;
+            $('amount-data').textContent = amount;
+            $('sender-data').textContent = sender_fund;
+            $('recipient-data').textContent = recipient_fund;
+            $('date-data').textContent = timestamp;
+        }
+
+        async function init_data(){
+            const {data:fund_data, status:fund_status} = await get_data(fund_api);
+            fund = fund_data;
+
+            const {data:sender_history, status:sender_history_status} = await get_data(`${fund_received_from}/${fund_id}/`);
+            const {data:recipient_history, status:recipient_history_status} = await get_data(`${fund_tranferred_to}/${fund_id}/`);
+            
+            sender_funds = sender_history;
+            recipient_funds = recipient_history;
+            console.log({sender_funds});
+            console.log({recipient_funds});
+            processData();
+        }
+
+        function processData(){
+            fund.forEach(f => {
+                fund_names[f.id] = f.name;
+            });
+            sender_funds.forEach((fah, i)=>{
+                fah.sender_fund = fund_names[fah.sender_fund];
+                fah.recipient_fund = fund_names[fah.recipient_fund];
+                fah.timestamp = processDateStr(fah.timestamp);
+            })
+            recipient_funds.forEach((fah, i)=>{
+                fah.sender_fund = fund_names[fah.sender_fund];
+                fah.recipient_fund = fund_names[fah.recipient_fund];
+                fah.timestamp = processDateStr(fah.timestamp);
+            })
+            // process the data further for the table
+            // since only 30 characters is allowed to be displayed at the table
+            // where gonna slice it and add ... at the end
+            let sender_table_data = sender_funds.map((fah, i)=>{
+                let new_fah = {...fah}
+                if(new_fah.description.length > 30){
+                    new_fah.description = `${new_fah.description.slice(0, 28)}...`
+                }
+                return new_fah;
+            })
+
+            let recipient_table_data = recipient_funds.map((fah, i)=>{
+                let new_fah = {...fah}
+                if(new_fah.description.length > 30){
+                    new_fah.description = `${new_fah.description.slice(0, 28)}...`
+                }
+                return new_fah;
+            })
+            const sender_row_selection_func = (e) =>{
+                openModal();
+                updateModalContent(sender_funds[e.srcElement.parentNode.id])
+            }
+
+            const recipient_row_selection_func = (e) =>{
+                openModal();
+                updateModalContent(recipient_funds[e.srcElement.parentNode.id])
+            }
+
+            let sender_table = createTable(sender_table_data, ['description', 'amount', 'sender_fund', 'timestamp'], sender_row_selection_func, 'table table-striped', ['Description', 'Amount', 'From', 'Date']);
+            let recipient_table = createTable(recipient_table_data, ['description', 'amount', 'recipient_fund', 'timestamp'], recipient_row_selection_func, 'table table-striped', ['Description', 'Amount', 'To', 'Date']);
+            $('table-div').innerHTML="";
+            $('table-div').appendChild(sender_table);
+            // $('table-div').append(document.createElement('P'))
+            $('table-div').appendChild(recipient_table);
+        }
+        init_data();
+    </script>
+{% endblock %}
