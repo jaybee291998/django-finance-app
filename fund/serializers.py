@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Fund, FundAllocationHistory
+from .models import Fund, FundAllocationHistory, FundTransferHistory
 
 class FundSerializer(serializers.ModelSerializer):
     class Meta:
