@@ -4,6 +4,12 @@
 {% endblock %}
 {% block content %}
     <h1>Hello</h1>
+    <dl class="row">
+        <dt class="col-sm-3">Total Allocation: </dt>
+        <dd class="col-sm-9" id="total-allocation"></dd>
+        <dt class="col-sm-3">Total Deallocation: </dt>
+        <dd class="col-sm-9" id="total-deallocation"></dd>
+    </dl>
     <div id="table-div">
 
     </div>
@@ -74,6 +80,15 @@
             fund.forEach(f => {
                 fund_names[f.id] = f.name;
             });
+            // calculate the total allcotion
+            $('total-allocation').textContent = fund_allocation_history.reduce((total, fah)=>{
+                if(fah.is_allocate) return total + fah.amount;
+                return total;
+            }, 0);
+            $('total-deallocation').textContent = fund_allocation_history.reduce((total, fah)=>{
+                if(!fah.is_allocate) return total + fah.amount;
+                return total;
+            }, 0);
             fund_allocation_history.forEach((fah, i)=>{
                 fah.fund = fund_names[fah.fund];
                 fah.is_allocate = fah.is_allocate?'Allocate':'Deallocate';
