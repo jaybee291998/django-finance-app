@@ -101,6 +101,10 @@ h2 {
     font-weight: var(--weight3);
 }
 
+.center-text{
+    text-align: center;
+}
+
 /* modal css */
 /* The Modal (background) */
 .modal {
