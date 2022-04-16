@@ -228,6 +228,19 @@ def fund_allocation_list_view(requests):
 	}
 	return render(requests, 'fund/fund_allocation_list.html', context)
 
+@login_required
+def fund_transfer_list_view(requests, fund_id):
+	try:
+		fund = Fund.objects.get(id=fund_id)
+	except (ValueError, OverflowError, TypeError, Fund.DoesNotExist):
+		raise Http404()
+	# make the fund is owned by the user
+	if fund.account != requests.user.bank_account: raise Http404()
+	context = {
+		'fund': fund
+	}
+	return render(requests, 'fund/fund_transfer_list.html', context)
+
 # returns the list of fund allocation history
 @method_decorator(login_required, name="dispatch")
 class FundAllocationHistoryList(APIView):
