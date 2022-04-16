@@ -10,10 +10,10 @@
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href='{% static "css/custom_css.css" %}'>
 	<link rel="icon" type="image/png" href='{% static "media/icons/favicon.png" %}'>
+	{% block links %}{% endblock %}
 </head>
 <body>
 	<div class="my-container">
-	<h1>Fund</h1>
 	{% block content %}
 		content here
 	{% endblock %}

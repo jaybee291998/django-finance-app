@@ -1,14 +1,14 @@
-{% extends 'fund_base.html' %}
+{% extends 'base.html' %}
 {% block title %}
     Fund | Allocation History
 {% endblock %}
 {% block content %}
-    <h1>Hello</h1>
+    <h1 class="center-text">Fund Allocation History</h1>
     <dl class="row">
         <dt class="col-sm-3">Total Allocation: </dt>
-        <dd class="col-sm-9" id="total-allocation"></dd>
+        <dd class="col-sm-1" id="total-allocation"></dd>
         <dt class="col-sm-3">Total Deallocation: </dt>
-        <dd class="col-sm-9" id="total-deallocation"></dd>
+        <dd class="col-sm-1" id="total-deallocation"></dd>
     </dl>
     <div id="table-div">
 
@@ -56,17 +56,6 @@
             return document.getElementById(e);
         }
 
-        async function init_data(){
-            const {data:fund_data, status:fund_status} = await get_data(fund_api);
-            fund = fund_data;
-            console.log(fund);
-
-            const {data:history_data, status:history_status} = await get_data(fund_allocation_history_api);
-            fund_allocation_history = history_data;
-            console.log(fund_allocation_history);
-            processData();
-        }
-
         function updateModalContent(row_data){
             const {description, fund, amount, is_allocate, timestamp} = row_data;
             $('description-data').textContent = description;
@@ -74,6 +63,15 @@
             $('amount-data').textContent = amount;
             $('type-data').textContent = is_allocate;
             $('date-data').textContent = timestamp;
+        }
+
+        async function init_data(){
+            const {data:fund_data, status:fund_status} = await get_data(fund_api);
+            fund = fund_data;
+
+            const {data:history_data, status:history_status} = await get_data(fund_allocation_history_api);
+            fund_allocation_history = history_data;
+            processData();
         }
 
         function processData(){
