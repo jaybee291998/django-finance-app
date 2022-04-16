@@ -23,7 +23,7 @@ from rest_framework import status
 
 from .models import Fund, FundTransferHistory, FundAllocationHistory
 from .forms import FundAllocationForm, FundTransferForm
-from .serializers import FundSerializer, FundAllocationHistorySerializer
+from .serializers import FundSerializer, FundAllocationHistorySerializer, FundTransferHistorySerializer
 
 from expenses.forms import DateSelectorForm
 from accounts.utils import is_object_expired
@@ -244,6 +244,35 @@ class FundList(APIView):
 		serializer = FundSerializer(fund, many=True)
 		return Response(serializer.data)
 
+@method_decorator(login_required, name='dispatch')
+class FundTransferredTo(APIView):
+	def get(self, requests, fund_id, format=None):
+		try:
+			# get the sender fund
+			sender_fund = Fund.objects.get(id=fund_id)
+		except (ValueError, OverflowError, TypeError, Fund.DoesNotExist):
+			raise Http404()
+		# make sure the user is the owner of the fund
+		if sender_fund.account != requests.user.bank_account: raise Http404()
+		# get all the funds rhat received money from sender fund
+		recepient_funds = FundTransferHistory.objects.filter(sender_fund=sender_fund).order_by('timestamp')
+		serializer = FundTransferHistorySerializer(recepient_funds, many=True)
+		return Response(serializer.data)
+
+@method_decorator(login_required, name='dispatch')
+class FundReceivedFrom(APIView):
+	def get(self, requests, fund_id, format=None):
+		try:
+			# get the recepient fund
+			recipient_fund = Fund.objects.get(id=fund_id)
+		except (ValueError, OverflowError, TypeError, Fund.DoesNotExist):
+			raise Http404()
+		# make sure the recepient fund is owned by the user
+		if recipient_fund.account != requests.user.bank_account: raise Http404()
+		# get all the fund that tranferres money to the recepient fund
+		sender_funds = FundTransferHistory.objects.filter(recipient_fund=recipient_fund).order_by('timestamp')
+		serializer = FundTransferHistorySerializer(sender_funds, many=True)
+		return Response(serializer.data)
 
 
 # transfer balance from an account to another account

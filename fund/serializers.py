@@ -10,3 +10,8 @@ class FundAllocationHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = FundAllocationHistory
         fields = ['description', 'fund', 'amount', 'is_allocate', 'timestamp']
+
+class FundTransferHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FundTransferHistory
+        fields = '__all__'

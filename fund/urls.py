@@ -11,5 +11,7 @@ urlpatterns = [
     path('fund_transfer/<int:fund_id>', views.transfer_FTF, name='fund_transfer'),
     path('fund_allocation_history_list_api/', views.FundAllocationHistoryList.as_view(), name='fund_allocation_history_list_api'),
     path('fund_allocation_history_list/', views.fund_allocation_list_view, name='fund_allocation_history_list'),
-    path('api/fund_list/', views.FundList.as_view(), name="fund_list_api")
+    path('api/fund_list/', views.FundList.as_view(), name="fund_list_api"),
+    path('api/fund_transferred_to/<int:fund_id>/', views.FundTransferredTo.as_view(), name='fund_transferred_to'),
+    path('api/fund_received_from/<int:fund_id>/', views.FundReceivedFrom.as_view(), name='fund_received_from')
 ]
