@@ -131,10 +131,12 @@
             if(sender_table_data.length > 0){
                 let sender_table = createTable(sender_table_data, ['description', 'amount', 'sender_fund', 'timestamp'], sender_row_selection_func, 'table table-striped', ['Description', 'Amount', 'From', 'Date']);
                 $('table-div').appendChild(sender_table);
+                $('total-received').textContent = sender_funds.reduce((total, fah)=>total+fah.amount,0);
             }
             if(recipient_table_data.length > 0){
                 let recipient_table = createTable(recipient_table_data, ['description', 'amount', 'recipient_fund', 'timestamp'], recipient_row_selection_func, 'table table-striped', ['Description', 'Amount', 'To', 'Date']);
                 $('table-div').appendChild(recipient_table);
+                $('total-transferred').textContent = recipient_funds.reduce((total, fah)=>total+fah.amount,0);
             }
         }
         init_data();
