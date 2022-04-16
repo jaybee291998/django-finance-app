@@ -7,10 +7,37 @@
     <div id="table-div">
 
     </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="my-container">
+                <div class="card-header">
+                    <h5 class="card-title">Fund Allocation History Detail</h5>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <dl class="row">
+                          <dt class="col-sm-3">Description</dt>
+                          <dd class="col-sm-9" id="description-data">putang inang bola yan napaka mahal</dd>
+                          <dt class="col-sm-3">Fund</dt>
+                          <dd class="col-sm-9" id="fund-data">pang grocery</dd>
+                          <dt class="col-sm-3">Amount</dt>
+                          <dd class="col-sm-9" id="amount-data">100</dd>
+                          <dt class="col-sm-3">Type</dt>
+                          <dd class="col-sm-9" id="type-data">Allocate</dd>
+                          <dt class="col-sm-3">Date</dt>
+                          <dd class="col-sm-9" id="date-data">April 09, 2022 8:33:12 PM</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     {% load static %}
     <script src="{% static 'js/api.js' %}"></script>
     <script src="{% static 'js/ui.js' %}"></script>
+    <script src="{% static 'js/modal.js' %}"></script>
     <script>
         // const fund_allocation_history_api = "{{fund_allocation_history_api}}";
         const fund_allocation_history_api = "/fund/fund_allocation_history_list_api/";
@@ -34,17 +61,39 @@
             processData();
         }
 
+        function updateModalContent(row_data){
+            const {description, fund, amount, is_allocate, timestamp} = row_data;
+            $('description-data').textContent = description;
+            $('fund-data').textContent = fund;
+            $('amount-data').textContent = amount;
+            $('type-data').textContent = is_allocate;
+            $('date-data').textContent = timestamp;
+        }
+
         function processData(){
             fund.forEach(f => {
                 fund_names[f.id] = f.name;
             });
-            fund_allocation_history = fund_allocation_history.map((fah, i)=>{
+            fund_allocation_history.forEach((fah, i)=>{
                 fah.fund = fund_names[fah.fund];
                 fah.is_allocate = fah.is_allocate?'Allocate':'Deallocate';
                 fah.timestamp = processDateStr(fah.timestamp);
-                return fah;
             })
-            let table = createTable(fund_allocation_history, ['description', 'fund', 'amount', 'is_allocate', 'timestamp'], ()=>{}, 'table table-striped', ['Description', 'Fund', 'Amount', 'Type', 'Date']);
+            // process the data further for the table
+            // since only 30 characters is allowed to be displayed at the table
+            // where gonna slice it and add ... at the end
+            let table_data = fund_allocation_history.map((fah, i)=>{
+                let new_fah = {...fah}
+                if(new_fah.description.length > 30){
+                    new_fah.description = `${new_fah.description.slice(0, 28)}...`
+                }
+                return new_fah;
+            })
+            const row_selection_func = (e) =>{
+                openModal();
+                updateModalContent(fund_allocation_history[e.srcElement.parentNode.id])
+            }
+            let table = createTable(table_data, ['description', 'fund', 'amount', 'is_allocate', 'timestamp'], row_selection_func, 'table table-striped', ['Description', 'Fund', 'Amount', 'Type', 'Date']);
             $('table-div').innerHTML="";
             $('table-div').appendChild(table);
             console.log(fund_names);
