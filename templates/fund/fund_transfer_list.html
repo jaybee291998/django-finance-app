@@ -5,14 +5,31 @@
 {% block content %}
     <h1 class="center-text">Fund Transfer History</h1>
     <h2 class="center-text">{{fund.name}}</h2>
-    <dl class="row">
-        <dt class="col-sm-3">Total Transfered: </dt>
-        <dd class="col-sm-1" id="total-transferred"></dd>
-        <dt class="col-sm-3">Total Received: </dt>
-        <dd class="col-sm-1" id="total-received"></dd>
-    </dl>
-    <div id="table-div">
 
+    <ul>
+        <li><button id="outgoing-btn" class="btn btn-primary btn-big">outgoing</button></li>
+        <li><button id="incoming-btn" class="btn btn-success btn-big">incoming</button></li>
+    </ul>
+    <br>
+    <div id="outgoing-div">
+        <h2>Transferred Funds</h2>
+        <dl class="row">
+            <dt class="col-sm-3">Total Transfered: </dt>
+            <dd class="col-sm-1" id="total-transferred"></dd>
+        </dl>
+        <div id="sender-table-div">
+    
+        </div>
+    </div>
+    <div id="incoming-div">
+        <h2>Received Funds</h2>
+        <dl class="row">
+            <dt class="col-sm-3">Total Received: </dt>
+            <dd class="col-sm-1" id="total-received"></dd>
+        </dl>
+        <div id="recipient-table-div">
+    
+        </div>
     </div>
     <div id="myModal" class="modal">
         <div class="modal-content">
@@ -82,6 +99,9 @@
             recipient_funds = recipient_history;
             console.log({sender_funds});
             console.log({recipient_funds});
+            // upon load only display the outgoing-div
+            $('outgoing-div').style.display = "block";
+            $('incoming-div').style.display = "none";
             processData();
         }
 
@@ -99,6 +119,7 @@
                 fah.recipient_fund = fund_names[fah.recipient_fund];
                 fah.timestamp = processDateStr(fah.timestamp);
             })
+
             // process the data further for the table
             // since only 30 characters is allowed to be displayed at the table
             // where gonna slice it and add ... at the end
@@ -126,19 +147,28 @@
                 openModal();
                 updateModalContent(recipient_funds[e.srcElement.parentNode.id])
             }
-
-            $('table-div').innerHTML="";
+            $('sender-table-div').innerHTML="";
+            $('recipient-table-div').innerHTML="";
             if(sender_table_data.length > 0){
                 let sender_table = createTable(sender_table_data, ['description', 'amount', 'sender_fund', 'timestamp'], sender_row_selection_func, 'table table-striped', ['Description', 'Amount', 'From', 'Date']);
-                $('table-div').appendChild(sender_table);
+                $('sender-table-div').appendChild(sender_table);
                 $('total-received').textContent = sender_funds.reduce((total, fah)=>total+fah.amount,0);
             }
             if(recipient_table_data.length > 0){
                 let recipient_table = createTable(recipient_table_data, ['description', 'amount', 'recipient_fund', 'timestamp'], recipient_row_selection_func, 'table table-striped', ['Description', 'Amount', 'To', 'Date']);
-                $('table-div').appendChild(recipient_table);
+                $('recipient-table-div').appendChild(recipient_table);
                 $('total-transferred').textContent = recipient_funds.reduce((total, fah)=>total+fah.amount,0);
             }
         }
         init_data();
+        $('outgoing-btn').onclick = () => {
+            $('outgoing-div').style.display = "block";
+            $('incoming-div').style.display = "none";
+        }
+
+        $('incoming-btn').onclick = () => {
+            $('outgoing-div').style.display = "none";
+            $('incoming-div').style.display = "block";
+        }
     </script>
 {% endblock %}

@@ -101,6 +101,16 @@ h2 {
     font-weight: var(--weight3);
 }
 
+ul{
+    list-style-type: none;
+    overflow: hidden;
+    margin: 0;
+}
+
+li{
+    float: left;
+    margin: 10px;
+}
 .center-text{
     text-align: center;
 }
