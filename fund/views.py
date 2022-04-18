@@ -1,6 +1,7 @@
 from cmath import log
 from datetime import date, datetime, timedelta
 import random
+from sqlite3 import Timestamp
 
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse, JsonResponse
@@ -256,11 +257,13 @@ class FundList(APIView):
 	def get(self, requests, format=None):
 		fund = Fund.objects.filter(account=requests.user.bank_account)
 		serializer = FundSerializer(fund, many=True)
-		return Response(serializer.data)
+		return Response(serializer.data)		
 
 @method_decorator(login_required, name='dispatch')
 class FundTransferredTo(APIView):
 	def get(self, requests, fund_id, format=None):
+		# default interval is 30 days
+		interval = 30
 		try:
 			# get the sender fund
 			sender_fund = Fund.objects.get(id=fund_id)
@@ -268,14 +271,23 @@ class FundTransferredTo(APIView):
 			raise Http404()
 		# make sure the user is the owner of the fund
 		if sender_fund.account != requests.user.bank_account: raise Http404()
+		# get the given interval
+		if requests.GET.get('interval') is not None and requests.GET.get('interval').isnumeric(): 
+			interval=int(requests.GET.get('interval'))
+
+		# get the starting and ending dates of the timerange to filter the queryset
+		end_date = date.today() + timedelta(days=1)
+		start_date = date.today() - timedelta(days=interval)
 		# get all the funds rhat received money from sender fund
-		recepient_funds = FundTransferHistory.objects.filter(sender_fund=sender_fund).order_by('timestamp')
+		recepient_funds = FundTransferHistory.objects.filter(sender_fund=sender_fund).filter(timestamp__range=[start_date, end_date]).order_by('timestamp')
 		serializer = FundTransferHistorySerializer(recepient_funds, many=True)
 		return Response(serializer.data)
 
 @method_decorator(login_required, name='dispatch')
 class FundReceivedFrom(APIView):
 	def get(self, requests, fund_id, format=None):
+		# default interval is 30 days
+		interval = 30
 		try:
 			# get the recepient fund
 			recipient_fund = Fund.objects.get(id=fund_id)
@@ -283,8 +295,15 @@ class FundReceivedFrom(APIView):
 			raise Http404()
 		# make sure the recepient fund is owned by the user
 		if recipient_fund.account != requests.user.bank_account: raise Http404()
+		# get the given interval
+		if requests.GET.get('interval') is not None and requests.GET.get('interval').isnumeric(): 
+			interval=int(requests.GET.get('interval'))
+
+		# get the starting and ending dates of the timerange to filter the queryset
+		end_date = date.today() + timedelta(days=1)
+		start_date = date.today() - timedelta(days=interval)
 		# get all the fund that tranferres money to the recepient fund
-		sender_funds = FundTransferHistory.objects.filter(recipient_fund=recipient_fund).order_by('timestamp')
+		sender_funds = FundTransferHistory.objects.filter(recipient_fund=recipient_fund).filter(timestamp__range=[start_date, end_date]).order_by('timestamp')
 		serializer = FundTransferHistorySerializer(sender_funds, many=True)
 		return Response(serializer.data)
 
