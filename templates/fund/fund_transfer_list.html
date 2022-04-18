@@ -17,6 +17,11 @@
             <dt class="col-sm-3">Total Transfered: </dt>
             <dd class="col-sm-1" id="total-transferred"></dd>
         </dl>
+        <label for="outgoing-select">Interval</label>
+        <select name="outgoing-select" id="outgoing-select-interval"></select>
+        <br>
+        <label for="recipient-fund-select">Recipient</label>
+        <select name="recipient-fund-select" id="recipient-fund-select"></select>
         <div id="recipient-table-div">
     
         </div>
@@ -27,6 +32,11 @@
             <dt class="col-sm-3">Total Received: </dt>
             <dd class="col-sm-1" id="total-received"></dd>
         </dl>
+        <label for="incoming-select">Interval</label>
+        <select name="incoming-select" id="incoming-select-interval"></select>
+        <br>
+        <label for="recipient-fund-select">Sender</label>
+        <select name="sender-fund-select" id="sender-fund-select"></select>
         <div id="sender-table-div">
     
         </div>
@@ -79,6 +89,20 @@
             return document.getElementById(e);
         }
 
+        async function init_sender_funds(interval=7){
+            const {data, status} = await get_data(`${fund_received_from}/${fund_id}/?interval=${interval}`);
+            sender_funds = preProcessData(data);
+            displayTable(sender_funds, $('sender-table-div'));
+            $('total-received').textContent = sender_funds.reduce((total, fah)=>total+fah.amount,0);
+        }
+
+        async function init_recipient_funds(interval=7){
+            const {data, status} = await get_data(`${fund_tranferred_to}/${fund_id}/?interval=${interval}`);
+            recipient_funds = preProcessData(data);
+            displayTable(recipient_funds, $('recipient-table-div'));
+            $('total-transferred').textContent = recipient_funds.reduce((total, fah)=>total+fah.amount,0);
+        }
+
         function updateModalContent(row_data){
             const {description, amount, sender_fund, recipient_fund, timestamp} = row_data;
             $('description-data').textContent = description;
@@ -88,77 +112,116 @@
             $('date-data').textContent = timestamp;
         }
 
+        const filterSenderFunds = () =>{
+            let selectedIndex = $('sender-fund-select').value;
+            if(selectedIndex == -1){
+                // display all
+                displayTable(sender_funds, $('sender-table-div'));
+                return;
+            }
+            let selectedFund = fund_names[selectedIndex];
+            let filtered_data = sender_funds.filter((obj)=>obj['sender_fund']==selectedFund);
+            displayTable(filtered_data, $('sender-table-div'));
+            console.log({filtered_data});
+        }
+
+        const filterRecipientFunds = () =>{
+            let selectedIndex = $('recipient-fund-select').value;
+            if(selectedIndex == -1){
+                // display all
+                displayTable(recipient_funds, $('recipient-table-div'));
+                return;
+            }
+            let selectedFund = fund_names[selectedIndex];
+            let filtered_data = recipient_funds.filter((obj)=>obj['recipient_fund']==selectedFund);
+            displayTable(filtered_data, $('recipient-table-div'));
+            console.log({filtered_data});
+        }
+
         async function init_data(){
             const {data:fund_data, status:fund_status} = await get_data(fund_api);
             fund = fund_data;
-
-            const {data:sender_history, status:sender_history_status} = await get_data(`${fund_received_from}/${fund_id}/`);
-            const {data:recipient_history, status:recipient_history_status} = await get_data(`${fund_tranferred_to}/${fund_id}/`);
-            
-            sender_funds = sender_history;
-            recipient_funds = recipient_history;
-            console.log({sender_funds});
-            console.log({recipient_funds});
-            // upon load only display the outgoing-div
-            $('outgoing-div').style.display = "block";
-            $('incoming-div').style.display = "none";
-            processData();
-        }
-
-        function processData(){
             fund.forEach(f => {
                 fund_names[f.id] = f.name;
             });
-            sender_funds.forEach((fah, i)=>{
-                fah.sender_fund = fund_names[fah.sender_fund];
-                fah.recipient_fund = fund_names[fah.recipient_fund];
-                fah.timestamp = processDateStr(fah.timestamp);
-            })
-            recipient_funds.forEach((fah, i)=>{
-                fah.sender_fund = fund_names[fah.sender_fund];
-                fah.recipient_fund = fund_names[fah.recipient_fund];
-                fah.timestamp = processDateStr(fah.timestamp);
-            })
 
-            // process the data further for the table
-            // since only 30 characters is allowed to be displayed at the table
-            // where gonna slice it and add ... at the end
-            let sender_table_data = sender_funds.map((fah, i)=>{
-                let new_fah = {...fah}
-                if(new_fah.description.length > 30){
-                    new_fah.description = `${new_fah.description.slice(0, 28)}...`
-                }
-                return new_fah;
-            })
+            console.log(fund_names);
 
-            let recipient_table_data = recipient_funds.map((fah, i)=>{
-                let new_fah = {...fah}
-                if(new_fah.description.length > 30){
-                    new_fah.description = `${new_fah.description.slice(0, 28)}...`
-                }
-                return new_fah;
-            })
-            const sender_row_selection_func = (e) =>{
+            await init_recipient_funds();
+            await init_sender_funds();
+
+            let interval_obj = {7:"1 week", 14:"2 weeks", 30:"1 month", 90:"3 months", 180:"6 months"};
+
+            populateSelectControl($('outgoing-select-interval') ,interval_obj, () => {let interval = $('outgoing-select-interval').value;init_recipient_funds(interval);});
+            populateSelectControl($('incoming-select-interval'), interval_obj, () => {let interval = $('incoming-select-interval').value;init_sender_funds(interval);});
+            populateSelectControl($('recipient-fund-select'), fund_names, filterRecipientFunds);
+            populateSelectControl($('sender-fund-select'), fund_names, filterSenderFunds);
+
+
+            // upon load only display the outgoing-div
+            $('outgoing-div').style.display = "block";
+            $('incoming-div').style.display = "none";
+        }
+
+        // create options for a select
+        const populateSelectControl = (select_object, key_value_dict, func) => {
+            select_object.onchange = func
+            // add an option to select all
+            let all_option = document.createElement("OPTION");
+            all_option.text = "ALL";
+            all_option.value = -1;
+            select_object.add(all_option);
+            // generate options
+            let keys = Object.keys(key_value_dict);
+            keys.forEach((key) => {
+                let new_option = document.createElement("OPTION");
+                new_option.text = key_value_dict[key];
+                new_option.value = key;
+                // add the option to the select object
+                select_object.add(new_option);
+            });
+        }
+        const sender_row_selection_func = (e) =>{
                 openModal();
                 updateModalContent(sender_funds[e.srcElement.parentNode.id])
-            }
-
-            const recipient_row_selection_func = (e) =>{
+        }
+        const recipient_row_selection_func = (e) =>{
                 openModal();
                 updateModalContent(recipient_funds[e.srcElement.parentNode.id])
+        }
+        function displayTable(raw_data, table_div){
+            let table_data = normalizeDescription(raw_data, 30);
+            table_div.innerHTML="";
+            if(table_data.length > 0){
+                let table = createTable(table_data, ['description', 'amount', 'sender_fund', 'recipient_fund', 'timestamp'], sender_row_selection_func, 'table table-striped', ['Description', 'Amount', 'From', 'To', 'Date']);
+                table_div.appendChild(table);
             }
-            $('sender-table-div').innerHTML="";
-            $('recipient-table-div').innerHTML="";
-            if(sender_table_data.length > 0){
-                let sender_table = createTable(sender_table_data, ['description', 'amount', 'sender_fund', 'timestamp'], sender_row_selection_func, 'table table-striped', ['Description', 'Amount', 'From', 'Date']);
-                $('sender-table-div').appendChild(sender_table);
-                $('total-received').textContent = sender_funds.reduce((total, fah)=>total+fah.amount,0);
-            }
-            if(recipient_table_data.length > 0){
-                let recipient_table = createTable(recipient_table_data, ['description', 'amount', 'recipient_fund', 'timestamp'], recipient_row_selection_func, 'table table-striped', ['Description', 'Amount', 'To', 'Date']);
-                $('recipient-table-div').appendChild(recipient_table);
-                $('total-transferred').textContent = recipient_funds.reduce((total, fah)=>total+fah.amount,0);
-            }
+        }
+
+        // process the raw data, such that the recipient and sender fund will be a named instead of the fund id
+        // and the timestamp is converted into a more readble format e.g. 12/03/2022 19:00+8:00 to Decemeber 3, 2022 7:00PM
+        function preProcessData(raw_data){
+            return raw_data.map((fah, index)=>{
+                // create a copy of the object
+                let new_fah = {...fah};
+                // change the sender and recipient fun into its name
+                new_fah.sender_fund = fund_names[new_fah.sender_fund];
+                new_fah.recipient_fund = fund_names[new_fah.recipient_fund];
+                // convert the timestamp into a more readable format
+                new_fah.timestamp = processDateStr(new_fah.timestamp);
+                return new_fah;
+            })
+        }
+
+        // shorten the description into just 30 characters
+        function normalizeDescription(raw_data, len){
+            return raw_data.map((fah, i)=>{
+                let new_fah = {...fah}
+                if(new_fah.description.length > len){
+                    new_fah.description = `${new_fah.description.slice(0, len-2)}...`
+                }
+                return new_fah;
+            });
         }
         init_data();
         $('outgoing-btn').onclick = () => {
