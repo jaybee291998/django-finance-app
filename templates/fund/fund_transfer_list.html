@@ -92,14 +92,14 @@
         async function init_sender_funds(interval=7){
             const {data, status} = await get_data(`${fund_received_from}/${fund_id}/?interval=${interval}`);
             sender_funds = preProcessData(data);
-            displayTable(sender_funds, $('sender-table-div'));
+            displayTable(sender_funds, $('sender-table-div'), sender_row_selection_func);
             $('total-received').textContent = sender_funds.reduce((total, fah)=>total+fah.amount,0);
         }
 
         async function init_recipient_funds(interval=7){
             const {data, status} = await get_data(`${fund_tranferred_to}/${fund_id}/?interval=${interval}`);
             recipient_funds = preProcessData(data);
-            displayTable(recipient_funds, $('recipient-table-div'));
+            displayTable(recipient_funds, $('recipient-table-div'), recipient_row_selection_func);
             $('total-transferred').textContent = recipient_funds.reduce((total, fah)=>total+fah.amount,0);
         }
 
@@ -189,11 +189,11 @@
                 openModal();
                 updateModalContent(recipient_funds[e.srcElement.parentNode.id])
         }
-        function displayTable(raw_data, table_div){
+        function displayTable(raw_data, table_div, row_selection_func){
             let table_data = normalizeDescription(raw_data, 30);
             table_div.innerHTML="";
             if(table_data.length > 0){
-                let table = createTable(table_data, ['description', 'amount', 'sender_fund', 'recipient_fund', 'timestamp'], sender_row_selection_func, 'table table-striped', ['Description', 'Amount', 'From', 'To', 'Date']);
+                let table = createTable(table_data, ['description', 'amount', 'sender_fund', 'recipient_fund', 'timestamp'], row_selection_func, 'table table-striped', ['Description', 'Amount', 'From', 'To', 'Date']);
                 table_div.appendChild(table);
             }
         }
